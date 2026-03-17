@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Login - AI Travel Planner{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-page {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        overflow: hidden;
+    }
+    
+    .auth-image {
+        background: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600') center/cover;
+        min-height: 400px;
+    }
+    
+    .auth-form {
+        padding: 3rem;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn-auth {
+        border-radius: 10px;
+        padding: 12px 30px;
+        font-weight: 600;
+    }
+    
+    .social-login {
+        display: flex;
+        gap: 10px;
+        margin-top: 1.5rem;
+    }
+    
+    .social-btn {
+        flex: 1;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+    
+    .forgot-link {
+        color: #667eea;
+        text-decoration: none;
+    }
+    
+    .forgot-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="auth-card">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="auth-image"></div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="auth-form">
+                                <div class="text-center mb-4">
+                                    <h2 class="fw-bold">Welcome Back</h2>
+                                    <p class="text-muted">Login to continue your travel journey</p>
+                                </div>
+                                
+                                <form method="POST" action="{{ url_for('login') }}">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                                        </div>
+                                        <div class="text-end mt-2">
+                                            <a href="#" class="forgot-link small">Forgot password?</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100 btn-auth">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                                    </button>
+                                </form>
+                                
+                                <div class="text-center mt-4">
+                                    <p class="text-muted">Don't have an account? 
+                                        <a href="{{ url_for('register') }}" class="text-primary fw-bold">Register here</a>
+                                    </p>
+                                </div>
+                                
+                                <div class="text-center my-4">
+                                    <span class="text-muted">Or continue with</span>
+                                </div>
+                                
+                                <div class="social-login">
+                                    <button class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-google"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-twitter"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

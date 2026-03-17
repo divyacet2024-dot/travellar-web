@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Travel Preferences - AI Travel Planner{% endblock %}
+
+{% block extra_css %}
+<style>
+    .preferences-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+    }
+    
+    .preference-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        padding: 2rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .destination-option {
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .destination-option:hover {
+        border-color: #667eea;
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    }
+    
+    .destination-option.selected {
+        border-color: #667eea;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    }
+    
+    .destination-option i {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .destination-option .type-name {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .budget-option {
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .budget-option:hover {
+        border-color: #667eea;
+        transform: translateY(-5px);
+    }
+    
+    .budget-option.selected {
+        border-color: #667eea;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    }
+    
+    .btn-submit {
+        border-radius: 15px;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .range-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.875rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+    
+    input[type="range"] {
+        height: 8px;
+        border-radius: 5px;
+        background: #e0e0e0;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+        background: #667eea;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="preferences-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="text-white mb-2">Plan Your Perfect Trip</h1>
+                <p class="text-white-50 mb-0">Tell us your preferences and we'll recommend the best destinations for you</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="preference-card">
+                <form method="POST" action="{{ url_for('preferences_page') }}">
+                    <!-- Destination Type -->
+                    <div class="mb-4">
+                        <label class="form-label">Where would you like to go?</label>
+                        <div class="row g-3">
+                            <div class="col-6 col-md-4">
+                                <div class="destination-option" onclick="selectDestination('Beach', this)">
+                                    <i class="fas fa-umbrella-beach text-info"></i>
+                                    <div class="type-name">Beach</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="destination-option" onclick="selectDestination('Hill', this)">
+                                    <i class="fas fa-mountain text-success"></i>
+                                    <div class="type-name">Hill Station</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="destination-option" onclick="selectDestination('City', this)">
+                                    <i class="fas fa-city text-primary"></i>
+                                    <div class="type-name">City</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="destination-option" onclick="selectDestination('Adventure', this)">
+                                    <i class="fas fa-hiking text-danger"></i>
+                                    <div class="type-name">Adventure</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="destination-option" onclick="selectDestination('Cultural', this)">
+                                    <i class="fas fa-landmark text-warning"></i>
+                                    <div class="type-name">Cultural</div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="destination_type" id="destination_type" value="">
+                    </div>
+
+                    <!-- Budget -->
+                    <div class="mb-4">
+                        <label class="form-label">What's your budget?</label>
+                        <div class="row g-3">
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectBudget('Low', this)">
+                                    <i class="fas fa-wallet text-success fa-2x mb-2"></i>
+                                    <div class="fw-bold">Low</div>
+                                    <small class="text-muted">₹25K - ₹40K</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectBudget('Medium', this)">
+                                    <i class="fas fa-money-bill-wave text-primary fa-2x mb-2"></i>
+                                    <div class="fw-bold">Medium</div>
+                                    <small class="text-muted">₹40K - ₹80K</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectBudget('High', this)">
+                                    <i class="fas fa-crown text-warning fa-2x mb-2"></i>
+                                    <div class="fw-bold">High</div>
+                                    <small class="text-muted">₹80K+</small>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="budget" id="budget" value="">
+                    </div>
+
+                    <!-- Travel Days -->
+                    <div class="mb-4">
+                        <label class="form-label">How many days will you travel?</label>
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <input type="range" class="form-range" min="1" max="15" value="5" id="travelDays" name="travel_days" oninput="updateDaysDisplay()">
+                                <div class="range-labels">
+                                    <span>1 Day</span>
+                                    <span>15 Days</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="display-4 fw-bold text-primary" id="daysDisplay">5</div>
+                                <small class="text-muted">Days</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Travel Type -->
+                    <div class="mb-4">
+                        <label class="form-label">Who are you traveling with?</label>
+                        <div class="row g-3">
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectTravelType('Solo', this)">
+                                    <i class="fas fa-user text-info fa-2x mb-2"></i>
+                                    <div class="fw-bold">Solo</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectTravelType('Family', this)">
+                                    <i class="fas fa-users text-success fa-2x mb-2"></i>
+                                    <div class="fw-bold">Family</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="budget-option" onclick="selectTravelType('Friends', this)">
+                                    <i class="fas fa-user-friends text-primary fa-2x mb-2"></i>
+                                    <div class="fw-bold">Friends</div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="travel_type" id="travel_type" value="">
+                    </div>
+
+                    <!-- Season -->
+                    <div class="mb-4">
+                        <label class="form-label">Preferred season or weather?</label>
+                        <select class="form-select" name="season" required>
+                            <option value="" selected disabled>Select your preferred season</option>
+                            <option value="Summer">☀️ Summer (April - June)</option>
+                            <option value="Monsoon">🌧️ Monsoon (July - September)</option>
+                            <option value="Autumn">🍂 Autumn (October - November)</option>
+                            <option value="Winter">❄️ Winter (December - March)</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-magic me-2"></i>Get AI Recommendations
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectDestination(type, element) {
+        document.querySelectorAll('.destination-option').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        document.getElementById('destination_type').value = type;
+    }
+
+    function selectBudget(budget, element) {
+        document.querySelectorAll('.budget-option').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        document.getElementById('budget').value = budget;
+    }
+
+    function selectTravelType(type, element) {
+        document.querySelectorAll('.budget-option').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        document.getElementById('travel_type').value = type;
+    }
+
+    function updateDaysDisplay() {
+        document.getElementById('daysDisplay').textContent = document.getElementById('travelDays').value;
+    }
+</script>
+{% endblock %}

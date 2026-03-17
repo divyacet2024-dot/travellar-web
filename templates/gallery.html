@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - AI Travel Planner{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+    }
+    
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        cursor: pointer;
+        height: 300px;
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        padding: 1.5rem;
+        transform: translateY(100%);
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+        transform: translateY(0);
+    }
+    
+    .filter-btn {
+        border-radius: 25px;
+        padding: 8px 20px;
+        margin: 5px;
+        border: 2px solid #667eea;
+        background: transparent;
+        color: #667eea;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+        background: #667eea;
+        color: white;
+    }
+    
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.95);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .lightbox.active {
+        display: flex;
+    }
+    
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="gallery-header">
+    <div class="container">
+        <h1 class="text-white mb-2">Destination Gallery</h1>
+        <p class="text-white-50 mb-0">Explore beautiful destinations from around the world</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- Filter Buttons -->
+    <div class="text-center mb-4">
+        <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
+        <button class="filter-btn" onclick="filterGallery('Beach', this)">Beach</button>
+        <button class="filter-btn" onclick="filterGallery('Hill', this)">Hill Stations</button>
+        <button class="filter-btn" onclick="filterGallery('City', this)">Cities</button>
+        <button class="filter-btn" onclick="filterGallery('Adventure', this)">Adventure</button>
+        <button class="filter-btn" onclick="filterGallery('Cultural', this)">Cultural</button>
+    </div>
+    
+    <!-- Gallery Grid -->
+    <div class="row g-4" id="galleryGrid">
+        {% for dest in destinations %}
+        <div class="col-md-6 col-lg-4 gallery-item" data-type="{{ dest.type }}">
+            <img src="{{ dest.image_url }}" alt="{{ dest.name }}" onclick="openLightbox('{{ dest.image_url }}', '{{ dest.name }}')">
+            <div class="gallery-overlay">
+                <h5 class="text-white mb-1">{{ dest.name }}</h5>
+                <span class="badge bg-{{ 'info' if dest.type == 'Beach' else 'success' if dest.type == 'Hill' else 'primary' if dest.type == 'City' else 'danger' if dest.type == 'Adventure' else 'warning' }}">
+                    {{ dest.type }}
+                </span>
+                <span class="badge bg-success">
+                    <i class="fas fa-rupee-sign me-1"></i>{{ dest.estimated_cost|int }}
+                </span>
+                <a href="{{ url_for('destination_detail', destination_name=dest.name) }}" class="btn btn-sm btn-light mt-2">
+                    <i class="fas fa-info-circle me-1"></i>View Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img src="" alt="" id="lightboxImage">
+    <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);">
+        <h5 class="text-white" id="lightboxCaption"></h5>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterGallery(type, element) {
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+    
+    // Filter items
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach(item => {
+        if (type === 'all' || item.dataset.type === type) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function openLightbox(src, caption) {
+    document.getElementById('lightboxImage').src = src;
+    document.getElementById('lightboxCaption').textContent = caption;
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+// Close lightbox on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+});
+</script>
+{% endblock %}

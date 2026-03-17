@@ -1,0 +1,365 @@
+{% extends "base.html" %}
+
+{% block title %}AI Travel Planner - Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.8)), 
+                    url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920') center/cover;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        animation: fadeInUp 1s ease-out 0.3s backwards;
+    }
+    
+    .feature-card {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255,255,255,0.25);
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .destination-card {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .destination-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    
+    .destination-card img {
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .shape {
+        position: absolute;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        animation: float 20s infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-100px) rotate(180deg); }
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .stats-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        color: white;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="floating-shapes">
+        <div class="shape" style="width: 100px; height: 100px; top: 10%; left: 10%;"></div>
+        <div class="shape" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: -5s;"></div>
+        <div class="shape" style="width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: -10s;"></div>
+        <div class="shape" style="width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: -15s;"></div>
+    </div>
+    
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-7">
+                <h1 class="hero-title text-white">AI Powered<br>Travel Planner</h1>
+                <p class="hero-subtitle text-white">Discover your perfect destination with intelligent recommendations and create personalized travel itineraries powered by AI</p>
+                
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3">
+                        <i class="fas fa-user-plus me-2"></i>Get Started
+                    </a>
+                    <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+                
+                <!-- Feature Highlights -->
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="feature-card text-white">
+                            <div class="feature-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <h5>AI Recommendations</h5>
+                            <p class="small mb-0">Smart destination suggestions based on your preferences</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card text-white">
+                            <div class="feature-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h5>Auto Itinerary</h5>
+                            <p class="small mb-0">Generate day-wise travel plans instantly</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card text-white">
+                            <div class="feature-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h5>Travel Chatbot</h5>
+                            <p class="small mb-0">24/7 AI assistant for all your travel queries</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold">Amazing Features</h2>
+            <p class="lead text-muted">Everything you need for the perfect trip</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-primary text-white rounded-circle mb-3">
+                            <i class="fas fa-user-check fa-2x p-4"></i>
+                        </div>
+                        <h4>User Authentication</h4>
+                        <p class="text-muted">Secure registration and login system to protect your travel plans and preferences.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-success text-white rounded-circle mb-3">
+                            <i class="fas fa-robot fa-2x p-4"></i>
+                        </div>
+                        <h4>AI Recommendations</h4>
+                        <p class="text-muted">Our intelligent engine analyzes your preferences to suggest the perfect destinations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-info text-white rounded-circle mb-3">
+                            <i class="fas fa-clipboard-list fa-2x p-4"></i>
+                        </div>
+                        <h4>Smart Itineraries</h4>
+                        <p class="text-muted">Generate detailed day-wise travel plans automatically tailored to your trip.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-warning text-white rounded-circle mb-3">
+                            <i class="fas fa-comments fa-2x p-4"></i>
+                        </div>
+                        <h4>Travel Chatbot</h4>
+                        <p class="text-muted">Get instant answers to travel questions anytime with our AI assistant.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-danger text-white rounded-circle mb-3">
+                            <i class="fas fa-map-marked-alt fa-2x p-4"></i>
+                        </div>
+                        <h4>Map Integration</h4>
+                        <p class="text-muted">View destinations on an interactive map to plan your journey better.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon-large bg-purple text-white rounded-circle mb-3">
+                            <i class="fas fa-images fa-2x p-4"></i>
+                        </div>
+                        <h4>Image Gallery</h4>
+                        <p class="text-muted">Explore beautiful destinations through our curated image gallery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Destinations -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold">Popular Destinations</h2>
+            <p class="lead text-muted">Explore trending travel destinations</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 col-lg-3">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400" alt="Maldives" class="w-100">
+                    <div class="p-3">
+                        <h5 class="mb-1">Maldives</h5>
+                        <span class="badge bg-info">Beach</span>
+                        <span class="badge bg-success">Luxury</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400" alt="Tokyo" class="w-100">
+                    <div class="p-3">
+                        <h5 class="mb-1">Tokyo</h5>
+                        <span class="badge bg-primary">City</span>
+                        <span class="badge bg-warning">Culture</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400" alt="Manali" class="w-100">
+                    <div class="p-3">
+                        <h5 class="mb-1">Manali</h5>
+                        <span class="badge bg-secondary">Hill</span>
+                        <span class="badge bg-danger">Adventure</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400" alt="Kyoto" class="w-100">
+                    <div class="p-3">
+                        <h5 class="mb-1">Kyoto</h5>
+                        <span class="badge bg-warning">Cultural</span>
+                        <span class="badge bg-info">Historic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                Start Exploring <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div>Destinations</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div>Happy Travelers</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div>AI Powered</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div>Support</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="display-5 fw-bold">Ready to Plan Your Dream Trip?</h2>
+                <p class="lead text-muted">Join thousands of travelers who have discovered their perfect destination with our AI-powered travel planner.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-rocket me-2"></i>Get Started Free
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
