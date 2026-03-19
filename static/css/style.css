@@ -1,25 +1,28 @@
 /* AI Travel Planner - Main Stylesheet */
 
-/* CSS Variables */
+/* CSS Variables - Modern Travel Theme */
 :root {
-    --primary-color: #667eea;
-    --primary-dark: #5a6fd6;
-    --secondary-color: #764ba2;
+    --primary-color: #0077b6;
+    --primary-dark: #023e8a;
+    --secondary-color: #00b4d8;
+    --accent-color: #ff6b6b;
     --success-color: #28a745;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
     --info-color: #17a2b8;
     --dark-color: #1a1a2e;
-    --light-color: #f8f9fa;
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --light-color: #f5f7fa;
+    --text-color: #333333;
+    --gradient-primary: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
     --gradient-modern: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     --gradient-purple: linear-gradient(135deg, #cc2b5e 0%, #753a88 100%);
     --gradient-ocean: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
     --gradient-sunset: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+    --gradient-accent: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
     --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
     --shadow-md: 0 5px 20px rgba(0,0,0,0.15);
     --shadow-lg: 0 10px 40px rgba(0,0,0,0.2);
-    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.4);
+    --shadow-glow: 0 0 30px rgba(0, 119, 182, 0.4);
     --border-radius: 15px;
     --border-radius-lg: 25px;
     --transition: all 0.3s ease;
@@ -35,7 +38,8 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-color);
+    background-color: var(--light-color);
     overflow-x: hidden;
 }
 
@@ -62,9 +66,8 @@ a:hover {
 /* Navbar Styles */
 .navbar {
     box-shadow: var(--shadow-md);
-    padding: 0.8rem 0;
-    background: rgba(26, 26, 46, 0.95) !important;
-    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    background: #0077b6 !important;
     transition: all 0.3s ease;
     position: sticky;
     top: 0;
@@ -72,50 +75,26 @@ a:hover {
 }
 
 .navbar.scrolled {
-    padding: 0.5rem 0;
+    padding: 10px 0;
     box-shadow: var(--shadow-lg);
 }
 
 .navbar-brand {
     font-weight: 700;
     font-size: 1.6rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    transition: var(--transition);
-}
-
-.navbar-brand:hover {
-    transform: scale(1.05);
+    color: white !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
     font-weight: 500;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
-    transition: var(--transition);
-    position: relative;
-}
-
-.navbar-dark .navbar-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--gradient-primary);
+    padding: 8px 15px;
+    border-radius: 8px;
     transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.navbar-dark .navbar-nav .nav-link:hover::after {
-    width: 60%;
+    color: white !important;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.2);
 }
 
 /* Mobile Navigation */
@@ -162,48 +141,64 @@ a:hover {
 
 /* Button Styles */
 .btn {
-    border-radius: 15px;
-    padding: 14px 35px;
+    border-radius: 12px;
+    padding: 12px 25px;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1rem;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    border: 2px solid transparent;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: 0.5s;
-    z-index: -1;
-}
-
-.btn:hover::before {
-    left: 100%;
+    cursor: pointer;
+    border: none;
 }
 
 .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
-    border: none;
+    background-color: #0077b6;
     color: white;
+    border: none;
 }
 
 .btn-primary:hover {
-    background: var(--gradient-primary);
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+    background-color: #023e8a;
+}
+
+.btn-secondary {
+    background-color: #00b4d8;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #0096c7;
+}
+
+.btn-danger {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #ee5a5a;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 2px solid #0077b6;
+    color: #0077b6;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0077b6;
     color: white;
 }
 
@@ -257,28 +252,29 @@ a:hover {
 
 /* Card Styles */
 .card {
+    background: white;
     border: none;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
     overflow: hidden;
 }
 
 .card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
 }
 
 .card-img-top {
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
 .card:hover .card-img-top {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .card-body {
-    padding: 1.5rem;
+    padding: 20px;
 }
 
 /* Animated Card Hover Effects */
@@ -522,9 +518,9 @@ a:hover {
 
 /* Footer Styles */
 footer {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: #0077b6;
     margin-top: auto;
-    padding: 3rem 0;
+    padding: 20px 0;
 }
 
 footer h5 {

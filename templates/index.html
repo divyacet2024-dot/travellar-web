@@ -5,7 +5,7 @@
 {% block extra_css %}
 <style>
     .hero-section {
-        background: linear-gradient(135deg, rgba(0, 123, 255, 0.85), rgba(118, 75, 162, 0.75)), 
+        background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8)), 
                     url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920') center/cover;
         min-height: 100vh;
         display: flex;
@@ -145,12 +145,13 @@
                 <h1 class="hero-title text-white">Traveller Guide Web App</h1>
                 <p class="hero-subtitle text-white">Explore destinations based on your preferences ✈️</p>
                 <p class="hero-description text-white">This web app helps users explore travel destinations based on preferences and provides AI-powered recommendations for the perfect trip.</p>
+                <p class="hero-description text-white" style="font-size: 1.4rem; font-weight: 600; margin-top: 1rem;">Smart travel planning with personalized recommendations</p>
                 
                 <div class="d-flex gap-3 flex-wrap">
-                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3">
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem; padding: 16px 40px !important;">
                         <i class="fas fa-user-plus me-2"></i>Get Started
                     </a>
-                    <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
+                    <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem; padding: 16px 40px !important;">
                         <i class="fas fa-info-circle me-2"></i>Learn More
                     </a>
                 </div>
@@ -315,6 +316,16 @@
                         <h5 class="mb-1">Kyoto</h5>
                         <span class="badge bg-warning">Cultural</span>
                         <span class="badge bg-info">Historic</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400" alt="Bali" class="w-100">
+                    <div class="p-3">
+                        <h5 class="mb-1">Bali</h5>
+                        <span class="badge bg-info">Beach</span>
+                        <span class="badge bg-success">Tropical</span>
                     </div>
                 </div>
             </div>
