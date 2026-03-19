@@ -40,12 +40,19 @@
     .no-results {
         text-align: center;
         padding: 60px 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
     .no-results i {
         font-size: 4rem;
         color: #ccc;
         margin-bottom: 20px;
+    }
+    
+    .no-results h3 {
+        color: #0077b6;
     }
 </style>
 {% endblock %}
@@ -86,8 +93,8 @@
         </div>
     {% else %}
         <div class="no-results">
-            <i class="fas fa-search"></i>
-            <h3>No results found for "{{ query }}"</h3>
+            <i class="fas fa-sad-tear"></i>
+            <h3>No results found for "{{ query }}" 😔</h3>
             <p class="text-muted">Try searching for: Goa, Manali, Maldives, Bali, Tokyo, Kyoto, Rishikesh, Ladakh, Mysore, Bangalore</p>
             <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Back to Home</a>
         </div>
