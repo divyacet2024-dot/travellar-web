@@ -632,6 +632,35 @@ def get_chatbot_response(user_message):
 def index():
     return render_template('index.html')
 
+@app.route('/search')
+def search():
+    query = request.args.get('query', '').strip()
+    
+    # Destination database with hotels
+    destinations_data = {
+        'Goa': {'hotels': ['Taj Resort Goa', 'Beachside Inn', 'Sea View Hotel'], 'image': 'https://images.unsplash.com/photo-1518546979797-8494b522d09b?w=400'},
+        'Manali': {'hotels': ['Snow Valley Resort', 'Mountain View Hotel', 'Apple Garden Inn'], 'image': 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400'},
+        'Maldives': {'hotels': ['Water Villa Resort', 'Ocean Paradise', 'Sunset Beach Resort'], 'image': 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400'},
+        'Bali': {'hotels': ['Ubud Retreat', 'Bali Beach Resort', 'Seminyak Villa'], 'image': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400'},
+        'Tokyo': {'hotels': ['Tokyo Grand Hotel', 'Shinjuku Stay', 'Akasaka Hotel'], 'image': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400'},
+        'Kyoto': {'hotels': ['Kyoto Palace Hotel', 'Zen Garden Inn', 'Arashiyama Resort'], 'image': 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400'},
+        'Rishikesh': {'hotels': ['Ganga View Resort', 'Yoga Valley Inn', 'Adventure Base Camp'], 'image': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400'},
+        'Ladakh': {'hotels': ['Himalayan Guest House', 'Nubra Valley Camp', 'Leh Hotel'], 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400'},
+        'Mysore': {'hotels': ['Royal Orchid Hotel', 'Heritage Inn', 'Lalitha Mahal Palace'], 'image': 'https://images.unsplash.com/photo-1565008576549-57569a02271d?w=400'},
+        'Bangalore': {'hotels': ['The Leela Palace', 'ITC Gardenia', 'Taj Bangalore'], 'image': 'https://images.unsplash.com/photo-1596496050827-8299e0220de1?w=400'},
+        'Nandi Hills': {'hotels': ['Nandi Hill Resort', 'Cliff Club', 'Valley View Inn'], 'image': 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400'},
+        'Swiss Alps': {'hotels': ['Alpine Lodge', 'Matterhorn Resort', 'Lake Geneva Hotel'], 'image': 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=400'},
+    }
+    
+    # Search logic
+    results = {}
+    if query:
+        for dest, data in destinations_data.items():
+            if query.lower() in dest.lower():
+                results[dest] = data
+    
+    return render_template('search_results.html', results=results, query=query)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':

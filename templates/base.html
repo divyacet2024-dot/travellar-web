@@ -93,6 +93,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <form action="/search" method="GET" class="d-flex">
+                            <input type="text" name="query" placeholder="Search..." 
+                                   class="form-control form-control-sm me-2" style="border-radius: 20px;">
+                        </form>
+                    </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
