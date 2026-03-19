@@ -123,13 +123,28 @@ function removeLoadingMessage(id) {
  * Initialize animations
  */
 function initAnimations() {
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+    
     // Add fade-in animation to elements
-    const animatedElements = document.querySelectorAll('.card, .feature-card, .destination-card');
+    const animatedElements = document.querySelectorAll('.card, .feature-card, .destination-card, .stat-card');
     
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
+                // Add staggered delay based on index
+                setTimeout(() => {
+                    entry.target.classList.add('fade-in');
+                }, index * 100);
             }
         });
     }, {
@@ -137,6 +152,37 @@ function initAnimations() {
     });
     
     animatedElements.forEach(el => observer.observe(el));
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add page content animation
+    const mainContent = document.querySelector('main');
+    if (mainContent) {
+        mainContent.classList.add('page-content');
+    }
+    
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.card-hover-effect');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
 }
 
 /**
