@@ -7,9 +7,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block extra_css %}{% endblock %}
+    {% block extra_css %}
+<style>
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920') center/cover no-repeat;
+        z-index: -1;
+    }
+    
+    .bg-image::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(26, 26, 46, 0.85), rgba(102, 126, 234, 0.3));
+    }
+    
+    body {
+        background: transparent;
+    }
+    
+    main {
+        min-height: calc(100vh - 200px);
+        position: relative;
+        z-index: 1;
+    }
+</style>
+{% endblock %}
 </head>
 <body>
+    <!-- Background Image -->
+    <div class="bg-image"></div>
+    
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">

@@ -5,21 +5,25 @@
 {% block extra_css %}
 <style>
     .dashboard-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.9) 100%);
         padding: 3rem 0;
         margin-bottom: 2rem;
+        border-radius: 0 0 50px 50px;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
     }
     
     .stat-card {
         background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        padding: 1.8rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
+        border: 1px solid rgba(102, 126, 234, 0.1);
     }
     
     .stat-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
     }
     
     .stat-icon {
@@ -34,9 +38,15 @@
     
     .preference-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .preference-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
     }
     
     .preference-badge {
@@ -50,18 +60,27 @@
     
     .itinerary-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
+        border: 1px solid rgba(102, 126, 234, 0.1);
     }
     
     .itinerary-card:hover {
-        transform: translateX(5px);
+        transform: translateX(10px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
     }
     
     .action-btn {
-        border-radius: 10px;
-        padding: 10px 20px;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
     
     .quick-action-card {
