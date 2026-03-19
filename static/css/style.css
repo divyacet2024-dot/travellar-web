@@ -162,15 +162,16 @@ a:hover {
 
 /* Button Styles */
 .btn {
-    border-radius: 12px;
-    padding: 12px 30px;
+    border-radius: 15px;
+    padding: 14px 35px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.05rem;
     letter-spacing: 0.5px;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     z-index: 1;
+    border: 2px solid transparent;
 }
 
 .btn::before {
@@ -191,7 +192,7 @@ a:hover {
 
 .btn:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 .btn-primary {
@@ -202,7 +203,7 @@ a:hover {
 
 .btn-primary:hover {
     background: var(--gradient-primary);
-    box-shadow: var(--shadow-glow);
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
     color: white;
 }
 
