@@ -16,7 +16,8 @@
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        margin-top: 15px;
     }
     
     .result-card:hover {
@@ -67,7 +68,7 @@
 
 <div class="container mb-5" style="padding: 40px 20px;">
     {% if results %}
-        <div class="row">
+        <div class="row g-4">
             {% for destination, data in results.items() %}
             <div class="col-md-6 col-lg-4">
                 <div class="result-card card">
