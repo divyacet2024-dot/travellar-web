@@ -5,8 +5,8 @@
 {% block extra_css %}
 <style>
     .hero-section {
-        background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8)), 
-                    url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920') center/cover;
+        background: linear-gradient(135deg, rgba(0, 119, 182, 0.85), rgba(0, 180, 216, 0.7)), 
+                    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920') center/cover;
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -76,7 +76,7 @@
     }
     
     .destination-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-10px) scale(1.03);
         box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     
@@ -145,7 +145,7 @@
                 <h1 class="hero-title text-white">Traveller Guide Web App</h1>
                 <p class="hero-subtitle text-white">Explore destinations based on your preferences ✈️</p>
                 <p class="hero-description text-white">This web app helps users explore travel destinations based on preferences and provides AI-powered recommendations for the perfect trip.</p>
-                <p class="hero-description text-white" style="font-size: 1.4rem; font-weight: 600; margin-top: 1rem;">Smart travel planning with personalized recommendations</p>
+                <p class="hero-description text-white" style="font-size: 1.4rem; font-weight: 600; margin-top: 1rem;">Smart travel planning made easy ✈️</p>
                 
                 <div class="d-flex gap-3 flex-wrap">
                     <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem; padding: 16px 40px !important;">
@@ -192,8 +192,8 @@
 </section>
 
 <!-- Features Section -->
-<section id="features" class="py-5 bg-light">
-    <div class="container">
+<section id="features" class="py-5 bg-light" style="padding: 60px 0;">
+    <div class="container" style="padding: 20px;">
         <div class="text-center mb-5">
             <h2 class="display-4 fw-bold">Amazing Features</h2>
             <p class="lead text-muted">Everything you need for the perfect trip</p>
@@ -271,7 +271,7 @@
 </section>
 
 <!-- Popular Destinations -->
-<section class="py-5">
+<section class="py-5" style="padding: 60px 0;">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-4 fw-bold">Popular Destinations</h2>

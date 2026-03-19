@@ -35,6 +35,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -262,7 +266,7 @@ a:hover {
 
 .card:hover {
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.03);
 }
 
 .card-img-top {
@@ -394,6 +398,11 @@ a:hover {
 
 .badge.bg-success {
     background: var(--gradient-modern) !important;
+}
+
+.badge.bg-purple {
+    background-color: #6f42c1;
+    color: white;
 }
 
 /* Alert Styles */
