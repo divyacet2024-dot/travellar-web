@@ -4,6 +4,29 @@
 
 {% block extra_css %}
 <style>
+    /* Sticky Navigation */
+    .sticky-nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(0, 119, 182, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 12px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .sticky-nav .nav-link {
+        color: white !important;
+        font-weight: 500;
+        padding: 8px 16px !important;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .sticky-nav .nav-link:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    
     /* Hero Section Styles */
     .hero-section {
         background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8)), 
@@ -58,6 +81,141 @@
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Search Bar */
+    .search-section {
+        background: #f8f9fa;
+        padding: 30px 20px;
+    }
+    
+    .search-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: 50px;
+        border: 2px solid #e0e0e0;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+        border-color: #0077b6;
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+        outline: none;
+    }
+    
+    /* Destination Cards */
+    .destination-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .destination-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    
+    .destination-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .destination-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .destination-card-body {
+        padding: 20px;
+    }
+    
+    .destination-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #0077b6;
+        margin-bottom: 8px;
+    }
+    
+    .destination-meta {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+    
+    .hotel-list {
+        margin-top: 15px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+    
+    .hotel-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .hotel-item:last-child {
+        border-bottom: none;
+    }
+    
+    .hotel-name {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .hotel-price {
+        color: #28a745;
+        font-weight: 600;
+    }
+    
+    .book-btn {
+        background: #0077b6;
+        color: white;
+        border: none;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .book-btn:hover {
+        background: #005f8a;
+    }
+    
+    /* Map Section */
+    .map-section {
+        padding: 40px 20px;
+        background: #f8f9fa;
+    }
+    
+    .map-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+    
+    #map {
+        width: 100%;
+        height: 400px;
+        border-radius: 8px;
     }
     
     /* Input Section */
@@ -131,24 +289,11 @@
         margin: 0 auto;
     }
     
-    .destination-name {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0077b6;
-        margin-bottom: 10px;
-    }
-    
     .trip-cost {
         font-size: 1.5rem;
         font-weight: 600;
         color: #28a745;
         margin-bottom: 20px;
-    }
-    
-    .itinerary-title {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 15px;
     }
     
     .itinerary-item {
@@ -245,11 +390,40 @@
             font-size: 1.1rem;
             padding: 14px 35px;
         }
+        
+        .sticky-nav .navbar-nav {
+            flex-direction: row !important;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+
+<!-- Sticky Navigation -->
+<nav class="sticky-nav">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="navbar-brand text-white fw-bold" href="#">✈️ Travellar</a>
+            <ul class="navbar-nav flex-row ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#search">🔍 Destinations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#mapSection">🗺️ Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#planTrip">🎯 Plan Trip</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#hiddenGems">💎 Hidden Gems</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <!-- 1. HERO SECTION -->
 <section class="hero-section">
@@ -260,8 +434,26 @@
     </div>
 </section>
 
+<!-- Search Bar with Live Filtering -->
+<section class="search-section" id="search">
+    <div class="search-card">
+        <input type="text" class="search-input" id="destinationSearch" placeholder="🔍 Search destinations, cities, or places..." onkeyup="filterDestinations()">
+    </div>
+    <div class="destination-grid" id="destinationGrid" style="margin-top: 20px;">
+        <!-- Destination cards will be populated by JavaScript -->
+    </div>
+</section>
+
+<!-- Interactive Map -->
+<section class="map-section" id="mapSection">
+    <h2 style="text-align: center; margin-bottom: 20px; font-weight: 700;">🗺️ Explore on Map</h2>
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+</section>
+
 <!-- 2. INPUT SECTION (Main Feature) -->
-<section class="input-section" id="inputSection">
+<section class="input-section" id="planTrip">
     <div class="input-card">
         <h3 style="text-align: center; margin-bottom: 25px; font-weight: 700;">Plan Your Trip</h3>
         <form id="tripForm">
@@ -302,7 +494,7 @@
 </section>
 
 <!-- 4. EXTRA SECTION (Hidden gems + I'm bored) -->
-<section class="extra-section">
+<section class="extra-section" id="hiddenGems">
     <h2 class="hidden-gems-title">🏕️ Hidden Gems</h2>
     
     <div class="container">
@@ -349,11 +541,172 @@
     </div>
 </section>
 
+<!-- Load OpenStreetMap -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // Trip data for demo purposes
+    // Destination database with hotels
+    const destinations = [
+        { 
+            name: 'Nandi Hills', 
+            city: 'Bangalore', 
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            cost: '₹2,500',
+            hotels: [
+                { name: 'Hill View Resort', price: '₹1,500/night' },
+                { name: 'Nandi Residency', price: '₹1,200/night' }
+            ]
+        },
+        { 
+            name: 'Coorg', 
+            city: 'Bangalore', 
+            image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400',
+            cost: '₹2,800',
+            hotels: [
+                { name: 'Coorg Resort', price: '₹2,000/night' },
+                { name: 'Misty Valley', price: '₹1,800/night' }
+            ]
+        },
+        { 
+            name: 'Lonavala', 
+            city: 'Mumbai', 
+            image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400',
+            cost: '₹1,800',
+            hotels: [
+                { name: 'Lake View Inn', price: '₹1,200/night' },
+                { name: 'Hilltop Resort', price: '₹1,500/night' }
+            ]
+        },
+        { 
+            name: 'Mahabaleshwar', 
+            city: 'Mumbai', 
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            cost: '₹2,800',
+            hotels: [
+                { name: 'Misty Mountain', price: '₹2,200/night' },
+                { name: 'Lake View Hotel', price: '₹1,800/night' }
+            ]
+        },
+        { 
+            name: 'Pondicherry', 
+            city: 'Chennai', 
+            image: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400',
+            cost: '₹2,500',
+            hotels: [
+                { name: 'Beach Resort', price: '₹1,800/night' },
+                { name: 'Le Pondy', price: '₹2,500/night' }
+            ]
+        },
+        { 
+            name: 'Ooty', 
+            city: 'Chennai', 
+            image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
+            cost: '₹2,800',
+            hotels: [
+                { name: 'Lake Palace', price: '₹2,000/night' },
+                { name: 'Fern Hill', price: '₹1,600/night' }
+            ]
+        },
+        { 
+            name: 'Matheran', 
+            city: 'Pune', 
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            cost: '₹1,600',
+            hotels: [
+                { name: 'The Verdict', price: '₹1,200/night' },
+                { name: 'Byke Heritage', price: '₹1,000/night' }
+            ]
+        },
+        { 
+            name: 'Rishikesh', 
+            city: 'Delhi', 
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            cost: '₹2,200',
+            hotels: [
+                { name: 'Ganga Kinare', price: '₹1,800/night' },
+                { name: 'Neeranchal', price: '₹1,500/night' }
+            ]
+        }
+    ];
+
+    // Map locations
+    const mapLocations = [
+        { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
+        { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
+        { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
+        { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
+        { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
+        { name: 'Ooty', lat: 11.4102, lng: 76.6950 },
+        { name: 'Matheran', lat: 18.9897, lng: 73.2655 },
+        { name: 'Rishikesh', lat: 30.0869, lng: 78.2676 }
+    ];
+
+    // Initialize map
+    let map;
+    function initMap() {
+        map = L.map('map').setView([20.0, 78.0], 5);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Add markers
+        mapLocations.forEach(loc => {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>Click to explore`);
+        });
+    }
+
+    // Render destination cards
+    function renderDestinations(filter = '') {
+        const grid = document.getElementById('destinationGrid');
+        const filtered = destinations.filter(d => 
+            d.name.toLowerCase().includes(filter.toLowerCase()) ||
+            d.city.toLowerCase().includes(filter.toLowerCase())
+        );
+        
+        grid.innerHTML = filtered.map(dest => `
+            <div class="destination-card">
+                <img src="${dest.image}" alt="${dest.name}">
+                <div class="destination-card-body">
+                    <div class="destination-name">📍 ${dest.name}</div>
+                    <div class="destination-meta">From ${dest.city} • ${dest.cost}</div>
+                    
+                    <div class="hotel-list">
+                        <strong>🏨 Hotels:</strong>
+                        ${dest.hotels.map(hotel => `
+                            <div class="hotel-item">
+                                <div>
+                                    <div class="hotel-name">${hotel.name}</div>
+                                    <div class="hotel-price">${hotel.price}</div>
+                                </div>
+                                <button class="book-btn" onclick="alert('Booking: ${hotel.name} - ${dest.name}')">Book Now</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Live search filter
+    function filterDestinations() {
+        const searchTerm = document.getElementById('destinationSearch').value;
+        renderDestinations(searchTerm);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        renderDestinations();
+        initMap();
+    });
+
+    // Trip data for trip generator
     const tripDatabase = {
         'Bangalore': [
             { name: 'Nandi Hills', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
@@ -367,7 +720,7 @@
             { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Visit Pratapgad Fort, Venna Lake', 'Day 2: Sunrise at Wilson Point, market visit'] },
             { name: 'Goa', cost: 3000, days: 2, itinerary: ['Day 1: Beach visit, Fort Aguada', 'Day 2: Baga Beach morning, return'] },
             { name: 'Alibaug', cost: 2200, days: 2, itinerary: ['Day 1: Beach visit, Kolaba Fort', 'Day 2: Morning beach walk, return'] },
-            { name: 'Panchgani', cost: 2500, days: 2, itinerary: ['Day 1: Visit Table Land, Parsi Point', 'Day 2: Morning sunrise, Sydney Point'] }
+            { name: 'Panchgani', cost: 2500, days: 2, itinerary: ['Day 1: Visit Table Land, Parsi Point', 'Day 2: Sydney Point, return'] }
         ],
         'Delhi': [
             { name: 'Agra', cost: 2500, days: 2, itinerary: ['Day 1: Taj Mahal visit, Agra Fort', 'Day 2: Itimad-ud-Daulah, return'] },
@@ -394,7 +747,7 @@
             { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Pratapgad Fort, Venna Lake', 'Day 2: Wilson Point sunrise, market'] },
             { name: 'Lonavala', cost: 1800, days: 2, itinerary: ['Day 1: Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
             { name: 'Matheran', cost: 1600, days: 2, itinerary: ['Day 1: Toy train, Charlotte Lake', 'Day 2: Sunrise at Panorama Point, return'] },
-            { name: ' Panchgani', cost: 2200, days: 2, itinerary: ['Day 1: Table Land, Parsi Point', 'Day 2: Sydney Point, return'] },
+            { name: 'Panchgani', cost: 2200, days: 2, itinerary: ['Day 1: Table Land, Parsi Point', 'Day 2: Sydney Point, return'] },
             { name: 'Tamhini Ghat', cost: 1500, days: 2, itinerary: ['Day 1: Waterfall visits, nature walk', 'Day 2: Mountain view, return'] }
         ],
         'Kolkata': [
@@ -441,7 +794,7 @@
 
     // Function to scroll to input section
     function scrollToInput() {
-        document.getElementById('inputSection').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('planTrip').scrollIntoView({ behavior: 'smooth' });
     }
 
     // Handle form submission
