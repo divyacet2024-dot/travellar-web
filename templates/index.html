@@ -80,7 +80,7 @@
        ========================================= */
     .hero-section {
         background: var(--background-gradient);
-        min-height: 65vh;
+        min-height: 80vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -89,27 +89,30 @@
     
     .hero-content {
         text-align: center;
-        max-width: 800px;
+        max-width: 850px;
     }
     
     .hero-title {
         font-size: 3.8rem;
         font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         color: var(--text-primary);
         animation: fadeInUp 0.8s ease-out;
     }
     
     .hero-subtitle {
         font-size: 1.4rem;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
         color: var(--text-secondary);
         animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .hero-btn {
         font-size: 1.2rem;
-        padding: 16px 50px;
+        padding: 18px 55px;
         font-weight: 700;
         border-radius: 8px;
         background: var(--primary);
@@ -128,18 +131,85 @@
     }
 
     /* =========================================
+       HOW IT WORKS SECTION
+       ========================================= */
+    .how-it-works {
+        background: var(--card-bg);
+        padding: 80px 20px;
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 50px;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .steps-container {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .step-card {
+        text-align: center;
+        max-width: 300px;
+        padding: 30px 25px;
+        border-radius: 12px;
+        background: var(--card-bg);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+    
+    .step-card:hover {
+        transform: translateY(-8px);
+    }
+    
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 auto 20px;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .step-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+    }
+    
+    .step-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* =========================================
        SEARCH SECTION
        ========================================= */
     .search-section {
-        background: var(--card-bg);
-        padding: 50px 20px;
+        background: var(--background-gradient);
+        padding: 60px 20px;
     }
     
     .search-container {
         display: flex;
         gap: 12px;
         max-width: 650px;
-        margin: 0 auto;
+        margin: 0 auto 30px;
     }
     
     .search-input {
@@ -178,15 +248,6 @@
     /* =========================================
        DESTINATION CARDS
        ========================================= */
-    .section-title {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 35px;
-        font-family: 'Poppins', sans-serif;
-    }
-    
     .destination-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -336,7 +397,7 @@
        ========================================= */
     .map-section {
         padding: 60px 20px;
-        background: var(--background-gradient);
+        background: var(--card-bg);
     }
     
     .map-container {
@@ -359,14 +420,14 @@
        ========================================= */
     .input-section {
         background: var(--background-gradient);
-        padding: 60px 20px;
+        padding: 70px 20px;
     }
     
     .input-card {
         background: var(--card-bg);
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 40px;
+        padding: 45px;
         max-width: 600px;
         margin: 0 auto;
     }
@@ -470,11 +531,95 @@
     }
     
     /* =========================================
+       FEATURED DESTINATIONS SECTION
+       ========================================= */
+    .featured-section {
+        background: var(--background-gradient);
+        padding: 80px 20px;
+    }
+    
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .featured-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .featured-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .featured-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .featured-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        padding: 40px 20px 20px;
+    }
+    
+    .featured-title {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .featured-body {
+        padding: 24px;
+    }
+    
+    .featured-description {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+    
+    .featured-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #388E3C;
+    }
+    
+    .explore-btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 24px;
+        background: var(--primary);
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .explore-btn:hover {
+        background: var(--secondary);
+        color: var(--text-primary);
+    }
+    
+    /* =========================================
        EXTRA SECTION (Hidden Gems)
        ========================================= */
     .extra-section {
         background: var(--card-bg);
-        padding: 70px 20px;
+        padding: 80px 20px;
     }
     
     .gem-card {
@@ -500,13 +645,13 @@
     
     .bored-btn {
         display: block;
-        width: 240px;
+        width: 260px;
         margin: 50px auto 0;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         padding: 18px 40px;
         font-weight: 700;
         border-radius: 8px;
-        background: var(--primary);
+        background: #6c5ce7;
         border: none;
         color: white;
         cursor: pointer;
@@ -515,10 +660,8 @@
     }
     
     .bored-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
+        background: #5b4cc4;
         transform: scale(1.08);
-        box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
     }
     
     /* =========================================
@@ -527,13 +670,14 @@
     .site-footer {
         background: var(--footer-bg);
         color: #FFFFFF;
-        padding: 50px 20px 30px;
+        padding: 60px 20px 30px;
     }
     
     .footer-title {
         font-family: 'Poppins', sans-serif;
         font-weight: 700;
         margin-bottom: 20px;
+        font-size: 1.3rem;
     }
     
     .footer-link {
@@ -546,6 +690,16 @@
     
     .footer-link:hover {
         color: var(--primary);
+    }
+    
+    .about-text {
+        color: #BDBDBD;
+        line-height: 1.8;
+    }
+    
+    .developer-credit {
+        color: var(--secondary);
+        font-weight: 600;
     }
     
     /* =========================================
@@ -581,6 +735,15 @@
         
         .destination-grid {
             grid-template-columns: 1fr;
+        }
+        
+        .steps-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-card {
+            max-width: 100%;
         }
     }
     
@@ -638,16 +801,16 @@
             <a class="navbar-brand text-white" href="#">✈️ Travellar</a>
             <ul class="navbar-nav flex-row ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#search">🔍 Destinations</a>
+                    <a class="nav-link" href="#howItWorks">How It Works</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#mapSection">🗺️ Map</a>
+                    <a class="nav-link" href="#destinations">Destinations</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#planTrip">🎯 Plan Trip</a>
+                    <a class="nav-link" href="#hiddenGems">Hidden Gems</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#hiddenGems">💎 Hidden Gems</a>
+                    <a class="nav-link" href="#planTrip">Start Planning</a>
                 </li>
             </ul>
         </div>
@@ -657,14 +820,36 @@
 <!-- 1. HERO SECTION -->
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title fade-in">Plan Trips Under ₹3000</h1>
-        <p class="hero-subtitle fade-in">Smart travel planner for students</p>
-        <button class="hero-btn" onclick="scrollToInput()">Plan My Trip</button>
+        <h1 class="hero-title fade-in">Your Adventure Starts Here!</h1>
+        <p class="hero-subtitle fade-in">Discover amazing destinations within your budget. Travellar helps students plan unforgettable trips without breaking the bank.</p>
+        <button class="hero-btn" onclick="scrollToInput()">Start Planning</button>
     </div>
 </section>
 
-<!-- 2. SEARCH SECTION -->
-<section class="search-section" id="search">
+<!-- 2. HOW IT WORKS SECTION -->
+<section class="how-it-works" id="howItWorks">
+    <h2 class="section-title">🚀 How It Works</h2>
+    <div class="steps-container">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h4 class="step-title">Enter Your Details</h4>
+            <p class="step-description">Tell us your budget, number of days, and starting city. We'll find the perfect destinations for you.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h4 class="step-title">Get Recommendations</h4>
+            <p class="step-description">Browse through curated destinations that match your budget and preferences. Explore hidden gems!</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h4 class="step-title">Plan Your Trip</h4>
+            <p class="step-description">Get detailed itineraries, cost breakdowns, and hotel suggestions. Your perfect trip is just a click away!</p>
+        </div>
+    </div>
+</section>
+
+<!-- 3. SEARCH SECTION -->
+<section class="search-section" id="destinations">
     <h2 class="section-title">🔍 Find Your Destination</h2>
     <div class="search-container">
         <input type="text" id="search-place" class="search-input" placeholder="Search for a place...">
@@ -672,7 +857,7 @@
     </div>
     
     <!-- Filter Tags -->
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
         <span class="trip-tag tag-adventure" onclick="filterByType('adventure')" style="cursor: pointer;">🏃 Adventure</span>
         <span class="trip-tag tag-nature" onclick="filterByType('nature')" style="cursor: pointer;">🌿 Nature</span>
         <span class="trip-tag tag-heritage" onclick="filterByType('heritage')" style="cursor: pointer;">🏛️ Heritage</span>
@@ -684,7 +869,52 @@
     </div>
 </section>
 
-<!-- 3. INTERACTIVE MAP -->
+<!-- 4. FEATURED DESTINATIONS -->
+<section class="featured-section" id="featured">
+    <h2 class="section-title">🌟 Featured Destinations</h2>
+    <div class="featured-grid">
+        <div class="featured-card">
+            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600');">
+                <div class="featured-overlay">
+                    <h3 class="featured-title">Nandi Hills</h3>
+                </div>
+            </div>
+            <div class="featured-body">
+                <p class="featured-description">Escape to the misty peaks of Nandi Hills, a perfect weekend getaway from Bangalore. Watch breathtaking sunrises and explore ancient temples.</p>
+                <div class="featured-price">Starting from ₹2,500</div>
+                <a href="#planTrip" class="explore-btn">Explore Now</a>
+            </div>
+        </div>
+        
+        <div class="featured-card">
+            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=600');">
+                <div class="featured-overlay">
+                    <h3 class="featured-title">Coorg</h3>
+                </div>
+            </div>
+            <div class="featured-body">
+                <p class="featured-description">Known as the Scotland of India, Coorg offers lush coffee plantations, stunning waterfalls, and serene landscapes perfect for nature lovers.</p>
+                <div class="featured-price">Starting from ₹2,800</div>
+                <a href="#planTrip" class="explore-btn">Explore Now</a>
+            </div>
+        </div>
+        
+        <div class="featured-card">
+            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600');">
+                <div class="featured-overlay">
+                    <h3 class="featured-title">Lonavala</h3>
+                </div>
+            </div>
+            <div class="featured-body">
+                <p class="featured-description">A favorite hill station for Mumbai and Pune students! Enjoy scenic caves, lush valleys, and delicious chikki at this popular getaway.</p>
+                <div class="featured-price">Starting from ₹1,800</div>
+                <a href="#planTrip" class="explore-btn">Explore Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5. INTERACTIVE MAP -->
 <section class="map-section" id="mapSection">
     <h2 class="section-title">🗺️ Explore on Map</h2>
     <div class="map-container">
@@ -692,7 +922,7 @@
     </div>
 </section>
 
-<!-- 4. INPUT SECTION -->
+<!-- 6. INPUT SECTION -->
 <section class="input-section" id="planTrip">
     <div class="input-card">
         <h3 style="text-align: center; margin-bottom: 30px; font-weight: 700;">🎯 Plan Your Trip</h3>
@@ -730,23 +960,24 @@
     </div>
 </section>
 
-<!-- 5. OUTPUT SECTION -->
+<!-- 7. OUTPUT SECTION -->
 <section class="output-section" id="outputSection">
     <div class="trip-card" id="tripCard">
         <!-- Content populated by JavaScript -->
     </div>
 </section>
 
-<!-- 6. EXTRA SECTION (Hidden Gems) -->
+<!-- 8. HIDDEN GEMS SECTION -->
 <section class="extra-section" id="hiddenGems">
     <h2 class="section-title">💎 Hidden Gems</h2>
+    <p style="text-align: center; color: #757575; max-width: 700px; margin: 0 auto 40px;">Discover offbeat destinations that most tourists miss. These hidden treasures offer unique experiences at budget-friendly prices!</p>
     
     <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <div class="gem-card">
-                    <div class="gem-name">Kudremukh, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Lush green meadows and misty hills - perfect for weekend escape</p>
+                    <div class="gem-name">🏕️ Kudremukh, Karnataka</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">Lush green meadows and misty hills - perfect for weekend escape. Trek through pristine forests and spot exotic wildlife.</p>
                     <div class="trip-type-tags" style="margin-top: 12px;">
                         <span class="trip-tag tag-nature">Nature</span>
                         <span class="trip-tag tag-adventure">Adventure</span>
@@ -755,17 +986,18 @@
             </div>
             <div class="col-md-4">
                 <div class="gem-card">
-                    <div class="gem-name">Chikkamagaluru, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Coffee plantations and scenic mountain trails</p>
+                    <div class="gem-name">☕ Chikkamagaluru, Karnataka</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">Coffee plantations and scenic mountain trails. Experience the joy of staying in a coffee estate and tasting fresh brew.</p>
                     <div class="trip-type-tags" style="margin-top: 12px;">
                         <span class="trip-tag tag-nature">Nature</span>
+                        <span class="trip-tag tag-food">Food</span>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="gem-card">
-                    <div class="gem-name">Sakleshpur, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Offbeat hill station with amazing treks</p>
+                    <div class="gem-name">🏞️ Sakleshpur, Karnataka</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">Offbeat hill station with amazing treks and caves. A paradise for adventure enthusiasts and nature lovers alike.</p>
                     <div class="trip-type-tags" style="margin-top: 12px;">
                         <span class="trip-tag tag-adventure">Adventure</span>
                     </div>
@@ -773,60 +1005,62 @@
             </div>
             <div class="col-md-4">
                 <div class="gem-card">
-                    <div class="gem-name">Coorg, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Scotland of India - waterfalls and spice plantations</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-nature">Nature</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">Wayanad, Kerala</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Misty mountains and wildlife sanctuaries</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-nature">Nature</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">Hampi, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Ancient ruins and boulder-strewn landscapes</p>
+                    <div class="gem-name">🌿 Hampi, Karnataka</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">Ancient ruins and boulder-strewn landscapes. Explore UNESCO World Heritage sites and watch stunning sunsets.</p>
                     <div class="trip-type-tags" style="margin-top: 12px;">
                         <span class="trip-tag tag-heritage">Heritage</span>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">🦋 Wayanad, Kerala</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">Misty mountains and wildlife sanctuaries. Perfect for wildlife spotting and exploring ancient caves.</p>
+                    <div class="trip-type-tags" style="margin-top: 12px;">
+                        <span class="trip-tag tag-nature">Nature</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">🏖️ Pondicherry, Tamil Nadu</div>
+                    <p class="text-muted mb-0" style="margin-top: 10px;">French colonial charm meets Indian beaches. Enjoy peaceful ashrams, colorful streets, and delicious cuisine.</p>
+                    <div class="trip-type-tags" style="margin-top: 12px;">
+                        <span class="trip-tag tag-heritage">Heritage</span>
+                        <span class="trip-tag tag-food">Food</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <button class="bored-btn" onclick="imBored()">🎲 I'm Bored!</button>
+        <button class="bored-btn" onclick="imBored()">🎲 I'm Bored! Suggest a Trip</button>
     </div>
 </section>
 
-<!-- Footer -->
+<!-- 9. FOOTER -->
 <footer class="site-footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <h5 class="footer-title">✈️ Travellar</h5>
-                <p style="color: #BDBDBD;">Smart budget travel planner for students in India. Discover hidden gems and plan your perfect trip.</p>
+                <p class="about-text">Your smart travel companion for budget-friendly adventures. We help students discover amazing destinations, plan perfect itineraries, and create unforgettable memories without breaking the bank. Start your journey with Travellar today!</p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <h5 class="footer-title">Quick Links</h5>
-                <a href="#search" class="footer-link">Destinations</a>
-                <a href="#mapSection" class="footer-link">Map</a>
-                <a href="#planTrip" class="footer-link">Plan Trip</a>
+                <a href="#howItWorks" class="footer-link">How It Works</a>
+                <a href="#destinations" class="footer-link">Destinations</a>
                 <a href="#hiddenGems" class="footer-link">Hidden Gems</a>
+                <a href="#planTrip" class="footer-link">Start Planning</a>
             </div>
             <div class="col-md-4">
-                <h5 class="footer-title">Contact</h5>
-                <p style="color: #BDBDBD;">Email: hello@travellar.in</p>
-                <p style="color: #BDBDBD;">Made with ❤️ for students</p>
+                <h5 class="footer-title">Contact & Connect</h5>
+                <p class="about-text" style="margin-bottom: 10px;">📧 hello@travellar.in</p>
+                <p class="about-text">📱 Follow us on social media</p>
+                <p style="color: #BDBDBD; margin-top: 20px;">Made with ❤️ by <span class="developer-credit">Divya</span></p>
             </div>
         </div>
-        <hr style="border-color: #424242; margin: 30px 0;">
-        <p style="text-align: center; color: #757575; margin: 0;">© 2024 Travellar. All rights reserved.</p>
+        <hr style="border-color: #424242; margin: 40px 0 20px;">
+        <p style="text-align: center; color: #757575; margin: 0;">© 2024 Travellar. All rights reserved. | Made for students, by students ❤️</p>
     </div>
 </footer>
 
@@ -839,7 +1073,7 @@
 {% block extra_js %}
 <script>
     // ==========================================
-    // 1. SEARCH FUNCTIONALITY
+    // SEARCH FUNCTIONALITY
     // ==========================================
     const searchInput = document.getElementById("search-place");
     const searchBtn = document.getElementById("search-btn");
@@ -854,7 +1088,7 @@
     });
 
     // ==========================================
-    // 2. HOTEL RECOMMENDATIONS
+    // HOTEL RECOMMENDATIONS
     // ==========================================
     const hotels = {
         "Nandi Hills": ["Hill View Resort - ₹1,500/night", "Nandi Residency - ₹1,200/night", "Mountain Stay - ₹1,800/night"],
@@ -875,7 +1109,7 @@
     }
 
     // ==========================================
-    // 3. FILTER BY TYPE
+    // FILTER BY TYPE
     // ==========================================
     function filterByType(type) {
         const cards = document.querySelectorAll('.destination-card');
@@ -892,7 +1126,7 @@
     }
 
     // ==========================================
-    // 4. AUTOCOMPLETE FOR CITY
+    // AUTOCOMPLETE FOR CITY
     // ==========================================
     const cities = ["Bangalore", "Mumbai", "Delhi", "Chennai", "Hyderabad", "Pune", "Kolkata", "Jaipur", "Ahmedabad", "Coimbatore"];
     const cityInput = document.getElementById('cityInput');
@@ -930,7 +1164,7 @@
     });
 
     // ==========================================
-    // 5. DESTINATION DATA
+    // DESTINATION DATA
     // ==========================================
     const destinations = [
         { 
@@ -1027,7 +1261,7 @@
     }
 
     // ==========================================
-    // 6. MAP INITIALIZATION
+    // MAP INITIALIZATION
     // ==========================================
     let map;
     function initMap() {
@@ -1056,7 +1290,7 @@
     }
 
     // ==========================================
-    // 7. TRIP GENERATION
+    // TRIP GENERATION
     // ==========================================
     const tripDatabase = {
         'Bangalore': [
@@ -1207,11 +1441,6 @@
                 
                 <div style="font-weight: 600; color: #212121; margin-bottom: 15px;">📅 Your Itinerary:</div>
                 ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
-                
-                <div style="margin-top: 20px; padding: 15px; background: #FFF8E1; border-radius: 8px; border-left: 4px solid #FFC107;">
-                    <strong>💡 Did you know?</strong>
-                    <p style="margin: 8px 0 0; color: #757575;">${trip.name} is one of the most beautiful destinations in India!</p>
-                </div>
             `;
             
             document.getElementById('outputSection').classList.add('show');
