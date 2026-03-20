@@ -4,6 +4,16 @@
 
 {% block extra_css %}
 <style>
+    /* Animations */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
     /* Sticky Navigation */
     .sticky-nav {
         position: sticky;
@@ -78,28 +88,21 @@
         background: #ff5722;
     }
     
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
     /* Search Bar */
     .search-section {
         background: #f8f9fa;
         padding: 30px 20px;
     }
     
-    .search-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        padding: 20px;
-        max-width: 700px;
+    .search-container {
+        display: flex;
+        gap: 10px;
+        max-width: 600px;
         margin: 0 auto;
     }
     
     .search-input {
-        width: 100%;
+        flex: 1;
         padding: 14px 20px;
         border-radius: 50px;
         border: 2px solid #e0e0e0;
@@ -113,12 +116,30 @@
         outline: none;
     }
     
-    /* Destination Cards */
+    .search-btn {
+        padding: 14px 30px;
+        border-radius: 50px;
+        background: #0077b6;
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .search-btn:hover {
+        background: #005f8a;
+        transform: translateY(-2px);
+    }
+    
+    /* Destination Cards with Animations */
     .destination-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        padding: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 30px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
     }
     
     .destination-card {
@@ -126,16 +147,18 @@
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         overflow: hidden;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s, opacity 0.3s;
+        opacity: 1;
     }
     
     .destination-card:hover {
-        transform: translateY(-5px);
+        transform: scale(1.05);
+        opacity: 0.9;
     }
     
     .destination-card img {
         width: 100%;
-        height: 180px;
+        height: 200px;
         object-fit: cover;
     }
     
@@ -143,8 +166,8 @@
         padding: 20px;
     }
     
-    .destination-name {
-        font-size: 1.3rem;
+    .place-name {
+        font-size: 1.4rem;
         font-weight: 700;
         color: #0077b6;
         margin-bottom: 8px;
@@ -152,21 +175,44 @@
     
     .destination-meta {
         color: #666;
-        font-size: 0.9rem;
-        margin-bottom: 12px;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+    
+    .show-hotels-btn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        background: #6c5ce7;
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+    }
+    
+    .show-hotels-btn:hover {
+        background: #5b4cc4;
     }
     
     .hotel-list {
-        margin-top: 15px;
-        border-top: 1px solid #eee;
+        display: none;
+        margin-top: 10px;
         padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+    
+    .hotel-list.show {
+        display: block;
+        animation: fadeInUp 0.3s ease-out;
     }
     
     .hotel-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0;
+        padding: 12px 0;
         border-bottom: 1px solid #f0f0f0;
     }
     
@@ -182,13 +228,14 @@
     .hotel-price {
         color: #28a745;
         font-weight: 600;
+        font-size: 0.9rem;
     }
     
     .book-btn {
-        background: #0077b6;
+        background: #00b894;
         color: white;
         border: none;
-        padding: 6px 16px;
+        padding: 8px 18px;
         border-radius: 20px;
         font-size: 0.85rem;
         cursor: pointer;
@@ -196,7 +243,8 @@
     }
     
     .book-btn:hover {
-        background: #005f8a;
+        background: #00a383;
+        transform: scale(1.05);
     }
     
     /* Map Section */
@@ -210,25 +258,27 @@
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
     }
     
     #map {
         width: 100%;
-        height: 400px;
+        height: 450px;
         border-radius: 8px;
     }
     
     /* Input Section */
     .input-section {
         background: #f8f9fa;
-        padding: 40px 20px;
+        padding: 50px 20px;
     }
     
     .input-card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        padding: 30px;
+        padding: 35px;
         max-width: 600px;
         margin: 0 auto;
     }
@@ -273,7 +323,7 @@
     /* Output Section */
     .output-section {
         display: none;
-        padding: 40px 20px;
+        padding: 50px 20px;
     }
     
     .output-section.show {
@@ -284,7 +334,7 @@
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        padding: 30px;
+        padding: 35px;
         max-width: 600px;
         margin: 0 auto;
     }
@@ -326,14 +376,14 @@
     /* Extra Section */
     .extra-section {
         background: #f8f9fa;
-        padding: 50px 20px;
+        padding: 60px 20px;
     }
     
     .hidden-gems-title {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: 700;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
         color: #333;
     }
     
@@ -341,27 +391,28 @@
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease;
+        padding: 25px;
+        margin-bottom: 25px;
+        transition: transform 0.3s, opacity 0.3s;
     }
     
     .gem-card:hover {
-        transform: translateY(-5px);
+        transform: scale(1.03);
+        opacity: 0.95;
     }
     
     .gem-name {
         font-weight: 600;
         color: #0077b6;
-        font-size: 1.2rem;
+        font-size: 1.25rem;
     }
     
     .bored-btn {
         display: block;
-        width: 200px;
-        margin: 40px auto 0;
-        font-size: 1.1rem;
-        padding: 14px 30px;
+        width: 220px;
+        margin: 50px auto 0;
+        font-size: 1.2rem;
+        padding: 16px 35px;
         font-weight: 600;
         border-radius: 50px;
         background: #6c5ce7;
@@ -372,8 +423,8 @@
     }
     
     .bored-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        transform: scale(1.08);
+        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
     }
     
     /* Mobile Responsive */
@@ -389,6 +440,14 @@
         .hero-btn {
             font-size: 1.1rem;
             padding: 14px 35px;
+        }
+        
+        .search-container {
+            flex-direction: column;
+        }
+        
+        .search-btn {
+            width: 100%;
         }
         
         .sticky-nav .navbar-nav {
@@ -428,34 +487,36 @@
 <!-- 1. HERO SECTION -->
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title text-white">Plan Trips Under ₹3000</h1>
-        <p class="hero-subtitle text-white">Smart travel planner for students</p>
+        <h1 class="hero-title text-white fade-in">Plan Trips Under ₹3000</h1>
+        <p class="hero-subtitle text-white fade-in">Smart travel planner for students</p>
         <button class="hero-btn" onclick="scrollToInput()">Plan My Trip</button>
     </div>
 </section>
 
-<!-- Search Bar with Live Filtering -->
+<!-- 2. SEARCH SECTION (with button) -->
 <section class="search-section" id="search">
-    <div class="search-card">
-        <input type="text" class="search-input" id="destinationSearch" placeholder="🔍 Search destinations, cities, or places..." onkeyup="filterDestinations()">
+    <div class="search-container">
+        <input type="text" id="search-place" class="search-input" placeholder="Search for a place...">
+        <button id="search-btn" class="search-btn">Search</button>
     </div>
-    <div class="destination-grid" id="destinationGrid" style="margin-top: 20px;">
-        <!-- Destination cards will be populated by JavaScript -->
+    
+    <div class="destination-grid" id="destinationGrid">
+        <!-- Destination cards populated by JavaScript -->
     </div>
 </section>
 
-<!-- Interactive Map -->
+<!-- 3. INTERACTIVE MAP -->
 <section class="map-section" id="mapSection">
-    <h2 style="text-align: center; margin-bottom: 20px; font-weight: 700;">🗺️ Explore on Map</h2>
+    <h2 style="text-align: center; margin-bottom: 25px; font-weight: 700;">🗺️ Explore on Map</h2>
     <div class="map-container">
         <div id="map"></div>
     </div>
 </section>
 
-<!-- 2. INPUT SECTION (Main Feature) -->
+<!-- 4. INPUT SECTION (Main Feature) -->
 <section class="input-section" id="planTrip">
     <div class="input-card">
-        <h3 style="text-align: center; margin-bottom: 25px; font-weight: 700;">Plan Your Trip</h3>
+        <h3 style="text-align: center; margin-bottom: 30px; font-weight: 700;">Plan Your Trip</h3>
         <form id="tripForm">
             <div class="mb-3">
                 <label class="form-label">💸 Budget (₹)</label>
@@ -486,14 +547,14 @@
     </div>
 </section>
 
-<!-- 3. OUTPUT SECTION (Shows after clicking) -->
+<!-- 5. OUTPUT SECTION (Shows after clicking) -->
 <section class="output-section" id="outputSection">
     <div class="trip-card" id="tripCard">
-        <!-- Content will be populated by JavaScript -->
+        <!-- Content populated by JavaScript -->
     </div>
 </section>
 
-<!-- 4. EXTRA SECTION (Hidden gems + I'm bored) -->
+<!-- 6. EXTRA SECTION (Hidden gems + I'm bored) -->
 <section class="extra-section" id="hiddenGems">
     <h2 class="hidden-gems-title">🏕️ Hidden Gems</h2>
     
@@ -549,143 +610,124 @@
 
 {% block extra_js %}
 <script>
-    // Destination database with hotels
+    // ==========================================
+    // 1. SEARCH FUNCTIONALITY
+    // ==========================================
+    const searchInput = document.getElementById("search-place");
+    const searchBtn = document.getElementById("search-btn");
+
+    searchBtn.addEventListener("click", () => {
+        const query = searchInput.value.toLowerCase();
+        const cards = document.querySelectorAll(".destination-card");
+        cards.forEach(card => {
+            const place = card.querySelector(".place-name").innerText.toLowerCase();
+            card.style.display = place.includes(query) ? "block" : "none";
+        });
+    });
+
+    // ==========================================
+    // 2. HOTEL RECOMMENDATIONS
+    // ==========================================
+    const hotels = {
+        "Nandi Hills": ["Hill View Resort - ₹1,500/night", "Nandi Residency - ₹1,200/night", "Mountain Stay - ₹1,800/night"],
+        "Coorg": ["Coorg Resort - ₹2,000/night", "Misty Valley - ₹1,800/night", "Coffee Grove - ₹1,600/night"],
+        "Lonavala": ["Lake View Inn - ₹1,200/night", "Hilltop Resort - ₹1,500/night", "Valley View - ₹1,400/night"],
+        "Mahabaleshwar": ["Misty Mountain - ₹2,200/night", "Lake View Hotel - ₹1,800/night", "Silver Oak - ₹2,000/night"],
+        "Pondicherry": ["Beach Resort - ₹1,800/night", "Le Pondy - ₹2,500/night", "Sea Pearl - ₹1,600/night"],
+        "Ooty": ["Lake Palace - ₹2,000/night", "Fern Hill - ₹1,600/night", "Devon House - ₹1,800/night"],
+        "Matheran": ["The Verdict - ₹1,200/night", "Byke Heritage - ₹1,000/night", "Sky Deck - ₹1,400/night"],
+        "Rishikesh": ["Ganga Kinare - ₹1,800/night", "Neeranchal - ₹1,500/night", "Riverside Stay - ₹1,200/night"]
+    };
+
+    function showHotels(place) {
+        const list = hotels[place] || ["No hotels found"];
+        alert("Recommended Hotels for " + place + ":\n\n" + list.join("\n"));
+    }
+
+    function toggleHotels(place) {
+        const hotelList = document.getElementById('hotels-' + place.replace(/\s+/g, '-'));
+        if (hotelList) {
+            hotelList.classList.toggle('show');
+        }
+    }
+
+    // ==========================================
+    // 3. DESTINATION DATA & RENDERING
+    // ==========================================
     const destinations = [
         { 
             name: 'Nandi Hills', 
             city: 'Bangalore', 
             image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,500',
-            hotels: [
-                { name: 'Hill View Resort', price: '₹1,500/night' },
-                { name: 'Nandi Residency', price: '₹1,200/night' }
-            ]
+            cost: '₹2,500'
         },
         { 
             name: 'Coorg', 
             city: 'Bangalore', 
             image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400',
-            cost: '₹2,800',
-            hotels: [
-                { name: 'Coorg Resort', price: '₹2,000/night' },
-                { name: 'Misty Valley', price: '₹1,800/night' }
-            ]
+            cost: '₹2,800'
         },
         { 
             name: 'Lonavala', 
             city: 'Mumbai', 
             image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400',
-            cost: '₹1,800',
-            hotels: [
-                { name: 'Lake View Inn', price: '₹1,200/night' },
-                { name: 'Hilltop Resort', price: '₹1,500/night' }
-            ]
+            cost: '₹1,800'
         },
         { 
             name: 'Mahabaleshwar', 
             city: 'Mumbai', 
             image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,800',
-            hotels: [
-                { name: 'Misty Mountain', price: '₹2,200/night' },
-                { name: 'Lake View Hotel', price: '₹1,800/night' }
-            ]
+            cost: '₹2,800'
         },
         { 
             name: 'Pondicherry', 
             city: 'Chennai', 
             image: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400',
-            cost: '₹2,500',
-            hotels: [
-                { name: 'Beach Resort', price: '₹1,800/night' },
-                { name: 'Le Pondy', price: '₹2,500/night' }
-            ]
+            cost: '₹2,500'
         },
         { 
             name: 'Ooty', 
             city: 'Chennai', 
             image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-            cost: '₹2,800',
-            hotels: [
-                { name: 'Lake Palace', price: '₹2,000/night' },
-                { name: 'Fern Hill', price: '₹1,600/night' }
-            ]
+            cost: '₹2,800'
         },
         { 
             name: 'Matheran', 
             city: 'Pune', 
             image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹1,600',
-            hotels: [
-                { name: 'The Verdict', price: '₹1,200/night' },
-                { name: 'Byke Heritage', price: '₹1,000/night' }
-            ]
+            cost: '₹1,600'
         },
         { 
             name: 'Rishikesh', 
             city: 'Delhi', 
             image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,200',
-            hotels: [
-                { name: 'Ganga Kinare', price: '₹1,800/night' },
-                { name: 'Neeranchal', price: '₹1,500/night' }
-            ]
+            cost: '₹2,200'
         }
     ];
 
-    // Map locations
-    const mapLocations = [
-        { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
-        { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
-        { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
-        { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
-        { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
-        { name: 'Ooty', lat: 11.4102, lng: 76.6950 },
-        { name: 'Matheran', lat: 18.9897, lng: 73.2655 },
-        { name: 'Rishikesh', lat: 30.0869, lng: 78.2676 }
-    ];
-
-    // Initialize map
-    let map;
-    function initMap() {
-        map = L.map('map').setView([20.0, 78.0], 5);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        
-        // Add markers
-        mapLocations.forEach(loc => {
-            L.marker([loc.lat, loc.lng])
-                .addTo(map)
-                .bindPopup(`<b>${loc.name}</b><br>Click to explore`);
-        });
-    }
-
-    // Render destination cards
-    function renderDestinations(filter = '') {
+    function renderDestinations() {
         const grid = document.getElementById('destinationGrid');
-        const filtered = destinations.filter(d => 
-            d.name.toLowerCase().includes(filter.toLowerCase()) ||
-            d.city.toLowerCase().includes(filter.toLowerCase())
-        );
-        
-        grid.innerHTML = filtered.map(dest => `
+        grid.innerHTML = destinations.map(dest => `
             <div class="destination-card">
                 <img src="${dest.image}" alt="${dest.name}">
                 <div class="destination-card-body">
-                    <div class="destination-name">📍 ${dest.name}</div>
+                    <div class="place-name">📍 ${dest.name}</div>
                     <div class="destination-meta">From ${dest.city} • ${dest.cost}</div>
                     
-                    <div class="hotel-list">
-                        <strong>🏨 Hotels:</strong>
-                        ${dest.hotels.map(hotel => `
+                    <button class="show-hotels-btn" onclick="toggleHotels('${dest.name}')">
+                        🏨 Show Hotels
+                    </button>
+                    
+                    <div class="hotel-list" id="hotels-${dest.name.replace(/\s+/g, '-')}">
+                        ${(hotels[dest.name] || []).map((hotel, idx) => `
                             <div class="hotel-item">
                                 <div>
-                                    <div class="hotel-name">${hotel.name}</div>
-                                    <div class="hotel-price">${hotel.price}</div>
+                                    <div class="hotel-name">${hotel.split('-')[0]}</div>
+                                    <div class="hotel-price">${hotel.split('-')[1]}</div>
                                 </div>
-                                <button class="book-btn" onclick="alert('Booking: ${hotel.name} - ${dest.name}')">Book Now</button>
+                                <button class="book-btn" onclick="window.location.href='booking.html?hotel=${encodeURIComponent(hotel.split('-')[0])}&place=${encodeURIComponent(dest.name)}'">
+                                    Book Now
+                                </button>
                             </div>
                         `).join('')}
                     </div>
@@ -694,19 +736,38 @@
         `).join('');
     }
 
-    // Live search filter
-    function filterDestinations() {
-        const searchTerm = document.getElementById('destinationSearch').value;
-        renderDestinations(searchTerm);
+    // ==========================================
+    // 4. MAP INITIALIZATION
+    // ==========================================
+    let map;
+    function initMap() {
+        map = L.map('map').setView([20.0, 78.0], 5);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        const mapLocations = [
+            { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
+            { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
+            { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
+            { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
+            { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
+            { name: 'Ooty', lat: 11.4102, lng: 76.6950 },
+            { name: 'Matheran', lat: 18.9897, lng: 73.2655 },
+            { name: 'Rishikesh', lat: 30.0869, lng: 78.2676 }
+        ];
+        
+        mapLocations.forEach(loc => {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>Click to explore`);
+        });
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        renderDestinations();
-        initMap();
-    });
-
-    // Trip data for trip generator
+    // ==========================================
+    // 5. TRIP GENERATION
+    // ==========================================
     const tripDatabase = {
         'Bangalore': [
             { name: 'Nandi Hills', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
@@ -780,7 +841,6 @@
         ]
     };
 
-    // Additional trips for "I'm bored" feature
     const randomTrips = [
         { name: 'Nandi Hills', city: 'Bangalore', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
         { name: 'Lonavala', city: 'Mumbai', cost: 1800, days: 2, itinerary: ['Day 1: Visit Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
@@ -792,12 +852,10 @@
         { name: 'Wayanad', city: 'Bangalore', cost: 2900, days: 2, itinerary: ['Day 1: Travel to Wayanad, Edakkal Caves', 'Day 2: Sunrise at Chembra Peak, return'] }
     ];
 
-    // Function to scroll to input section
     function scrollToInput() {
         document.getElementById('planTrip').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Handle form submission
     document.getElementById('tripForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -810,31 +868,25 @@
             return;
         }
         
-        // Get trips for selected city within budget
         let availableTrips = tripDatabase[city].filter(trip => trip.cost <= budget);
         
-        // If no trips within budget, get cheapest trip
         if (availableTrips.length === 0) {
             availableTrips = tripDatabase[city].filter(trip => trip.days === days);
         }
         
-        // If still no trips, get any trip from the city
         if (availableTrips.length === 0) {
             availableTrips = tripDatabase[city];
         }
         
-        // Pick a random trip from available options
         const trip = availableTrips[Math.floor(Math.random() * availableTrips.length)];
         
-        // Generate cost breakdown
         const travelCost = Math.round(trip.cost * 0.4);
         const foodCost = Math.round(trip.cost * 0.35);
         const stayCost = Math.round(trip.cost * 0.25);
         
-        // Display trip
         const tripCard = document.getElementById('tripCard');
         tripCard.innerHTML = `
-            <div class="destination-name">📍 ${trip.name}</div>
+            <div class="place-name">📍 ${trip.name}</div>
             <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
             
             <div class="cost-breakdown">
@@ -856,31 +908,24 @@
                 </div>
             </div>
             
-            <div class="itinerary-title">📅 Your Itinerary:</div>
+            <div style="font-weight: 600; color: #333; margin-bottom: 15px;">📅 Your Itinerary:</div>
             ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
         `;
         
-        // Show output section
         document.getElementById('outputSection').classList.add('show');
-        
-        // Scroll to output
         document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
     });
 
-    // "I'm bored" functionality
     function imBored() {
-        // Pick a random trip
         const trip = randomTrips[Math.floor(Math.random() * randomTrips.length)];
         
-        // Generate cost breakdown
         const travelCost = Math.round(trip.cost * 0.4);
         const foodCost = Math.round(trip.cost * 0.35);
         const stayCost = Math.round(trip.cost * 0.25);
         
-        // Display trip
         const tripCard = document.getElementById('tripCard');
         tripCard.innerHTML = `
-            <div class="destination-name">📍 ${trip.name}</div>
+            <div class="place-name">📍 ${trip.name}</div>
             <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
             
             <div class="cost-breakdown">
@@ -902,15 +947,18 @@
                 </div>
             </div>
             
-            <div class="itinerary-title">📅 Your Itinerary:</div>
+            <div style="font-weight: 600; color: #333; margin-bottom: 15px;">📅 Your Itinerary:</div>
             ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
         `;
         
-        // Show output section
         document.getElementById('outputSection').classList.add('show');
-        
-        // Scroll to output
         document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
     }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        renderDestinations();
+        initMap();
+    });
 </script>
 {% endblock %}
