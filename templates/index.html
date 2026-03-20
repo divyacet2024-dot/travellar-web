@@ -1,1306 +1,969 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travellar - Budget Travel Planner for Students</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #1E88E5;
+            --primary-dark: #1565C0;
+            --secondary: #FFC107;
+            --purple: #6C5CE7;
+            --dark: #212121;
+            --light: #F5F5F5;
+            --white: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #E3F2FD;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        
+        /* Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            padding: 100px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 70px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+        
+        /* How it Works */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 280px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        
+        .step:hover { transform: translateY(-10px); }
+        
+        .step-num {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+        
+        /* Search */
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .filter-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tag {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        
+        .tag-adventure { background: #FFECB3; color: #F57C00; }
+        .tag-nature { background: #C8E6C9; color: #388E3C; }
+        .tag-heritage { background: #D7CCC8; color: #5D4037; }
+        
+        /* Destination Grid */
+        .dest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .dest-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        
+        .dest-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        
+        .dest-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .dest-card-body { padding: 20px; }
+        
+        .dest-name {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .dest-meta { color: #666; font-size: 0.9rem; margin-bottom: 12px; }
+        
+        .dest-tags { margin-bottom: 15px; }
+        
+        .dest-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            font-weight: 600;
+        }
+        
+        .btn-hotels {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-hotels:hover { background: var(--primary-dark); }
+        
+        .hotels-list {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .hotels-list.show { display: block; }
+        
+        .hotel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .hotel-item:last-child { border-bottom: none; }
+        
+        .hotel-info { flex: 1; }
+        .hotel-name { font-weight: 500; }
+        .hotel-price { color: #388E3C; font-size: 0.9rem; }
+        
+        .btn-book {
+            background: #00C853;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-book:hover { background: #00A843; }
+        
+        /* Trip Form */
+        .trip-form {
+            background: white;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn-generate {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), #42A5F5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(30,136,229,0.4);
+        }
+        
+        /* Result */
+        .trip-result {
+            display: none;
+            background: white;
+            max-width: 550px;
+            margin: 30px auto 0;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .trip-result.show { display: block; }
+        
+        .result-name { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .result-cost { font-size: 1.4rem; color: #388E3C; font-weight: 700; margin-bottom: 20px; }
+        
+        .cost-breakdown {
+            background: #E8F5E9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #C8E6C9;
+        }
+        
+        .cost-row:last-child { border-bottom: none; font-weight: 700; }
+        
+        .itinerary-title { font-weight: 600; margin-bottom: 12px; }
+        
+        .itinerary-item {
+            background: #F5F5F5;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        /* AI Section */
+        .ai-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 70px 20px;
+            color: white;
+        }
+        
+        .ai-section h2 { text-align: center; margin-bottom: 15px; }
+        
+        .ai-section > div > p {
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .ai-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .ai-input-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .ai-input-box input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .ai-input-box button {
+            background: #667eea;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .ai-input-box button:hover { background: #5a6dd1; }
+        
+        .ai-response {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: var(--dark);
+        }
+        
+        .ai-response.show { display: block; }
+        
+        .ai-quick {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .ai-quick button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .ai-quick button:hover { background: rgba(255,255,255,0.3); }
+        
+        /* Map */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+        }
+        
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hidden Gems */
+        .gems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .gem-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        
+        .gem-card:hover { transform: translateY(-5px); }
+        
+        .gem-name {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .btn-bored {
+            display: block;
+            width: 260px;
+            margin: 40px auto 0;
+            padding: 18px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-bored:hover { background: #5a4cc4; transform: scale(1.05); }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 20px 30px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: 0.3s;
+        }
+        
+        .footer-link:hover { color: var(--primary); }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .nav-links { display: none; }
+            .search-box { flex-direction: column; }
+            .steps { flex-direction: column; align-items: center; }
+            .dest-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
 
-{% block title %}Travellar - Budget Travel Planner for Students{% endblock %}
-
-{% block extra_css %}
-<style>
-    /* =========================================
-       OVERRIDE BASE STYLES
-       ========================================= */
-    .bg-image { display: none !important; }
-    body { background: #E3F2FD !important; }
-    .navbar { display: none !important; }
-    
-    /* =========================================
-       PROFESSIONAL COLOR PALETTE
-       ========================================= */
-    :root {
-        --primary: #1E88E5;
-        --primary-light: #42A5F5;
-        --secondary: #FFC107;
-        --background-gradient: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-        --card-bg: #FFFFFF;
-        --text-primary: #212121;
-        --text-secondary: #757575;
-        --navbar-bg: #1E88E5;
-        --footer-bg: #212121;
-    }
-
-    /* =========================================
-       TYPOGRAPHY
-       ========================================= */
-    h1, h2, h3, h4, h5, .place-name {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-    }
-    
-    body, p, div, span, li {
-        font-family: 'Roboto', sans-serif;
-    }
-
-    /* =========================================
-       ANIMATIONS
-       ========================================= */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .fade-in {
-        animation: fadeInUp 0.6s ease-out forwards;
-    }
-
-    /* =========================================
-       CUSTOM NAVBAR
-       ========================================= */
-    .custom-nav {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: var(--navbar-bg);
-        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-        padding: 14px 0;
-    }
-    
-    .custom-nav .nav-link {
-        color: #FFFFFF !important;
-        font-weight: 500;
-        padding: 10px 18px !important;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-        text-decoration: none;
-    }
-    
-    .custom-nav .nav-link:hover {
-        background: var(--primary-light);
-    }
-    
-    .custom-brand {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        color: white;
-        text-decoration: none;
-        font-size: 1.4rem;
-    }
-
-    /* =========================================
-       HERO SECTION
-       ========================================= */
-    .hero-section {
-        background: var(--background-gradient);
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 80px 20px;
-    }
-    
-    .hero-content {
-        text-align: center;
-        max-width: 850px;
-    }
-    
-    .hero-title {
-        font-size: 3.8rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-        color: var(--text-primary);
-        animation: fadeInUp 0.8s ease-out;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.4rem;
-        margin-bottom: 30px;
-        color: var(--text-secondary);
-        animation: fadeInUp 0.8s ease-out 0.2s backwards;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .hero-btn {
-        font-size: 1.2rem;
-        padding: 18px 55px;
-        font-weight: 700;
-        border-radius: 8px;
-        background: var(--primary);
-        border: none;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-        animation: fadeInUp 0.8s ease-out 0.4s backwards;
-    }
-    
-    .hero-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-        transform: translateY(-3px);
-    }
-
-    /* =========================================
-       HOW IT WORKS SECTION
-       ========================================= */
-    .how-it-works {
-        background: var(--card-bg);
-        padding: 80px 20px;
-    }
-    
-    .section-title {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 50px;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .steps-container {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        flex-wrap: wrap;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-    
-    .step-card {
-        text-align: center;
-        max-width: 300px;
-        padding: 30px 25px;
-        border-radius: 12px;
-        background: var(--card-bg);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transition: transform 0.3s ease;
-    }
-    
-    .step-card:hover {
-        transform: translateY(-8px);
-    }
-    
-    .step-number {
-        width: 60px;
-        height: 60px;
-        background: var(--primary);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0 auto 20px;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .step-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: var(--text-primary);
-    }
-    
-    .step-description {
-        color: var(--text-secondary);
-        line-height: 1.6;
-    }
-
-    /* =========================================
-       SEARCH SECTION
-       ========================================= */
-    .search-section {
-        background: var(--background-gradient);
-        padding: 60px 20px;
-    }
-    
-    .search-container {
-        display: flex;
-        gap: 12px;
-        max-width: 650px;
-        margin: 0 auto 30px;
-    }
-    
-    .search-input {
-        flex: 1;
-        padding: 14px 22px;
-        border-radius: 8px;
-        border: 2px solid #BDBDBD;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-    
-    .search-input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.15);
-        outline: none;
-    }
-    
-    .search-btn {
-        padding: 14px 32px;
-        border-radius: 8px;
-        background: var(--primary);
-        color: white;
-        border: none;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .search-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-    }
-
-    /* =========================================
-       DESTINATION CARDS
-       ========================================= */
-    .destination-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-        gap: 28px;
-        padding: 30px 20px;
-        max-width: 1300px;
-        margin: 0 auto;
-    }
-    
-    .destination-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        overflow: hidden;
-        transition: transform 0.3s, box-shadow 0.3s;
-        opacity: 0;
-        animation: fadeInUp 0.5s ease-out forwards;
-    }
-    
-    .destination-card:nth-child(1) { animation-delay: 0.1s; }
-    .destination-card:nth-child(2) { animation-delay: 0.2s; }
-    .destination-card:nth-child(3) { animation-delay: 0.3s; }
-    .destination-card:nth-child(4) { animation-delay: 0.4s; }
-    .destination-card:nth-child(5) { animation-delay: 0.5s; }
-    .destination-card:nth-child(6) { animation-delay: 0.6s; }
-    
-    .destination-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-    }
-    
-    .destination-card img {
-        width: 100%;
-        height: 210px;
-        object-fit: cover;
-    }
-    
-    .destination-card-body {
-        padding: 24px;
-    }
-    
-    .place-name {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 8px;
-    }
-    
-    .destination-meta {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-        margin-bottom: 16px;
-    }
-    
-    .trip-type-tags {
-        margin-bottom: 15px;
-    }
-    
-    .trip-tag {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-right: 6px;
-        text-transform: uppercase;
-    }
-    
-    .tag-adventure { background: #FFECB3; color: #F57C00; }
-    .tag-nature { background: #C8E6C9; color: #388E3C; }
-    .tag-heritage { background: #D7CCC8; color: #5D4037; }
-    .tag-food { background: #FFCCBC; color: #E64A19; }
-    
-    .show-hotels-btn {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        background: var(--primary);
-        color: white;
-        border: none;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .show-hotels-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-    }
-    
-    .hotel-list {
-        display: none;
-        margin-top: 12px;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
-    }
-    
-    .hotel-list.show {
-        display: block;
-        animation: fadeInUp 0.3s ease-out;
-    }
-    
-    .hotel-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 14px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .hotel-item:last-child {
-        border-bottom: none;
-    }
-    
-    .hotel-name {
-        font-weight: 500;
-        color: var(--text-primary);
-    }
-    
-    .hotel-price {
-        color: #388E3C;
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-    
-    .book-btn {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .book-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-        transform: scale(1.05);
-    }
-    
-    /* =========================================
-       MAP SECTION
-       ========================================= */
-    .map-section {
-        padding: 60px 20px;
-        background: var(--card-bg);
-    }
-    
-    .map-container {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 24px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    #map {
-        width: 100%;
-        height: 450px;
-        border-radius: 8px;
-    }
-    
-    /* =========================================
-       INPUT SECTION
-       ========================================= */
-    .input-section {
-        background: var(--background-gradient);
-        padding: 70px 20px;
-    }
-    
-    .input-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 45px;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 8px;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .form-control {
-        padding: 14px 18px;
-        border-radius: 8px;
-        border: 2px solid #BDBDBD;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-    
-    .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.15);
-        outline: none;
-    }
-    
-    .generate-btn {
-        width: 100%;
-        font-size: 1.15rem;
-        padding: 16px;
-        font-weight: 700;
-        border-radius: 8px;
-        background: var(--primary);
-        border: none;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .generate-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(30, 136, 229, 0.3);
-    }
-    
-    /* =========================================
-       OUTPUT SECTION
-       ========================================= */
-    .output-section {
-        display: none;
-        padding: 60px 20px;
-    }
-    
-    .output-section.show {
-        display: block;
-    }
-    
-    .trip-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 40px;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    
-    .trip-cost {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #388E3C;
-        margin-bottom: 20px;
-    }
-    
-    .itinerary-item {
-        padding: 14px;
-        background: #F5F5F5;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        border-left: 4px solid var(--primary);
-    }
-    
-    .cost-breakdown {
-        background: #E8F5E9;
-        border-radius: 8px;
-        padding: 18px;
-        margin-bottom: 22px;
-    }
-    
-    .cost-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #C8E6C9;
-    }
-    
-    .cost-item:last-child {
-        border-bottom: none;
-        font-weight: 600;
-    }
-    
-    /* =========================================
-       FEATURED DESTINATIONS
-       ========================================= */
-    .featured-section {
-        background: var(--background-gradient);
-        padding: 80px 20px;
-    }
-    
-    .featured-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    .featured-card {
-        background: var(--card-bg);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-    
-    .featured-card:hover {
-        transform: translateY(-10px);
-    }
-    
-    .featured-image {
-        height: 200px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-    
-    .featured-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(transparent, rgba(0,0,0,0.7));
-        padding: 40px 20px 20px;
-    }
-    
-    .featured-title {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-    }
-    
-    .featured-body {
-        padding: 24px;
-    }
-    
-    .featured-description {
-        color: var(--text-secondary);
-        line-height: 1.7;
-        margin-bottom: 15px;
-    }
-    
-    .featured-price {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #388E3C;
-    }
-    
-    .explore-btn {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 24px;
-        background: var(--primary);
-        color: white;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .explore-btn:hover {
-        background: var(--secondary);
-        color: var(--text-primary);
-    }
-    
-    /* =========================================
-       HIDDEN GEMS SECTION
-       ========================================= */
-    .extra-section {
-        background: var(--card-bg);
-        padding: 80px 20px;
-    }
-    
-    .gem-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 28px;
-        margin-bottom: 28px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    
-    .gem-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    }
-    
-    .gem-name {
-        font-weight: 600;
-        color: var(--primary);
-        font-size: 1.25rem;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .bored-btn {
-        display: block;
-        width: 260px;
-        margin: 50px auto 0;
-        font-size: 1.3rem;
-        padding: 18px 40px;
-        font-weight: 700;
-        border-radius: 8px;
-        background: #6c5ce7;
-        border: none;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .bored-btn:hover {
-        background: #5b4cc4;
-        transform: scale(1.08);
-    }
-    
-    /* =========================================
-       FOOTER
-       ========================================= */
-    .site-footer {
-        background: var(--footer-bg);
-        color: #FFFFFF;
-        padding: 60px 20px 30px;
-    }
-    
-    .footer-title {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        margin-bottom: 20px;
-        font-size: 1.3rem;
-    }
-    
-    .footer-link {
-        color: #BDBDBD;
-        text-decoration: none;
-        transition: color 0.3s ease;
-        display: block;
-        padding: 6px 0;
-    }
-    
-    .footer-link:hover {
-        color: var(--primary);
-    }
-    
-    .about-text {
-        color: #BDBDBD;
-        line-height: 1.8;
-    }
-    
-    .developer-credit {
-        color: var(--secondary);
-        font-weight: 600;
-    }
-    
-    /* =========================================
-       MOBILE RESPONSIVE
-       ========================================= */
-    @media (max-width: 768px) {
-        .hero-title { font-size: 2.4rem; }
-        .hero-subtitle { font-size: 1.1rem; }
-        .hero-btn { font-size: 1.1rem; padding: 14px 35px; }
-        .search-container { flex-direction: column; }
-        .search-btn { width: 100%; }
-        .destination-grid { grid-template-columns: 1fr; }
-        .steps-container { flex-direction: column; align-items: center; }
-        .step-card { max-width: 100%; }
-    }
-    
-    /* Loading Spinner */
-    .loading-spinner {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s ease-in-out infinite;
-        margin-right: 8px;
-    }
-    
-    @keyframes spin { to { transform: rotate(360deg); } }
-</style>
-{% endblock %}
-
-{% block content %}
-
-<!-- Custom Navbar (replaces base.html navbar) -->
-<nav class="custom-nav">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <a class="custom-brand" href="#">✈️ Travellar</a>
-            <div class="d-flex flex-row">
-                <a class="nav-link" href="#howItWorks">How It Works</a>
-                <a class="nav-link" href="#destinations">Destinations</a>
-                <a class="nav-link" href="#hiddenGems">Hidden Gems</a>
-                <a class="nav-link" href="#planTrip">Start Planning</a>
-            </div>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-content">
+        <a href="#" class="brand">✈️ Travellar</a>
+        <div class="nav-links">
+            <a href="#how">How It Works</a>
+            <a href="#destinations">Destinations</a>
+            <a href="#ai">AI Assistant</a>
+            <a href="#plan">Plan Trip</a>
+            <a href="#gems">Hidden Gems</a>
         </div>
     </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title fade-in">Your Adventure Starts Here!</h1>
-        <p class="hero-subtitle fade-in">Discover amazing destinations within your budget. Travellar helps students plan unforgettable trips without breaking the bank.</p>
-        <button class="hero-btn" onclick="scrollToInput()">Start Planning</button>
-    </div>
+<!-- Hero -->
+<section class="hero">
+    <h1>Your Adventure Starts Here! 🌍</h1>
+    <p>Discover amazing destinations within your budget. Travellar helps students plan unforgettable trips without breaking the bank.</p>
+    <button class="btn-primary" onclick="document.getElementById('plan').scrollIntoView({behavior:'smooth'})">Start Planning</button>
 </section>
 
 <!-- How It Works -->
-<section class="how-it-works" id="howItWorks">
+<section class="section" id="how">
     <h2 class="section-title">🚀 How It Works</h2>
-    <div class="steps-container">
-        <div class="step-card">
-            <div class="step-number">1</div>
-            <h4 class="step-title">Enter Your Details</h4>
-            <p class="step-description">Tell us your budget, number of days, and starting city.</p>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h4>Enter Your Details</h4>
+            <p>Tell us your budget, days, and city</p>
         </div>
-        <div class="step-card">
-            <div class="step-number">2</div>
-            <h4 class="step-title">Get Recommendations</h4>
-            <p class="step-description">Browse curated destinations that match your budget.</p>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h4>Get Recommendations</h4>
+            <p>Browse destinations that match</p>
         </div>
-        <div class="step-card">
-            <div class="step-number">3</div>
-            <h4 class="step-title">Plan Your Trip</h4>
-            <p class="step-description">Get detailed itineraries and hotel suggestions.</p>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h4>Plan Your Trip</h4>
+            <p>Get itinerary & hotel suggestions</p>
         </div>
     </div>
 </section>
 
-<!-- Search & Destinations -->
-<section class="search-section" id="destinations">
+<!-- Destinations -->
+<section class="section" id="destinations" style="background: white;">
     <h2 class="section-title">🔍 Find Your Destination</h2>
-    <div class="search-container">
-        <input type="text" id="search-place" class="search-input" placeholder="Search for a place...">
-        <button id="search-btn" class="search-btn">Search</button>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search places...">
+        <button onclick="searchDestinations()">Search</button>
     </div>
-    
-    <div style="text-align: center; margin-bottom: 30px;">
-        <span class="trip-tag tag-adventure" onclick="filterByType('adventure')" style="cursor: pointer;">🏃 Adventure</span>
-        <span class="trip-tag tag-nature" onclick="filterByType('nature')" style="cursor: pointer;">🌿 Nature</span>
-        <span class="trip-tag tag-heritage" onclick="filterByType('heritage')" style="cursor: pointer;">🏛️ Heritage</span>
+    <div class="filter-tags">
+        <button class="filter-tag tag-adventure" onclick="filterDest('adventure')">🏃 Adventure</button>
+        <button class="filter-tag tag-nature" onclick="filterDest('nature')">🌿 Nature</button>
+        <button class="filter-tag tag-heritage" onclick="filterDest('heritage')">🏛️ Heritage</button>
+        <button class="filter-tag" style="background: #eee; color: #666;" onclick="showAllDest()">Show All</button>
     </div>
-    
-    <div class="destination-grid" id="destinationGrid"></div>
+    <div class="dest-grid" id="destGrid"></div>
 </section>
 
-<!-- Featured Destinations -->
-<section class="featured-section" id="featured">
-    <h2 class="section-title">🌟 Featured Destinations</h2>
-    <div class="featured-grid">
-        <div class="featured-card">
-            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600');">
-                <div class="featured-overlay"><h3 class="featured-title">Nandi Hills</h3></div>
+<!-- AI Assistant -->
+<section class="ai-section" id="ai">
+    <h2>🤖 AI Travel Assistant</h2>
+    <div>
+        <p>Ask me anything about travel! Get instant recommendations.</p>
+        <div class="ai-box">
+            <div class="ai-input-box">
+                <input type="text" id="aiInput" placeholder="Ask me about budget trips, weekend getaways...">
+                <button onclick="askAI()">Ask AI</button>
             </div>
-            <div class="featured-body">
-                <p class="featured-description">Watch breathtaking sunrises and explore ancient temples.</p>
-                <div class="featured-price">From ₹2,500</div>
-            </div>
-        </div>
-        <div class="featured-card">
-            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=600');">
-                <div class="featured-overlay"><h3 class="featured-title">Coorg</h3></div>
-            </div>
-            <div class="featured-body">
-                <p class="featured-description">Lush coffee plantations and stunning waterfalls.</p>
-                <div class="featured-price">From ₹2,800</div>
-            </div>
-        </div>
-        <div class="featured-card">
-            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600');">
-                <div class="featured-overlay"><h3 class="featured-title">Lonavala</h3></div>
-            </div>
-            <div class="featured-body">
-                <p class="featured-description">Favorite hill station for students!</p>
-                <div class="featured-price">From ₹1,800</div>
+            <div class="ai-response" id="aiResponse"></div>
+            <div class="ai-quick">
+                <button onclick="askAIQuick('budget')">💰 Budget</button>
+                <button onclick="askAIQuick('weekend')">🗓️ Weekend</button>
+                <button onclick="askAIQuick('adventure')">🏃 Adventure</button>
+                <button onclick="askAIQuick('nature')">🌿 Nature</button>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Map Section -->
-<section class="map-section" id="mapSection">
-    <h2 class="section-title">🗺️ Explore on Map</h2>
-    <div class="map-container">
-        <div id="map"></div>
-    </div>
+<!-- Map -->
+<section class="map-container">
+    <h2 class="section-title" style="margin-top: 60px;">🗺️ Explore on Map</h2>
+    <div id="map"></div>
 </section>
 
-<!-- AI Travel Assistant Section -->
-<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 20px; color: white;">
-    <div class="container">
-        <h2 class="section-title" style="color: white;">🤖 Ask AI Travel Assistant</h2>
-        <p style="text-align: center; max-width: 600px; margin: 0 auto 30px; opacity: 0.9;">Get instant travel recommendations, budget tips, and personalized suggestions from our AI!</p>
-        
-        <div style="max-width: 700px; margin: 0 auto;">
-            <div style="background: white; border-radius: 12px; padding: 20px; display: flex; gap: 10px;">
-                <input type="text" id="aiInput" placeholder="Ask me anything about travel... (e.g., best budget destinations)" 
-                       style="flex: 1; padding: 14px 18px; border-radius: 8px; border: 2px solid #ddd; font-size: 1rem;"
-                       onkeypress="if(event.key==='Enter')askAI()">
-                <button onclick="askAI()" style="padding: 14px 28px; background: #667eea; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Ask AI</button>
-            </div>
-            
-            <div id="aiResponse" style="display: none; margin-top: 20px; background: white; border-radius: 12px; padding: 25px; color: #333;">
-                <h4 style="color: #667eea; margin-bottom: 15px;">🤖 AI Recommendation</h4>
-                <p id="aiText" style="line-height: 1.8; margin: 0;"></p>
-            </div>
-            
-            <!-- Quick AI Questions -->
-            <div style="margin-top: 20px;">
-                <p style="font-size: 0.9rem; opacity: 0.8;">Quick questions:</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <button onclick="askAIQuick('budget')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">💰 Best budget trips</button>
-                    <button onclick="askAIQuick('weekend')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🗓️ Weekend getaways</button>
-                    <button onclick="askAIQuick('adventure')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🏃 Adventure trips</button>
-                    <button onclick="askAIQuick('nature')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🌿 Nature escapes</button>
-                </div>
-            </div>
+<!-- Plan Trip -->
+<section class="section" id="plan">
+    <h2 class="section-title">🎯 Plan Your Trip</h2>
+    <div class="trip-form">
+        <div class="form-group">
+            <label>💸 Budget (₹)</label>
+            <input type="number" id="budget" value="3000" min="500" max="10000">
         </div>
+        <div class="form-group">
+            <label>📅 Days</label>
+            <input type="number" id="days" value="2" min="1" max="7">
+        </div>
+        <div class="form-group">
+            <label>📍 Starting City</label>
+            <select id="city">
+                <option value="">Select city</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+            </select>
+        </div>
+        <button class="btn-generate" onclick="generateTrip()">Generate Trip ✨</button>
     </div>
-</section>
-
-<!-- Trip Generator -->
-<section class="input-section" id="planTrip">
-    <div class="input-card">
-        <h3 style="text-align: center; margin-bottom: 30px; font-weight: 700;">🎯 Plan Your Trip</h3>
-        <form id="tripForm">
-            <div class="mb-3">
-                <label class="form-label">💸 Budget (₹)</label>
-                <input type="number" class="form-control" id="budget" placeholder="Enter your budget" min="500" max="10000" value="3000" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">📅 Number of Days</label>
-                <input type="number" class="form-control" id="days" placeholder="How many days?" min="1" max="7" value="2" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">📍 Starting City</label>
-                <select class="form-control" id="city" required>
-                    <option value="">Select your city</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Chennai">Chennai</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Pune">Pune</option>
-                    <option value="Kolkata">Kolkata</option>
-                    <option value="Jaipur">Jaipur</option>
-                </select>
-            </div>
-            <button type="submit" class="generate-btn" id="generateBtn">Generate Trip</button>
-        </form>
-    </div>
-</section>
-
-<!-- Output Section -->
-<section class="output-section" id="outputSection">
-    <div class="trip-card" id="tripCard"></div>
+    <div class="trip-result" id="tripResult"></div>
 </section>
 
 <!-- Hidden Gems -->
-<section class="extra-section" id="hiddenGems">
+<section class="section" id="gems" style="background: white;">
     <h2 class="section-title">💎 Hidden Gems</h2>
-    <p style="text-align: center; color: #757575; max-width: 700px; margin: 0 auto 40px;">Discover offbeat destinations that most tourists miss!</p>
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏕️ Kudremukh, Karnataka</div><p class="text-muted mb-0 mt-2">Lush green meadows and misty hills</p></div></div>
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">☕ Chikkamagaluru, Karnataka</div><p class="text-muted mb-0 mt-2">Coffee plantations and mountain trails</p></div></div>
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏞️ Sakleshpur, Karnataka</div><p class="text-muted mb-0 mt-2">Offbeat hill station with treks</p></div></div>
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🌿 Hampi, Karnataka</div><p class="text-muted mb-0 mt-2">Ancient ruins and unique landscapes</p></div></div>
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🦋 Wayanad, Kerala</div><p class="text-muted mb-0 mt-2">Misty mountains and wildlife</p></div></div>
-            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏖️ Pondicherry</div><p class="text-muted mb-0 mt-2">French charm and peaceful beaches</p></div></div>
+    <p style="text-align: center; color: #666; margin-bottom: 40px;">Offbeat destinations that tourists miss!</p>
+    <div class="gems-grid">
+        <div class="gem-card">
+            <div class="gem-name">🏕️ Kudremukh, Karnataka</div>
+            <p>Lush green meadows and misty hills</p>
         </div>
-        
-        <button class="bored-btn" onclick="imBored()">🎲 I'm Bored! Suggest a Trip</button>
+        <div class="gem-card">
+            <div class="gem-name">☕ Chikkamagaluru, Karnataka</div>
+            <p>Coffee plantations and mountain trails</p>
+        </div>
+        <div class="gem-card">
+            <div class="gem-name">🏞️ Sakleshpur, Karnataka</div>
+            <p>Offbeat hill station with treks</p>
+        </div>
+        <div class="gem-card">
+            <div class="gem-name">🌿 Hampi, Karnataka</div>
+            <p>Ancient ruins and unique landscapes</p>
+        </div>
+        <div class="gem-card">
+            <div class="gem-name">🦋 Wayanad, Kerala</div>
+            <p>Misty mountains and wildlife</p>
+        </div>
+        <div class="gem-card">
+            <div class="gem-name">🏖️ Pondicherry</div>
+            <p>French charm and peaceful beaches</p>
+        </div>
     </div>
+    <button class="btn-bored" onclick="imBored()">🎲 I'm Bored! Suggest Trip</button>
 </section>
 
 <!-- Footer -->
-<footer class="site-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <h5 class="footer-title">✈️ Travellar</h5>
-                <p class="about-text">Your smart travel companion for budget-friendly adventures. We help students discover amazing destinations!</p>
-            </div>
-            <div class="col-md-3">
-                <h5 class="footer-title">Quick Links</h5>
-                <a href="#howItWorks" class="footer-link">How It Works</a>
-                <a href="#destinations" class="footer-link">Destinations</a>
-                <a href="#hiddenGems" class="footer-link">Hidden Gems</a>
-            </div>
-            <div class="col-md-4">
-                <h5 class="footer-title">Contact</h5>
-                <p class="about-text">📧 hello@travellar.in</p>
-                <p class="about-text mt-3">Made with ❤️ by <span class="developer-credit">Divya</span></p>
-            </div>
+<footer>
+    <div class="footer-content">
+        <div>
+            <h4 class="footer-title">✈️ Travellar</h4>
+            <p style="color: #aaa; line-height: 1.8;">Your smart travel companion for budget-friendly adventures. Made for students, by students!</p>
         </div>
-        <hr style="border-color: #424242; margin: 40px 0 20px;">
-        <p style="text-align: center; color: #757575; margin: 0;">© 2024 Travellar. All rights reserved.</p>
+        <div>
+            <h4 class="footer-title">Quick Links</h4>
+            <a href="#how" class="footer-link">How It Works</a>
+            <a href="#destinations" class="footer-link">Destinations</a>
+            <a href="#ai" class="footer-link">AI Assistant</a>
+            <a href="#plan" class="footer-link">Plan Trip</a>
+        </div>
+        <div>
+            <h4 class="footer-title">Contact</h4>
+            <p style="color: #aaa;">📧 hello@travellar.in</p>
+            <p style="color: #aaa; margin-top: 10px;">Made with ❤️ by <span style="color: var(--secondary);">Divya</span></p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2024 Travellar. All rights reserved.
     </div>
 </footer>
 
-<!-- Leaflet Map CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-{% endblock %}
-
-{% block extra_js %}
-<!-- Leaflet Map JS -->
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
-console.log("Travellar JavaScript loading...");
-
-// ==========================================
-// DESTINATION DATA
-// ==========================================
+// ==================== DATA ====================
 const destinations = [
-    { name: 'Nandi Hills', city: 'Bangalore', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,500', types: ['nature', 'adventure'] },
-    { name: 'Coorg', city: 'Bangalore', image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400', cost: '₹2,800', types: ['nature'] },
-    { name: 'Lonavala', city: 'Mumbai', image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400', cost: '₹1,800', types: ['nature', 'adventure'] },
-    { name: 'Mahabaleshwar', city: 'Mumbai', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,800', types: ['nature'] },
-    { name: 'Pondicherry', city: 'Chennai', image: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400', cost: '₹2,500', types: ['heritage', 'food'] },
-    { name: 'Ooty', city: 'Chennai', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400', cost: '₹2,800', types: ['nature'] }
+    { name: 'Nandi Hills', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,500', types: ['nature','adventure'] },
+    { name: 'Coorg', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400', cost: '₹2,800', types: ['nature'] },
+    { name: 'Lonavala', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400', cost: '₹1,800', types: ['nature','adventure'] },
+    { name: 'Mahabaleshwar', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,800', types: ['nature'] },
+    { name: 'Pondicherry', city: 'Chennai', img: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400', cost: '₹2,500', types: ['heritage'] },
+    { name: 'Ooty', city: 'Chennai', img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400', cost: '₹2,800', types: ['nature'] }
 ];
 
-// ==========================================
-// HOTELS DATA
-// ==========================================
 const hotels = {
-    "Nandi Hills": ["Hill View Resort - ₹1,500", "Nandi Residency - ₹1,200"],
-    "Coorg": ["Coorg Resort - ₹2,000", "Misty Valley - ₹1,800"],
-    "Lonavala": ["Lake View Inn - ₹1,200", "Hilltop Resort - ₹1,500"],
-    "Mahabaleshwar": ["Misty Mountain - ₹2,200", "Lake View Hotel - ₹1,800"],
-    "Pondicherry": ["Beach Resort - ₹1,800", "Le Pondy - ₹2,500"],
-    "Ooty": ["Lake Palace - ₹2,000", "Fern Hill - ₹1,600"]
+    'Nandi Hills': ['Hill View Resort - ₹1,500', 'Nandi Residency - ₹1,200'],
+    'Coorg': ['Coorg Resort - ₹2,000', 'Misty Valley - ₹1,800'],
+    'Lonavala': ['Lake View Inn - ₹1,200', 'Hilltop Resort - ₹1,500'],
+    'Mahabaleshwar': ['Misty Mountain - ₹2,200', 'Lake View Hotel - ₹1,800'],
+    'Pondicherry': ['Beach Resort - ₹1,800', 'Le Pondy - ₹2,500'],
+    'Ooty': ['Lake Palace - ₹2,000', 'Fern Hill - ₹1,600']
 };
 
-// ==========================================
-// RENDER DESTINATIONS
-// ==========================================
+const trips = {
+    'Bangalore': [
+        { name: 'Nandi Hills', cost: 2500, plan: ['Day 1: Travel, sunset point', 'Day 2: Sunrise, Tipu Drop, return'] },
+        { name: 'Coorg', cost: 2800, plan: ['Day 1: Abbey Falls', 'Day 2: Coffee tour, return'] }
+    ],
+    'Mumbai': [
+        { name: 'Lonavala', cost: 1800, plan: ['Day 1: Bhaja Caves', 'Day 2: Tiger Point, return'] },
+        { name: 'Mahabaleshwar', cost: 2800, plan: ['Day 1: Pratapgad Fort', 'Day 2: Wilson Point, return'] }
+    ],
+    'Delhi': [
+        { name: 'Agra', cost: 2500, plan: ['Day 1: Taj Mahal', 'Day 2: Agra Fort, return'] },
+        { name: 'Rishikesh', cost: 2200, plan: ['Day 1: Lakshman Jhula', 'Day 2: Yoga, return'] }
+    ],
+    'Chennai': [
+        { name: 'Pondicherry', cost: 2500, plan: ['Day 1: Aurobindo Ashram', 'Day 2: Beach, return'] },
+        { name: 'Ooty', cost: 2800, plan: ['Day 1: Botanical Gardens', 'Day 2: Doddabetta, return'] }
+    ],
+    'Hyderabad': [
+        { name: 'Warangal', cost: 2000, plan: ['Day 1: Fort visit', 'Day 2: Temples, return'] }
+    ],
+    'Pune': [
+        { name: 'Mahabaleshwar', cost: 2800, plan: ['Day 1: Pratapgad', 'Day 2: Sunrise, return'] },
+        { name: 'Lonavala', cost: 1800, plan: ['Day 1: Caves', 'Day 2: Valley, return'] }
+    ]
+};
+
+const aiAnswers = {
+    budget: '<b>💰 Best Budget Trips (Under ₹3000):</b><br><br>• Nandi Hills - ₹2,500 - Sunrise views<br>• Lonavala - ₹1,800 - Caves & nature<br>• Matheran - ₹1,600 - Car-free hill station',
+    weekend: '<b>🗓️ Best Weekend Getaways:</b><br><br>• Coorg - 2 days - Coffee & falls<br>• Lonavala - 2 days - Caves & viewpoints<br>• Ooty - 2 days - Botanical gardens',
+    adventure: '<b>🏃 Adventure Trips:</b><br><br>• Rishikesh - Rafting & yoga<br>• Coorg - Trekking & wildlife<br>• Lonavale - Valley rappelling',
+    nature: '<b>🌿 Nature Escapes:</b><br><br>• Coorg - Scotland of India<br>• Wayanad - Misty mountains<br>• Kodaikanal - Princess of hills'
+};
+
+// ==================== RENDER ====================
 function renderDestinations() {
-    const grid = document.getElementById('destinationGrid');
-    if (!grid) { console.error("destinationGrid not found!"); return; }
-    
-    console.log("Rendering destinations...");
-    grid.innerHTML = destinations.map((dest, idx) => `
-        <div class="destination-card" data-name="${dest.name.toLowerCase()}" data-types="${dest.types.join(',')}">
-            <img src="${dest.image}" alt="${dest.name}">
-            <div class="destination-card-body">
-                <div class="place-name">📍 ${dest.name}</div>
-                <div class="destination-meta">From ${dest.city} • ${dest.cost}</div>
-                <div class="trip-type-tags">
-                    ${dest.types.map(t => `<span class="trip-tag tag-${t}">${t.charAt(0).toUpperCase() + t.slice(1)}</span>`).join('')}
+    const grid = document.getElementById('destGrid');
+    grid.innerHTML = destinations.map(d => `
+        <div class="dest-card" data-types="${d.types.join(',')}">
+            <img src="${d.img}" alt="${d.name}">
+            <div class="dest-card-body">
+                <div class="dest-name">📍 ${d.name}</div>
+                <div class="dest-meta">From ${d.city} • ${d.cost}</div>
+                <div class="dest-tags">
+                    ${d.types.map(t => `<span class="dest-tag tag-${t}">${t}</span>`).join('')}
                 </div>
-                <button class="show-hotels-btn" onclick="toggleHotels('${dest.name}')">🏨 Show Hotels</button>
-                <div class="hotel-list" id="hotels-${dest.name.replace(/\s+/g, '-')}">
-                    ${(hotels[dest.name] || ['No hotels']).map(h => `
+                <button class="btn-hotels" onclick="toggleHotels('${d.name}')">🏨 Show Hotels</button>
+                <div class="hotels-list" id="hotels-${d.name.replace(/\s/g,'-')}">
+                    ${(hotels[d.name] || []).map(h => `
                         <div class="hotel-item">
-                            <div>
+                            <div class="hotel-info">
                                 <div class="hotel-name">${h.split('-')[0]}</div>
                                 <div class="hotel-price">${h.split('-')[1]}</div>
                             </div>
-                            <button class="book-btn" onclick="bookHotel('${dest.name}', '${h.split('-')[0]}')">Book Now</button>
+                            <button class="btn-book" onclick="bookHotel('${d.name}','${h.split('-')[0]}')">Book</button>
                         </div>
                     `).join('')}
                 </div>
             </div>
         </div>
     `).join('');
-    console.log("Destinations rendered successfully!");
 }
 
-// ==========================================
-// SEARCH FUNCTIONALITY
-// ==========================================
-function initSearch() {
-    const searchInput = document.getElementById('search-place');
-    const searchBtn = document.getElementById('search-btn');
-    
-    if (!searchInput || !searchBtn) { console.error("Search elements not found!"); return; }
-    
-    console.log("Initializing search...");
-    
-    searchBtn.addEventListener('click', () => {
-        const query = searchInput.value.toLowerCase();
-        console.log("Searching for:", query);
-        const cards = document.querySelectorAll('.destination-card');
-        cards.forEach(card => {
-            const name = card.dataset.name;
-            card.style.display = name.includes(query) ? 'block' : 'none';
-        });
-    });
-    
-    searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
-            searchBtn.click();
-        }
+// ==================== SEARCH & FILTER ====================
+function searchDestinations() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.dest-card');
+    cards.forEach(card => {
+        const name = card.querySelector('.dest-name').textContent.toLowerCase();
+        card.style.display = name.includes(query) ? 'block' : 'none';
     });
 }
 
-// ==========================================
-// TOGGLE HOTELS
-// ==========================================
-function toggleHotels(place) {
-    console.log("Toggling hotels for:", place);
-    const hotelList = document.getElementById('hotels-' + place.replace(/\s+/g, '-'));
-    if (hotelList) {
-        hotelList.classList.toggle('show');
-    }
-}
-
-// ==========================================
-// BOOK HOTEL
-// ==========================================
-function bookHotel(place, hotel) {
-    console.log("Booking:", hotel, "at", place);
-    alert(`🎉 Booking Request!\n\nHotel: ${hotel}\nPlace: ${place}\n\nThis would redirect to booking page in production!`);
-}
-
-// ==========================================
-// FILTER BY TYPE
-// ==========================================
-function filterByType(type) {
-    console.log("Filtering by type:", type);
-    const cards = document.querySelectorAll('.destination-card');
+function filterDest(type) {
+    const cards = document.querySelectorAll('.dest-card');
     cards.forEach(card => {
         const types = card.dataset.types.split(',');
         card.style.display = types.includes(type) ? 'block' : 'none';
     });
 }
 
-// ==========================================
-// MAP INITIALIZATION
-// ==========================================
-let map;
-function initMap() {
-    const mapDiv = document.getElementById('map');
-    if (!mapDiv) { console.error("Map element not found!"); return; }
-    
-    console.log("Initializing map...");
-    map = L.map('map').setView([20.0, 78.0], 5);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
-    
-    const locations = [
-        { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
-        { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
-        { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
-        { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
-        { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
-        { name: 'Ooty', lat: 11.4102, lng: 76.6950 }
-    ];
-    
-    locations.forEach(loc => {
-        L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(`<b>${loc.name}</b><br>Click to explore`);
-    });
-    console.log("Map initialized!");
+function showAllDest() {
+    document.querySelectorAll('.dest-card').forEach(c => c.style.display = 'block');
+    document.getElementById('searchInput').value = '';
 }
 
-// ==========================================
-// TRIP GENERATION
-// ==========================================
-const tripDatabase = {
-    'Bangalore': [
-        { name: 'Nandi Hills', cost: 2500, itinerary: ['Day 1: Travel to Nandi Hills', 'Day 2: Sunrise, return'] },
-        { name: 'Coorg', cost: 2800, itinerary: ['Day 1: Visit Abbey Falls', 'Day 2: Coffee tour, return'] },
-        { name: 'Mysore', cost: 2000, itinerary: ['Day 1: Mysore Palace', 'Day 2: Zoo, return'] }
-    ],
-    'Mumbai': [
-        { name: 'Lonavala', cost: 1800, itinerary: ['Day 1: Bhaja Caves', 'Day 2: Tiger Point, return'] },
-        { name: 'Mahabaleshwar', cost: 2800, itinerary: ['Day 1: Pratapgad Fort', 'Day 2: Wilson Point, return'] }
-    ],
-    'Delhi': [
-        { name: 'Agra', cost: 2500, itinerary: ['Day 1: Taj Mahal', 'Day 2: Agra Fort, return'] },
-        { name: 'Rishikesh', cost: 2200, itinerary: ['Day 1: Lakshman Jhula', 'Day 2: Yoga, return'] }
-    ],
-    'Chennai': [
-        { name: 'Pondicherry', cost: 2500, itinerary: ['Day 1: Aurobindo Ashram', 'Day 2: Beach, return'] },
-        { name: 'Ooty', cost: 2800, itinerary: ['Day 1: Botanical Gardens', 'Day 2: Doddabetta, return'] }
-    ],
-    'Hyderabad': [
-        { name: 'Warangal', cost: 2000, itinerary: ['Day 1: Fort visit', 'Day 2: Temples, return'] }
-    ],
-    'Pune': [
-        { name: 'Mahabaleshwar', cost: 2800, itinerary: ['Day 1: Pratapgad', 'Day 2: Sunrise, return'] },
-        { name: 'Lonavala', cost: 1800, itinerary: ['Day 1: Caves', 'Day 2: Valley view, return'] }
-    ],
-    'Kolkata': [
-        { name: 'Digha', cost: 1800, itinerary: ['Day 1: Beach', 'Day 2: Marine Park, return'] }
-    ],
-    'Jaipur': [
-        { name: 'Udaipur', cost: 2800, itinerary: ['Day 1: City Palace', 'Day 2: Lake, return'] }
-    ]
-};
-
-function scrollToInput() {
-    document.getElementById('planTrip').scrollIntoView({ behavior: 'smooth' });
+// ==================== HOTELS ====================
+function toggleHotels(name) {
+    const list = document.getElementById('hotels-' + name.replace(/\s/g,'-'));
+    if (list) list.classList.toggle('show');
 }
 
-// Trip form handler
-document.getElementById('tripForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    console.log("Form submitted!");
-    
-    const btn = document.getElementById('generateBtn');
-    btn.innerHTML = '<span class="loading-spinner"></span>Generating...';
-    btn.disabled = true;
-    
-    setTimeout(() => {
-        const budget = parseInt(document.getElementById('budget').value);
-        const city = document.getElementById('city').value;
-        
-        if (!city) {
-            alert('Please select your city!');
-            btn.innerHTML = 'Generate Trip';
-            btn.disabled = false;
-            return;
-        }
-        
-        let trips = tripDatabase[city] || [];
-        trips = trips.filter(t => t.cost <= budget);
-        if (trips.length === 0) trips = tripDatabase[city] || [];
-        
-        const trip = trips[Math.floor(Math.random() * trips.length)];
-        
-        const travelCost = Math.round(trip.cost * 0.4);
-        const foodCost = Math.round(trip.cost * 0.35);
-        const stayCost = Math.round(trip.cost * 0.25);
-        
-        document.getElementById('tripCard').innerHTML = `
-            <div class="place-name">📍 ${trip.name}</div>
-            <div class="trip-cost">💰 Total: ₹${trip.cost}</div>
-            <div class="cost-breakdown">
-                <div class="cost-item"><span>🚆 Travel</span><span>₹${travelCost}</span></div>
-                <div class="cost-item"><span>🍜 Food</span><span>₹${foodCost}</span></div>
-                <div class="cost-item"><span>🏨 Stay</span><span>₹${stayCost}</span></div>
-                <div class="cost-item"><span>Total</span><span>₹${trip.cost}</span></div>
-            </div>
-            <div style="font-weight: 600; margin-bottom: 15px;">📅 Your Itinerary:</div>
-            ${trip.itinerary.map(i => `<div class="itinerary-item">${i}</div>`).join('')}
-        `;
-        
-        document.getElementById('outputSection').classList.add('show');
-        document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
-        
-        btn.innerHTML = 'Generate Trip';
-        btn.disabled = false;
-    }, 1000);
-});
-
-// I'm bored function
-function imBored() {
-    const allTrips = Object.values(tripDatabase).flat();
-    const trip = allTrips[Math.floor(Math.random() * allTrips.length)];
-    
-    const travelCost = Math.round(trip.cost * 0.4);
-    const foodCost = Math.round(trip.cost * 0.35);
-    const stayCost = Math.round(trip.cost * 0.25);
-    
-    document.getElementById('tripCard').innerHTML = `
-        <div class="place-name">📍 ${trip.name}</div>
-        <div class="trip-cost">💰 Total: ₹${trip.cost}</div>
-        <div class="cost-breakdown">
-            <div class="cost-item"><span>🚆 Travel</span><span>₹${travelCost}</span></div>
-            <div class="cost-item"><span>🍜 Food</span><span>₹${foodCost}</span></div>
-            <div class="cost-item"><span>🏨 Stay</span><span>₹${stayCost}</span></div>
-            <div class="cost-item"><span>Total</span><span>₹${trip.cost}</span></div>
-        </div>
-        <div style="font-weight: 600; margin-bottom: 15px;">📅 Your Itinerary:</div>
-        ${trip.itinerary.map(i => `<div class="itinerary-item">${i}</div>`).join('')}
-    `;
-    
-    document.getElementById('outputSection').classList.add('show');
-    document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+function bookHotel(place, hotel) {
+    alert(`🎉 Booking: ${hotel} at ${place}\n\nThis would redirect to payment!`);
 }
 
-// ==========================================
-// AI TRAVEL ASSISTANT
-// ==========================================
-const aiResponses = {
-    budget: "💰 <b>Best Budget Trips (Under ₹3000):</b><br><br>• <b>Nandi Hills</b> - ₹2,500 - Perfect for sunrise views<br>• <b>Lonavala</b> - ₹1,800 - Caves and nature<br>• <b>Matheran</b> - ₹1,600 - Car-free hill station<br>• <b>Mathura</b> - ₹1,500 - Spiritual heritage<br><br>These destinations offer great value for money!",
-    weekend: "🗓️ <b>Best Weekend Getaways:</b><br><br>• <b>Coorg</b> - 2 days - Coffee & waterfalls<br>• <b>Lonavala</b> - 2 days - Caves & viewpoints<br>• <b>Ooty</b> - 2 days - Botanical gardens<br>• <b>Mahabaleshwar</b> - 2 days - Forts & lakes",
-    adventure: "🏃 <b>Adventure Trips:</b><br><br>• <b>Rishikesh</b> - River rafting & yoga<br>• <b>Coorg</b> - Trekking & wildlife<br>• <b>Lonavala</b> - Valley rappelling<br>• <b>Wayanad</b> - Rock climbing & caves",
-    nature: "🌿 <b>Nature Escapes:</b><br><br>• <b>Coorg</b> - Scotland of India<br>• <b>Wayanad</b> - Misty mountains<br>• <b>Kodaikanal</b> - Princess of Hill Stations<br>• <b>Ooty</b> - Blue Mountains"
-};
-
+// ==================== AI ====================
 function askAI() {
     const input = document.getElementById('aiInput').value.toLowerCase();
-    const responseDiv = document.getElementById('aiResponse');
-    const responseText = document.getElementById('aiText');
+    const resp = document.getElementById('aiResponse');
+    let text = '';
     
-    if (!input.trim()) {
-        alert('Please ask a question!');
-        return;
-    }
+    if (input.includes('budget') || input.includes('cheap')) text = aiAnswers.budget;
+    else if (input.includes('weekend')) text = aiAnswers.weekend;
+    else if (input.includes('adventure')) text = aiAnswers.adventure;
+    else if (input.includes('nature') || input.includes('peaceful')) text = aiAnswers.nature;
+    else if (input.includes('beach')) text = '<b>🏖️ Beach Destinations:</b><br><br>• Goa - ₹3,000<br>• Pondicherry - ₹2,500<br>• Varkala - ₹2,200';
+    else text = '🤖 Try asking about: budget trips, weekend getaways, adventure, nature, or beaches!';
     
-    // Simple AI response logic
-    let response = "🤖 <b>Here's what I recommend:</b><br><br>";
-    
-    if (input.includes('budget') || input.includes('cheap') || input.includes('money') || input.includes('low cost')) {
-        response += aiResponses.budget;
-    } else if (input.includes('weekend') || input.includes('2 days') || input.includes('short')) {
-        response += aiResponses.weekend;
-    } else if (input.includes('adventure') || input.includes('trek') || input.includes('rafting')) {
-        response += aiResponses.adventure;
-    } else if (input.includes('nature') || input.includes('peaceful') || input.includes('relax')) {
-        response += aiResponses.nature;
-    } else if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
-        response = "👋 Hello! I'm your AI travel assistant. Ask me about budget trips, weekend getaways, adventure, or nature escapes!";
-    } else if (input.includes('beach') || input.includes('sea')) {
-        response = "🏖️ <b>Best Beach Destinations:</b><br><br>• <b>Goa</b> - ₹3,000 - Parties & beaches<br>• <b>Pondicherry</b> - ₹2,500 - French Riviera<br>• <b>Varkala</b> - ₹2,200 - Cliffs & beaches<br>• <b>Gokarna</b> - ₹1,800 - Peaceful beaches";
-    } else if (input.includes('hill') || input.includes('mountain')) {
-        response = "🏔️ <b>Best Hill Stations:</b><br><br>• <b>Coorg</b> - ₹2,800 - Coffee plantations<br>• <b>Ooty</b> - ₹2,800 - Botanical gardens<br>• <b>Manali</b> - ₹3,000 - Snow & adventure<br>• <b>Darjeeling</b> - ₹3,000 - Tea & train";
-    } else {
-        response = "🤖 I'd love to help! Try asking about:<br>• Budget trips (under ₹3000)<br>• Weekend getaways<br>• Adventure trips<br>• Nature escapes<br>• Beach destinations<br>• Hill stations";
-    }
-    
-    responseText.innerHTML = response;
-    responseDiv.style.display = 'block';
-    responseDiv.scrollIntoView({ behavior: 'smooth' });
+    resp.innerHTML = text;
+    resp.classList.add('show');
 }
 
 function askAIQuick(type) {
     document.getElementById('aiInput').value = '';
-    const responseDiv = document.getElementById('aiResponse');
-    const responseText = document.getElementById('aiText');
-    
-    responseText.innerHTML = aiResponses[type];
-    responseDiv.style.display = 'block';
-    responseDiv.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('aiResponse').innerHTML = aiAnswers[type];
+    document.getElementById('aiResponse').classList.add('show');
 }
 
-// ==========================================
-// INITIALIZE EVERYTHING
-// ==========================================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("Page loaded, initializing...");
-    renderDestinations();
-    initSearch();
-    initMap();
-    console.log("All initialization complete!");
-});
+// ==================== MAP ====================
+let map = L.map('map').setView([20, 78], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OSM'}).addTo(map);
+[{n:'Nandi Hills',l:[13.39,77.81]},{n:'Coorg',l:[12.34,75.81]},{n:'Lonavala',l:[18.75,73.41]},{n:'Mahabaleshwar',l:[17.93,73.64]},{n:'Pondicherry',l:[11.94,79.79]},{n:'Ooty',l:[11.41,76.70]}].forEach(x => L.marker(x.l).addTo(map).bindPopup(`<b>${x.n}</b>`));
+
+// ==================== TRIP GENERATOR ====================
+function generateTrip() {
+    const budget = parseInt(document.getElementById('budget').value);
+    const city = document.getElementById('city').value;
+    const result = document.getElementById('tripResult');
+    
+    if (!city) { alert('Please select a city!'); return; }
+    
+    let available = (trips[city] || []).filter(t => t.cost <= budget);
+    if (!available.length) available = trips[city] || [];
+    if (!available.length) { alert('No trips found!'); return; }
+    
+    const trip = available[Math.floor(Math.random() * available.length)];
+    const travel = Math.round(trip.cost * 0.4);
+    const food = Math.round(trip.cost * 0.35);
+    const stay = Math.round(trip.cost * 0.25);
+    
+    result.innerHTML = `
+        <div class="result-name">📍 ${trip.name}</div>
+        <div class="result-cost">💰 Total: ₹${trip.cost}</div>
+        <div class="cost-breakdown">
+            <div class="cost-row"><span>🚆 Travel</span><span>₹${travel}</span></div>
+            <div class="cost-row"><span>🍜 Food</span><span>₹${food}</span></div>
+            <div class="cost-row"><span>🏨 Stay</span><span>₹${stay}</span></div>
+            <div class="cost-row"><span>Total</span><span>₹${trip.cost}</span></div>
+        </div>
+        <div class="itinerary-title">📅 Your Itinerary:</div>
+        ${trip.plan.map(p => `<div class="itinerary-item">${p}</div>`).join('')}
+    `;
+    result.classList.add('show');
+    result.scrollIntoView({behavior:'smooth'});
+}
+
+function imBored() {
+    const allTrips = Object.values(trips).flat();
+    const trip = allTrips[Math.floor(Math.random() * allTrips.length)];
+    const travel = Math.round(trip.cost * 0.4);
+    const food = Math.round(trip.cost * 0.35);
+    const stay = Math.round(trip.cost * 0.25);
+    
+    const result = document.getElementById('tripResult');
+    result.innerHTML = `
+        <div class="result-name">📍 ${trip.name}</div>
+        <div class="result-cost">💰 Total: ₹${trip.cost}</div>
+        <div class="cost-breakdown">
+            <div class="cost-row"><span>🚆 Travel</span><span>₹${travel}</span></div>
+            <div class="cost-row"><span>🍜 Food</span><span>₹${food}</span></div>
+            <div class="cost-row"><span>🏨 Stay</span><span>₹${stay}</span></div>
+            <div class="cost-row"><span>Total</span><span>₹${trip.cost}</span></div>
+        </div>
+        <div class="itinerary-title">📅 Your Itinerary:</div>
+        ${trip.plan.map(p => `<div class="itinerary-item">${p}</div>`).join('')}
+    `;
+    result.classList.add('show');
+    result.scrollIntoView({behavior:'smooth'});
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', renderDestinations);
 </script>
-{% endblock %}
+</body>
+</html>
