@@ -1,401 +1,563 @@
 {% extends "base.html" %}
 
-{% block title %}AI Travel Planner - Home{% endblock %}
+{% block title %}Travellar - Budget Travel Planner{% endblock %}
 
 {% block extra_css %}
 <style>
+    /* Hero Section Styles */
     .hero-section {
-        background: linear-gradient(135deg, rgba(0, 119, 182, 0.85), rgba(0, 180, 216, 0.7)), 
+        background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8)), 
                     url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920') center/cover;
-        min-height: 100vh;
+        min-height: 60vh;
         display: flex;
         align-items: center;
-        position: relative;
-        overflow: hidden;
+        justify-content: center;
+        padding: 60px 20px;
     }
     
     .hero-content {
-        position: relative;
-        z-index: 2;
         text-align: center;
+        max-width: 800px;
     }
     
     .hero-title {
-        font-size: 4.5rem;
+        font-size: 4rem;
         font-weight: 800;
-        margin-bottom: 1.5rem;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
-        animation: fadeInUp 1s ease-out;
-        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        animation: fadeInUp 0.8s ease-out;
     }
     
     .hero-subtitle {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
         opacity: 0.95;
-        animation: fadeInUp 1s ease-out 0.3s backwards;
-        font-weight: 500;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
     }
     
-    .hero-description {
-        font-size: 1.2rem;
-        margin-bottom: 2.5rem;
-        opacity: 0.9;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        animation: fadeInUp 1s ease-out 0.5s backwards;
-    }
-    
-    .feature-card {
-        background: rgba(255,255,255,0.15);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 1.5rem;
+    .hero-btn {
+        font-size: 1.3rem;
+        padding: 16px 50px;
+        font-weight: 600;
+        border-radius: 50px;
+        background: #ff6b35;
+        border: none;
+        color: white;
+        cursor: pointer;
         transition: all 0.3s ease;
-        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
     }
     
-    .feature-card:hover {
-        transform: translateY(-10px);
-        background: rgba(255,255,255,0.25);
-    }
-    
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: #fff;
-    }
-    
-    .destination-card {
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
-    
-    .destination-card:hover {
-        transform: translateY(-10px) scale(1.03);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    
-    .destination-card img {
-        height: 200px;
-        object-fit: cover;
-    }
-    
-    .floating-shapes {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        z-index: 1;
-    }
-    
-    .shape {
-        position: absolute;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
-        animation: float 20s infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-100px) rotate(180deg); }
+    .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        background: #ff5722;
     }
     
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
+        from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
     
-    .stats-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 4rem 0;
+    /* Input Section */
+    .input-section {
+        background: #f8f9fa;
+        padding: 40px 20px;
     }
     
-    .stat-item {
-        text-align: center;
+    .input-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 30px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+    
+    .form-control {
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #0077b6;
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+    }
+    
+    .generate-btn {
+        width: 100%;
+        font-size: 1.2rem;
+        padding: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #0077b6, #00b4d8);
+        border: none;
         color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
     
-    .stat-number {
-        font-size: 3rem;
-        font-weight: bold;
+    .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+    }
+    
+    /* Output Section */
+    .output-section {
+        display: none;
+        padding: 40px 20px;
+    }
+    
+    .output-section.show {
+        display: block;
+    }
+    
+    .trip-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 30px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .destination-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0077b6;
+        margin-bottom: 10px;
+    }
+    
+    .trip-cost {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+    
+    .itinerary-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .itinerary-item {
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border-left: 4px solid #0077b6;
+    }
+    
+    .cost-breakdown {
+        background: #e8f5e9;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .cost-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #c8e6c9;
+    }
+    
+    .cost-item:last-child {
+        border-bottom: none;
+        font-weight: 600;
+    }
+    
+    /* Extra Section */
+    .extra-section {
+        background: #f8f9fa;
+        padding: 50px 20px;
+    }
+    
+    .hidden-gems-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    
+    .gem-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+    
+    .gem-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .gem-name {
+        font-weight: 600;
+        color: #0077b6;
+        font-size: 1.2rem;
+    }
+    
+    .bored-btn {
+        display: block;
+        width: 200px;
+        margin: 40px auto 0;
+        font-size: 1.1rem;
+        padding: 14px 30px;
+        font-weight: 600;
+        border-radius: 50px;
+        background: #6c5ce7;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .bored-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .hero-btn {
+            font-size: 1.1rem;
+            padding: 14px 35px;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+
+<!-- 1. HERO SECTION -->
 <section class="hero-section">
-    <div class="floating-shapes">
-        <div class="shape" style="width: 100px; height: 100px; top: 10%; left: 10%;"></div>
-        <div class="shape" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: -5s;"></div>
-        <div class="shape" style="width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: -10s;"></div>
-        <div class="shape" style="width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: -15s;"></div>
+    <div class="hero-content">
+        <h1 class="hero-title text-white">Plan Trips Under ₹3000</h1>
+        <p class="hero-subtitle text-white">Smart travel planner for students</p>
+        <button class="hero-btn" onclick="scrollToInput()">Plan My Trip</button>
     </div>
+</section>
+
+<!-- 2. INPUT SECTION (Main Feature) -->
+<section class="input-section" id="inputSection">
+    <div class="input-card">
+        <h3 style="text-align: center; margin-bottom: 25px; font-weight: 700;">Plan Your Trip</h3>
+        <form id="tripForm">
+            <div class="mb-3">
+                <label class="form-label">💸 Budget (₹)</label>
+                <input type="number" class="form-control" id="budget" placeholder="Enter your budget" min="500" max="10000" value="3000" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">📅 Number of Days</label>
+                <input type="number" class="form-control" id="days" placeholder="How many days?" min="1" max="7" value="2" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">📍 Starting City</label>
+                <select class="form-control" id="city" required>
+                    <option value="">Select your city</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Jaipur">Jaipur</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Coimbatore">Coimbatore</option>
+                </select>
+            </div>
+            <button type="submit" class="generate-btn">Generate Trip</button>
+        </form>
+    </div>
+</section>
+
+<!-- 3. OUTPUT SECTION (Shows after clicking) -->
+<section class="output-section" id="outputSection">
+    <div class="trip-card" id="tripCard">
+        <!-- Content will be populated by JavaScript -->
+    </div>
+</section>
+
+<!-- 4. EXTRA SECTION (Hidden gems + I'm bored) -->
+<section class="extra-section">
+    <h2 class="hidden-gems-title">🏕️ Hidden Gems</h2>
     
-    <div class="container hero-content">
-        <div class="row">
-            <div class="col-lg-7">
-                <h1 class="hero-title text-white">Traveller Guide Web App</h1>
-                <p class="hero-subtitle text-white">Explore destinations based on your preferences ✈️</p>
-                <p class="hero-description text-white">This web app helps users explore travel destinations based on preferences and provides AI-powered recommendations for the perfect trip.</p>
-                <p class="hero-description text-white" style="font-size: 1.4rem; font-weight: 600; margin-top: 1rem;">Smart travel planning made easy ✈️</p>
-                
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem; padding: 16px 40px !important;">
-                        <i class="fas fa-user-plus me-2"></i>Get Started
-                    </a>
-                    <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem; padding: 16px 40px !important;">
-                        <i class="fas fa-info-circle me-2"></i>Learn More
-                    </a>
-                </div>
-                
-                <!-- Search Bar -->
-                <div class="mt-4" style="animation: fadeInUp 1s ease-out 0.7s backwards;">
-                    <form action="/search" method="GET" class="d-flex justify-content-center gap-2">
-                        <input type="text" name="query" placeholder="Search destinations..." 
-                               style="padding: 14px 20px; width: 300px; border-radius: 25px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                        <button type="submit" class="btn btn-light px-4" style="border-radius: 25px; font-weight: 600;">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                    </form>
-                </div>
-                
-                <!-- Feature Highlights -->
-                <div class="row mt-5">
-                    <div class="col-md-4">
-                        <div class="feature-card text-white">
-                            <div class="feature-icon">
-                                <i class="fas fa-magic"></i>
-                            </div>
-                            <h5>AI Recommendations</h5>
-                            <p class="small mb-0">Smart destination suggestions based on your preferences</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature-card text-white">
-                            <div class="feature-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <h5>Auto Itinerary</h5>
-                            <p class="small mb-0">Generate day-wise travel plans instantly</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature-card text-white">
-                            <div class="feature-icon">
-                                <i class="fas fa-comments"></i>
-                            </div>
-                            <h5>Travel Chatbot</h5>
-                            <p class="small mb-0">24/7 AI assistant for all your travel queries</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section id="features" class="py-5 bg-light" style="padding: 60px 0;">
-    <div class="container" style="padding: 20px;">
-        <div class="text-center mb-5">
-            <h2 class="display-4 fw-bold">Amazing Features</h2>
-            <p class="lead text-muted">Everything you need for the perfect trip</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-primary text-white rounded-circle mb-3">
-                            <i class="fas fa-user-check fa-2x p-4"></i>
-                        </div>
-                        <h4>User Authentication</h4>
-                        <p class="text-muted">Secure registration and login system to protect your travel plans and preferences.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-success text-white rounded-circle mb-3">
-                            <i class="fas fa-robot fa-2x p-4"></i>
-                        </div>
-                        <h4>AI Recommendations</h4>
-                        <p class="text-muted">Our intelligent engine analyzes your preferences to suggest the perfect destinations.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-info text-white rounded-circle mb-3">
-                            <i class="fas fa-clipboard-list fa-2x p-4"></i>
-                        </div>
-                        <h4>Smart Itineraries</h4>
-                        <p class="text-muted">Generate detailed day-wise travel plans automatically tailored to your trip.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-warning text-white rounded-circle mb-3">
-                            <i class="fas fa-comments fa-2x p-4"></i>
-                        </div>
-                        <h4>Travel Chatbot</h4>
-                        <p class="text-muted">Get instant answers to travel questions anytime with our AI assistant.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-danger text-white rounded-circle mb-3">
-                            <i class="fas fa-map-marked-alt fa-2x p-4"></i>
-                        </div>
-                        <h4>Map Integration</h4>
-                        <p class="text-muted">View destinations on an interactive map to plan your journey better.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon-large bg-purple text-white rounded-circle mb-3">
-                            <i class="fas fa-images fa-2x p-4"></i>
-                        </div>
-                        <h4>Image Gallery</h4>
-                        <p class="text-muted">Explore beautiful destinations through our curated image gallery.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Popular Destinations -->
-<section class="py-5" style="padding: 60px 0;">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-4 fw-bold" style="color: #0077b6;">Top Picks</h2>
-            <p class="lead text-muted">Most popular travel destinations</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4 col-lg-3">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400" alt="Maldives" class="w-100">
-                    <div class="p-3">
-                        <h5 class="mb-1">Maldives</h5>
-                        <span class="badge bg-info">Beach</span>
-                        <span class="badge bg-success">Luxury</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400" alt="Tokyo" class="w-100">
-                    <div class="p-3">
-                        <h5 class="mb-1">Tokyo</h5>
-                        <span class="badge bg-primary">City</span>
-                        <span class="badge bg-warning">Culture</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400" alt="Manali" class="w-100">
-                    <div class="p-3">
-                        <h5 class="mb-1">Manali</h5>
-                        <span class="badge bg-secondary">Hill</span>
-                        <span class="badge bg-danger">Adventure</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400" alt="Kyoto" class="w-100">
-                    <div class="p-3">
-                        <h5 class="mb-1">Kyoto</h5>
-                        <span class="badge bg-warning">Cultural</span>
-                        <span class="badge bg-info">Historic</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400" alt="Bali" class="w-100">
-                    <div class="p-3">
-                        <h5 class="mb-1">Bali</h5>
-                        <span class="badge bg-info">Beach</span>
-                        <span class="badge bg-success">Tropical</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
-                Start Exploring <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Stats Section -->
-<section class="stats-section">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div>Destinations</div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Kudremukh, Karnataka</div>
+                    <p class="text-muted mb-0">Lush green meadows and misty hills - perfect for weekend escape</p>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <div class="stat-number">10K+</div>
-                    <div>Happy Travelers</div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Chikkamagaluru, Karnataka</div>
+                    <p class="text-muted mb-0">Coffee plantations and scenic mountain trails</p>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div>AI Powered</div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Sakleshpur, Karnataka</div>
+                    <p class="text-muted mb-0">Offbeat hill station with amazing treks</p>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div>Support</div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Coorg, Karnataka</div>
+                    <p class="text-muted mb-0">Scotland of India - waterfalls and spice plantations</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Wayanad, Kerala</div>
+                    <p class="text-muted mb-0">Misty mountains and wildlife sanctuaries</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="gem-card">
+                    <div class="gem-name">Hampi, Karnataka</div>
+                    <p class="text-muted mb-0">Ancient ruins and boulder-strewn landscapes</p>
                 </div>
             </div>
         </div>
+        
+        <button class="bored-btn" onclick="imBored()">🎲 I'm Bored!</button>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h2 class="display-5 fw-bold">Ready to Plan Your Dream Trip?</h2>
-                <p class="lead text-muted">Join thousands of travelers who have discovered their perfect destination with our AI-powered travel planner.</p>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Trip data for demo purposes
+    const tripDatabase = {
+        'Bangalore': [
+            { name: 'Nandi Hills', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
+            { name: 'Coorg', cost: 2800, days: 2, itinerary: ['Day 1: Travel to Coorg, visit Abbey Falls', 'Day 2: Morning coffee plantation tour, return'] },
+            { name: 'Mysore', cost: 2000, days: 2, itinerary: ['Day 1: Visit Mysore Palace, Chamundi Hill', 'Day 2: Morning zoo visit, return'] },
+            { name: 'Ooty', cost: 3000, days: 2, itinerary: ['Day 1: Travel to Ooty, botanical gardens', 'Day 2: Sunrise at Doddabetta, lake visit'] },
+            { name: 'Wayanad', cost: 2900, days: 2, itinerary: ['Day 1: Travel to Wayanad, Edakkal Caves', 'Day 2: Sunrise at Chembra Peak, return'] }
+        ],
+        'Mumbai': [
+            { name: 'Lonavala', cost: 1800, days: 2, itinerary: ['Day 1: Visit Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
+            { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Visit Pratapgad Fort, Venna Lake', 'Day 2: Sunrise at Wilson Point, market visit'] },
+            { name: 'Goa', cost: 3000, days: 2, itinerary: ['Day 1: Beach visit, Fort Aguada', 'Day 2: Baga Beach morning, return'] },
+            { name: 'Alibaug', cost: 2200, days: 2, itinerary: ['Day 1: Beach visit, Kolaba Fort', 'Day 2: Morning beach walk, return'] },
+            { name: 'Panchgani', cost: 2500, days: 2, itinerary: ['Day 1: Visit Table Land, Parsi Point', 'Day 2: Morning sunrise, Sydney Point'] }
+        ],
+        'Delhi': [
+            { name: 'Agra', cost: 2500, days: 2, itinerary: ['Day 1: Taj Mahal visit, Agra Fort', 'Day 2: Itimad-ud-Daulah, return'] },
+            { name: 'Jaipur', cost: 2800, days: 2, itinerary: ['Day 1: Hawa Mahal, City Palace', 'Day 2: Amber Fort, Nahargarh Fort'] },
+            { name: 'Rishikesh', cost: 2200, days: 2, itinerary: ['Day 1: Lakshman Jhula, Ram Jhula', 'Day 2: Morning yoga, Ganga Aarti'] },
+            { name: 'Mathura', cost: 1500, days: 2, itinerary: ['Day 1: Krishna Janmabhoomi, Holi Gate', 'Day 2: Vrindavan temples, return'] },
+            { name: 'Neemrana', cost: 2000, days: 2, itinerary: ['Day 1: Neemrana Fort Palace', 'Day 2: Zip line adventure, return'] }
+        ],
+        'Chennai': [
+            { name: 'Pondicherry', cost: 2500, days: 2, itinerary: ['Day 1: Aurobindo Ashram, Beach Road', 'Day 2: Paradise Beach, return'] },
+            { name: 'Ooty', cost: 2800, days: 2, itinerary: ['Day 1: Botanical Gardens, Ooty Lake', 'Day 2: Doddabetta sunrise, return'] },
+            { name: 'Kodaikanal', cost: 2600, days: 2, itinerary: ['Day 1: Kodai Lake, Coaker\'s Walk', 'Day 2: Bryant Park, return'] },
+            { name: 'Yercaud', cost: 1800, days: 2, itinerary: ['Day 1: Killiyur Falls, Shevaroy Hills', 'Day 2: Sunrise point, return'] },
+            { name: 'Mahabalipuram', cost: 1500, days: 2, itinerary: ['Day 1: Shore Temple, Arjuna\'s Penance', 'Day 2: Beach visit, return'] }
+        ],
+        'Hyderabad': [
+            { name: 'Warangal', cost: 2000, days: 2, itinerary: ['Day 1: Warangal Fort, Khamma', 'Day 2: Thousand Pillar Temple, return'] },
+            { name: 'Nagarjuna Sagar', cost: 2200, days: 2, itinerary: ['Day 1: Dam visit, Ethipothala Falls', 'Day 2: Nagarjuna Konda, return'] },
+            { name: 'Ananthagiri', cost: 1500, days: 2, itinerary: ['Day 1: Hills trek, waterfalls', 'Day 2: Morning walk, return'] },
+            { name: 'Vijayawada', cost: 1800, days: 2, itinerary: ['Day 1: Undavalli Caves, Prakasam Barrage', 'Day 2: Kanaka Durga Temple, return'] },
+            { name: 'Srisailam', cost: 2000, days: 2, itinerary: ['Day 1: Mallikarjuna Temple, UNESCO site', 'Day 2: Pochera Falls, return'] }
+        ],
+        'Pune': [
+            { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Pratapgad Fort, Venna Lake', 'Day 2: Wilson Point sunrise, market'] },
+            { name: 'Lonavala', cost: 1800, days: 2, itinerary: ['Day 1: Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
+            { name: 'Matheran', cost: 1600, days: 2, itinerary: ['Day 1: Toy train, Charlotte Lake', 'Day 2: Sunrise at Panorama Point, return'] },
+            { name: ' Panchgani', cost: 2200, days: 2, itinerary: ['Day 1: Table Land, Parsi Point', 'Day 2: Sydney Point, return'] },
+            { name: 'Tamhini Ghat', cost: 1500, days: 2, itinerary: ['Day 1: Waterfall visits, nature walk', 'Day 2: Mountain view, return'] }
+        ],
+        'Kolkata': [
+            { name: 'Digha', cost: 1800, days: 2, itinerary: ['Day 1: Beach visit, sunrise', 'Day 2: Marine Park, return'] },
+            { name: 'Shantiniketan', cost: 1500, days: 2, itinerary: ['Day 1: Visva-Bharati University, Rabindranath Tagore\'s Ashram', 'Day 2: Kopai River, return'] },
+            { name: 'Bishnupur', cost: 1800, days: 2, itinerary: ['Day 1: Terracotta temples, Rasmancha', 'Day 2: Baluchar Mosque, return'] },
+            { name: 'Sundarbans', cost: 2800, days: 2, itinerary: ['Day 1: Boat safari, mangrove forest', 'Day 2: Tiger sighting, return'] },
+            { name: 'Darjeeling', cost: 3000, days: 2, itinerary: ['Day 1: Toy train, Tiger Hill', 'Day 2: Tea gardens, return'] }
+        ],
+        'Jaipur': [
+            { name: 'Udaipur', cost: 2800, days: 2, itinerary: ['Day 1: City Palace, Lake Pichola', 'Day 2: Sunrise at Fateh Sagar, return'] },
+            { name: 'Ajmer', cost: 1800, days: 2, itinerary: ['Day 1: Ajmer Sharif Dargah, Ana Sagar Lake', 'Day 2: Taragarh Fort, return'] },
+            { name: 'Pushkar', cost: 1500, days: 2, itinerary: ['Day 1: Brahma Temple, Pushkar Lake', 'Day 2: Sunrise at Savitri Temple, return'] },
+            { name: 'Ranthambore', cost: 3000, days: 2, itinerary: ['Day 1: Safari, Ranthambore Fort', 'Day 2: Morning safari, return'] },
+            { name: 'Neemrana', cost: 1800, days: 2, itinerary: ['Day 1: Neemrana Fort Palace', 'Day 2: Zip line, return'] }
+        ],
+        'Ahmedabad': [
+            { name: 'Udaipur', cost: 2800, days: 2, itinerary: ['Day 1: City Palace, Lake Pichola', 'Day 2: Fateh Sagar sunrise, return'] },
+            { name: 'Mount Abu', cost: 2200, days: 2, itinerary: ['Day 1: Nakki Lake, Dilwara Temples', 'Day 2: Sunset point, return'] },
+            { name: 'Patan', cost: 1500, days: 2, itinerary: ['Day 1: Rani ki Vav, Modhera Sun Temple', 'Day 2: Return'] },
+            { name: 'Vadodara', cost: 1800, days: 2, itinerary: ['Day 1: Laxmi Vilas Palace, Sayaji Baug', 'Day 2: Champaner, return'] },
+            { name: 'Dwarka', cost: 2000, days: 2, itinerary: ['Day 1: Dwarkadhish Temple, beach', 'Day 2: Gomti Ghat, return'] }
+        ],
+        'Coimbatore': [
+            { name: 'Ooty', cost: 2500, days: 2, itinerary: ['Day 1: Botanical Gardens, Ooty Lake', 'Day 2: Doddabetta sunrise, return'] },
+            { name: 'Kodaikanal', cost: 2400, days: 2, itinerary: ['Day 1: Kodai Lake, Coaker\'s Walk', 'Day 2: Bryant Park, return'] },
+            { name: 'Coonoor', cost: 1800, days: 2, itinerary: ['Day 1: Sim\'s Park, Dolphin\'s Nose', 'Day 2: Lamb\'s Rock, return'] },
+            { name: 'Munnar', cost: 2800, days: 2, itinerary: ['Day 1: Tea gardens, Mattupetty Dam', 'Day 2: Sunrise at Echo Point, return'] },
+            { name: 'Valparai', cost: 2000, days: 2, itinerary: ['Day 1: Anamalai Wildlife, waterfalls', 'Day 2: Tea estate visit, return'] }
+        ]
+    };
+
+    // Additional trips for "I'm bored" feature
+    const randomTrips = [
+        { name: 'Nandi Hills', city: 'Bangalore', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
+        { name: 'Lonavala', city: 'Mumbai', cost: 1800, days: 2, itinerary: ['Day 1: Visit Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
+        { name: 'Pondicherry', city: 'Chennai', cost: 2500, days: 2, itinerary: ['Day 1: Aurobindo Ashram, Beach Road', 'Day 2: Paradise Beach, return'] },
+        { name: 'Matheran', city: 'Pune', cost: 1600, days: 2, itinerary: ['Day 1: Toy train, Charlotte Lake', 'Day 2: Sunrise at Panorama Point, return'] },
+        { name: 'Coorg', city: 'Bangalore', cost: 2800, days: 2, itinerary: ['Day 1: Travel to Coorg, visit Abbey Falls', 'Day 2: Morning coffee plantation tour, return'] },
+        { name: 'Rishikesh', city: 'Delhi', cost: 2200, days: 2, itinerary: ['Day 1: Lakshman Jhula, Ram Jhula', 'Day 2: Morning yoga, Ganga Aarti'] },
+        { name: 'Mahabaleshwar', city: 'Pune', cost: 2800, days: 2, itinerary: ['Day 1: Pratapgad Fort, Venna Lake', 'Day 2: Wilson Point sunrise, market'] },
+        { name: 'Wayanad', city: 'Bangalore', cost: 2900, days: 2, itinerary: ['Day 1: Travel to Wayanad, Edakkal Caves', 'Day 2: Sunrise at Chembra Peak, return'] }
+    ];
+
+    // Function to scroll to input section
+    function scrollToInput() {
+        document.getElementById('inputSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Handle form submission
+    document.getElementById('tripForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const budget = parseInt(document.getElementById('budget').value);
+        const days = parseInt(document.getElementById('days').value);
+        const city = document.getElementById('city').value;
+        
+        if (!city) {
+            alert('Please select your city!');
+            return;
+        }
+        
+        // Get trips for selected city within budget
+        let availableTrips = tripDatabase[city].filter(trip => trip.cost <= budget);
+        
+        // If no trips within budget, get cheapest trip
+        if (availableTrips.length === 0) {
+            availableTrips = tripDatabase[city].filter(trip => trip.days === days);
+        }
+        
+        // If still no trips, get any trip from the city
+        if (availableTrips.length === 0) {
+            availableTrips = tripDatabase[city];
+        }
+        
+        // Pick a random trip from available options
+        const trip = availableTrips[Math.floor(Math.random() * availableTrips.length)];
+        
+        // Generate cost breakdown
+        const travelCost = Math.round(trip.cost * 0.4);
+        const foodCost = Math.round(trip.cost * 0.35);
+        const stayCost = Math.round(trip.cost * 0.25);
+        
+        // Display trip
+        const tripCard = document.getElementById('tripCard');
+        tripCard.innerHTML = `
+            <div class="destination-name">📍 ${trip.name}</div>
+            <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
+            
+            <div class="cost-breakdown">
+                <div class="cost-item">
+                    <span>🚆 Travel</span>
+                    <span>₹${travelCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>🍜 Food</span>
+                    <span>₹${foodCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>🏨 Stay</span>
+                    <span>₹${stayCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>Total</span>
+                    <span>₹${trip.cost}</span>
+                </div>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5">
-                    <i class="fas fa-rocket me-2"></i>Get Started Free
-                </a>
+            
+            <div class="itinerary-title">📅 Your Itinerary:</div>
+            ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
+        `;
+        
+        // Show output section
+        document.getElementById('outputSection').classList.add('show');
+        
+        // Scroll to output
+        document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // "I'm bored" functionality
+    function imBored() {
+        // Pick a random trip
+        const trip = randomTrips[Math.floor(Math.random() * randomTrips.length)];
+        
+        // Generate cost breakdown
+        const travelCost = Math.round(trip.cost * 0.4);
+        const foodCost = Math.round(trip.cost * 0.35);
+        const stayCost = Math.round(trip.cost * 0.25);
+        
+        // Display trip
+        const tripCard = document.getElementById('tripCard');
+        tripCard.innerHTML = `
+            <div class="destination-name">📍 ${trip.name}</div>
+            <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
+            
+            <div class="cost-breakdown">
+                <div class="cost-item">
+                    <span>🚆 Travel</span>
+                    <span>₹${travelCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>🍜 Food</span>
+                    <span>₹${foodCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>🏨 Stay</span>
+                    <span>₹${stayCost}</span>
+                </div>
+                <div class="cost-item">
+                    <span>Total</span>
+                    <span>₹${trip.cost}</span>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+            
+            <div class="itinerary-title">📅 Your Itinerary:</div>
+            ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
+        `;
+        
+        // Show output section
+        document.getElementById('outputSection').classList.add('show');
+        
+        // Scroll to output
+        document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
 {% endblock %}
