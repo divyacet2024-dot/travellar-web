@@ -846,6 +846,39 @@
     </div>
 </section>
 
+<!-- AI Travel Assistant Section -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 20px; color: white;">
+    <div class="container">
+        <h2 class="section-title" style="color: white;">🤖 Ask AI Travel Assistant</h2>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto 30px; opacity: 0.9;">Get instant travel recommendations, budget tips, and personalized suggestions from our AI!</p>
+        
+        <div style="max-width: 700px; margin: 0 auto;">
+            <div style="background: white; border-radius: 12px; padding: 20px; display: flex; gap: 10px;">
+                <input type="text" id="aiInput" placeholder="Ask me anything about travel... (e.g., best budget destinations)" 
+                       style="flex: 1; padding: 14px 18px; border-radius: 8px; border: 2px solid #ddd; font-size: 1rem;"
+                       onkeypress="if(event.key==='Enter')askAI()">
+                <button onclick="askAI()" style="padding: 14px 28px; background: #667eea; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Ask AI</button>
+            </div>
+            
+            <div id="aiResponse" style="display: none; margin-top: 20px; background: white; border-radius: 12px; padding: 25px; color: #333;">
+                <h4 style="color: #667eea; margin-bottom: 15px;">🤖 AI Recommendation</h4>
+                <p id="aiText" style="line-height: 1.8; margin: 0;"></p>
+            </div>
+            
+            <!-- Quick AI Questions -->
+            <div style="margin-top: 20px;">
+                <p style="font-size: 0.9rem; opacity: 0.8;">Quick questions:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <button onclick="askAIQuick('budget')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">💰 Best budget trips</button>
+                    <button onclick="askAIQuick('weekend')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🗓️ Weekend getaways</button>
+                    <button onclick="askAIQuick('adventure')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🏃 Adventure trips</button>
+                    <button onclick="askAIQuick('nature')" style="padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 20px; color: white; cursor: pointer;">🌿 Nature escapes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Trip Generator -->
 <section class="input-section" id="planTrip">
     <div class="input-card">
@@ -1201,6 +1234,62 @@ function imBored() {
     
     document.getElementById('outputSection').classList.add('show');
     document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ==========================================
+// AI TRAVEL ASSISTANT
+// ==========================================
+const aiResponses = {
+    budget: "💰 <b>Best Budget Trips (Under ₹3000):</b><br><br>• <b>Nandi Hills</b> - ₹2,500 - Perfect for sunrise views<br>• <b>Lonavala</b> - ₹1,800 - Caves and nature<br>• <b>Matheran</b> - ₹1,600 - Car-free hill station<br>• <b>Mathura</b> - ₹1,500 - Spiritual heritage<br><br>These destinations offer great value for money!",
+    weekend: "🗓️ <b>Best Weekend Getaways:</b><br><br>• <b>Coorg</b> - 2 days - Coffee & waterfalls<br>• <b>Lonavala</b> - 2 days - Caves & viewpoints<br>• <b>Ooty</b> - 2 days - Botanical gardens<br>• <b>Mahabaleshwar</b> - 2 days - Forts & lakes",
+    adventure: "🏃 <b>Adventure Trips:</b><br><br>• <b>Rishikesh</b> - River rafting & yoga<br>• <b>Coorg</b> - Trekking & wildlife<br>• <b>Lonavala</b> - Valley rappelling<br>• <b>Wayanad</b> - Rock climbing & caves",
+    nature: "🌿 <b>Nature Escapes:</b><br><br>• <b>Coorg</b> - Scotland of India<br>• <b>Wayanad</b> - Misty mountains<br>• <b>Kodaikanal</b> - Princess of Hill Stations<br>• <b>Ooty</b> - Blue Mountains"
+};
+
+function askAI() {
+    const input = document.getElementById('aiInput').value.toLowerCase();
+    const responseDiv = document.getElementById('aiResponse');
+    const responseText = document.getElementById('aiText');
+    
+    if (!input.trim()) {
+        alert('Please ask a question!');
+        return;
+    }
+    
+    // Simple AI response logic
+    let response = "🤖 <b>Here's what I recommend:</b><br><br>";
+    
+    if (input.includes('budget') || input.includes('cheap') || input.includes('money') || input.includes('low cost')) {
+        response += aiResponses.budget;
+    } else if (input.includes('weekend') || input.includes('2 days') || input.includes('short')) {
+        response += aiResponses.weekend;
+    } else if (input.includes('adventure') || input.includes('trek') || input.includes('rafting')) {
+        response += aiResponses.adventure;
+    } else if (input.includes('nature') || input.includes('peaceful') || input.includes('relax')) {
+        response += aiResponses.nature;
+    } else if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
+        response = "👋 Hello! I'm your AI travel assistant. Ask me about budget trips, weekend getaways, adventure, or nature escapes!";
+    } else if (input.includes('beach') || input.includes('sea')) {
+        response = "🏖️ <b>Best Beach Destinations:</b><br><br>• <b>Goa</b> - ₹3,000 - Parties & beaches<br>• <b>Pondicherry</b> - ₹2,500 - French Riviera<br>• <b>Varkala</b> - ₹2,200 - Cliffs & beaches<br>• <b>Gokarna</b> - ₹1,800 - Peaceful beaches";
+    } else if (input.includes('hill') || input.includes('mountain')) {
+        response = "🏔️ <b>Best Hill Stations:</b><br><br>• <b>Coorg</b> - ₹2,800 - Coffee plantations<br>• <b>Ooty</b> - ₹2,800 - Botanical gardens<br>• <b>Manali</b> - ₹3,000 - Snow & adventure<br>• <b>Darjeeling</b> - ₹3,000 - Tea & train";
+    } else {
+        response = "🤖 I'd love to help! Try asking about:<br>• Budget trips (under ₹3000)<br>• Weekend getaways<br>• Adventure trips<br>• Nature escapes<br>• Beach destinations<br>• Hill stations";
+    }
+    
+    responseText.innerHTML = response;
+    responseDiv.style.display = 'block';
+    responseDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+function askAIQuick(type) {
+    document.getElementById('aiInput').value = '';
+    const responseDiv = document.getElementById('aiResponse');
+    const responseText = document.getElementById('aiText');
+    
+    responseText.innerHTML = aiResponses[type];
+    responseDiv.style.display = 'block';
+    responseDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ==========================================
