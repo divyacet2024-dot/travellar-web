@@ -72,22 +72,83 @@
             background: rgba(255,255,255,0.2);
         }
         
+        .btn-login {
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 8px 20px;
+        }
+        
+        .btn-register {
+            background: var(--secondary);
+            color: var(--dark) !important;
+            border-radius: 8px;
+            padding: 8px 20px;
+        }
+        
+        .btn-register:hover {
+            background: #ffca28;
+        }
+        
+        .mobile-menu {
+            display: none;
+            background: var(--primary);
+            padding: 15px;
+            position: relative;
+        }
+        
+        .mobile-menu button {
+            background: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .mobile-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--primary);
+            padding: 20px;
+        }
+        
+        .mobile-links.show { display: block; }
+        
+        .mobile-links a {
+            display: block;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
         /* Hero */
         .hero {
-            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-            padding: 100px 20px;
+            background: linear-gradient(135deg, rgba(30,136,229,0.85), rgba(102,126,234,0.75)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920') center/cover;
+            padding: 120px 20px;
             text-align: center;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 15px;
-            color: var(--dark);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .hero p {
             font-size: 1.3rem;
-            color: #666;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             margin-bottom: 30px;
             max-width: 600px;
             margin-left: auto;
@@ -579,6 +640,7 @@
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1rem; }
             .nav-links { display: none; }
+            .mobile-menu { display: block; }
             .search-box { flex-direction: column; }
             .steps { flex-direction: column; align-items: center; }
             .dest-grid { grid-template-columns: 1fr; }
@@ -597,15 +659,31 @@
             <a href="#ai">AI Assistant</a>
             <a href="#plan">Plan Trip</a>
             <a href="#gems">Hidden Gems</a>
+            <a href="/login" target="_blank" class="btn-login">Login</a>
+            <a href="/register" target="_blank" class="btn-register">Register</a>
         </div>
     </div>
 </nav>
 
+<!-- Mobile Menu Button -->
+<div class="mobile-menu">
+    <button onclick="toggleMobileMenu()">☰ Menu</button>
+    <div class="mobile-links" id="mobileLinks">
+        <a href="#how">How It Works</a>
+        <a href="#destinations">Destinations</a>
+        <a href="#ai">AI Assistant</a>
+        <a href="#plan">Plan Trip</a>
+        <a href="#gems">Hidden Gems</a>
+        <a href="/login" target="_blank">Login</a>
+        <a href="/register" target="_blank">Register</a>
+    </div>
+</div>
+
 <!-- Hero -->
-<section class="hero">
-    <h1>Your Adventure Starts Here! 🌍</h1>
-    <p>Discover amazing destinations within your budget. Travellar helps students plan unforgettable trips without breaking the bank.</p>
-    <button class="btn-primary" onclick="document.getElementById('plan').scrollIntoView({behavior:'smooth'})">Start Planning</button>
+<section class="hero" style="background: linear-gradient(135deg, rgba(30,136,229,0.85), rgba(102,126,234,0.75)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920') center/cover;">
+    <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Your Adventure Starts Here! 🌍</h1>
+    <p style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Discover amazing destinations within your budget. Travellar helps students plan unforgettable trips without breaking the bank.</p>
+    <button class="btn-primary" onclick="document.getElementById('plan').scrollIntoView({behavior:'smooth'})" style="background: var(--secondary); color: var(--dark);">Start Planning</button>
 </section>
 
 <!-- How It Works -->
@@ -748,6 +826,9 @@
             <a href="#destinations" class="footer-link">Destinations</a>
             <a href="#ai" class="footer-link">AI Assistant</a>
             <a href="#plan" class="footer-link">Plan Trip</a>
+            <a href="/dashboard" target="_blank" class="footer-link">Dashboard</a>
+            <a href="/gallery" target="_blank" class="footer-link">Gallery</a>
+            <a href="/map" target="_blank" class="footer-link">View Map</a>
         </div>
         <div>
             <h4 class="footer-title">Contact</h4>
@@ -765,12 +846,12 @@
 <script>
 // ==================== DATA ====================
 const destinations = [
-    { name: 'Nandi Hills', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,500', types: ['nature','adventure'] },
-    { name: 'Coorg', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400', cost: '₹2,800', types: ['nature'] },
-    { name: 'Lonavala', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400', cost: '₹1,800', types: ['nature','adventure'] },
-    { name: 'Mahabaleshwar', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,800', types: ['nature'] },
-    { name: 'Pondicherry', city: 'Chennai', img: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400', cost: '₹2,500', types: ['heritage'] },
-    { name: 'Ooty', city: 'Chennai', img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400', cost: '₹2,800', types: ['nature'] }
+    { name: 'Nandi Hills', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600', cost: '₹2,500', types: ['nature','adventure'] },
+    { name: 'Coorg', city: 'Bangalore', img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600', cost: '₹2,800', types: ['nature'] },
+    { name: 'Lonavala', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600', cost: '₹1,800', types: ['nature','adventure'] },
+    { name: 'Mahabaleshwar', city: 'Mumbai', img: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600', cost: '₹2,800', types: ['nature'] },
+    { name: 'Pondicherry', city: 'Chennai', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600', cost: '₹2,500', types: ['heritage'] },
+    { name: 'Ooty', city: 'Chennai', img: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600', cost: '₹2,800', types: ['nature'] }
 ];
 
 const hotels = {
@@ -960,6 +1041,11 @@ function imBored() {
     `;
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth'});
+}
+
+// Mobile Menu
+function toggleMobileMenu() {
+    document.getElementById('mobileLinks').classList.toggle('show');
 }
 
 // Init
