@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Travellar - Budget Travel Planner{% endblock %}
+{% block title %}Travellar - Budget Travel Planner for Students{% endblock %}
 
 {% block extra_css %}
 <style>
+    /* =========================================
+       OVERRIDE BASE STYLES
+       ========================================= */
+    .bg-image { display: none !important; }
+    body { background: #E3F2FD !important; }
+    .navbar { display: none !important; }
+    
     /* =========================================
        PROFESSIONAL COLOR PALETTE
        ========================================= */
@@ -22,8 +29,6 @@
     /* =========================================
        TYPOGRAPHY
        ========================================= */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap');
-    
     h1, h2, h3, h4, h5, .place-name {
         font-family: 'Poppins', sans-serif;
         font-weight: 700;
@@ -46,9 +51,9 @@
     }
 
     /* =========================================
-       STICKY NAVBAR
+       CUSTOM NAVBAR
        ========================================= */
-    .sticky-nav {
+    .custom-nav {
         position: sticky;
         top: 0;
         z-index: 1000;
@@ -57,22 +62,26 @@
         padding: 14px 0;
     }
     
-    .sticky-nav .nav-link {
+    .custom-nav .nav-link {
         color: #FFFFFF !important;
         font-weight: 500;
         padding: 10px 18px !important;
         border-radius: 8px;
         transition: all 0.3s ease;
         font-family: 'Poppins', sans-serif;
+        text-decoration: none;
     }
     
-    .sticky-nav .nav-link:hover {
+    .custom-nav .nav-link:hover {
         background: var(--primary-light);
     }
     
-    .navbar-brand {
+    .custom-brand {
         font-family: 'Poppins', sans-serif;
         font-weight: 700;
+        color: white;
+        text-decoration: none;
+        font-size: 1.4rem;
     }
 
     /* =========================================
@@ -218,7 +227,6 @@
         border-radius: 8px;
         border: 2px solid #BDBDBD;
         font-size: 1rem;
-        font-family: 'Roboto', sans-serif;
         transition: all 0.3s ease;
     }
     
@@ -444,7 +452,6 @@
         border-radius: 8px;
         border: 2px solid #BDBDBD;
         font-size: 1rem;
-        font-family: 'Roboto', sans-serif;
         transition: all 0.3s ease;
     }
     
@@ -531,7 +538,7 @@
     }
     
     /* =========================================
-       FEATURED DESTINATIONS SECTION
+       FEATURED DESTINATIONS
        ========================================= */
     .featured-section {
         background: var(--background-gradient);
@@ -615,7 +622,7 @@
     }
     
     /* =========================================
-       EXTRA SECTION (Hidden Gems)
+       HIDDEN GEMS SECTION
        ========================================= */
     .extra-section {
         background: var(--card-bg);
@@ -706,45 +713,14 @@
        MOBILE RESPONSIVE
        ========================================= */
     @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.4rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        
-        .hero-btn {
-            font-size: 1.1rem;
-            padding: 14px 35px;
-        }
-        
-        .search-container {
-            flex-direction: column;
-        }
-        
-        .search-btn {
-            width: 100%;
-        }
-        
-        .sticky-nav .navbar-nav {
-            flex-direction: row !important;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-        
-        .destination-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .steps-container {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .step-card {
-            max-width: 100%;
-        }
+        .hero-title { font-size: 2.4rem; }
+        .hero-subtitle { font-size: 1.1rem; }
+        .hero-btn { font-size: 1.1rem; padding: 14px 35px; }
+        .search-container { flex-direction: column; }
+        .search-btn { width: 100%; }
+        .destination-grid { grid-template-columns: 1fr; }
+        .steps-container { flex-direction: column; align-items: center; }
+        .step-card { max-width: 100%; }
     }
     
     /* Loading Spinner */
@@ -759,65 +735,28 @@
         margin-right: 8px;
     }
     
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    
-    /* Autocomplete */
-    .autocomplete-items {
-        position: absolute;
-        border: 1px solid #d4d4d4;
-        border-bottom: none;
-        border-top: none;
-        z-index: 99;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        max-height: 200px;
-        overflow-y: auto;
-    }
-    
-    .autocomplete-items div {
-        padding: 12px;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .autocomplete-items div:hover {
-        background-color: #e9e9e9;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- Sticky Navigation -->
-<nav class="sticky-nav">
+<!-- Custom Navbar (replaces base.html navbar) -->
+<nav class="custom-nav">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            <a class="navbar-brand text-white" href="#">✈️ Travellar</a>
-            <ul class="navbar-nav flex-row ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#howItWorks">How It Works</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#destinations">Destinations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#hiddenGems">Hidden Gems</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#planTrip">Start Planning</a>
-                </li>
-            </ul>
+            <a class="custom-brand" href="#">✈️ Travellar</a>
+            <div class="d-flex flex-row">
+                <a class="nav-link" href="#howItWorks">How It Works</a>
+                <a class="nav-link" href="#destinations">Destinations</a>
+                <a class="nav-link" href="#hiddenGems">Hidden Gems</a>
+                <a class="nav-link" href="#planTrip">Start Planning</a>
+            </div>
         </div>
     </div>
 </nav>
 
-<!-- 1. HERO SECTION -->
+<!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-content">
         <h1 class="hero-title fade-in">Your Adventure Starts Here!</h1>
@@ -826,29 +765,29 @@
     </div>
 </section>
 
-<!-- 2. HOW IT WORKS SECTION -->
+<!-- How It Works -->
 <section class="how-it-works" id="howItWorks">
     <h2 class="section-title">🚀 How It Works</h2>
     <div class="steps-container">
         <div class="step-card">
             <div class="step-number">1</div>
             <h4 class="step-title">Enter Your Details</h4>
-            <p class="step-description">Tell us your budget, number of days, and starting city. We'll find the perfect destinations for you.</p>
+            <p class="step-description">Tell us your budget, number of days, and starting city.</p>
         </div>
         <div class="step-card">
             <div class="step-number">2</div>
             <h4 class="step-title">Get Recommendations</h4>
-            <p class="step-description">Browse through curated destinations that match your budget and preferences. Explore hidden gems!</p>
+            <p class="step-description">Browse curated destinations that match your budget.</p>
         </div>
         <div class="step-card">
             <div class="step-number">3</div>
             <h4 class="step-title">Plan Your Trip</h4>
-            <p class="step-description">Get detailed itineraries, cost breakdowns, and hotel suggestions. Your perfect trip is just a click away!</p>
+            <p class="step-description">Get detailed itineraries and hotel suggestions.</p>
         </div>
     </div>
 </section>
 
-<!-- 3. SEARCH SECTION -->
+<!-- Search & Destinations -->
 <section class="search-section" id="destinations">
     <h2 class="section-title">🔍 Find Your Destination</h2>
     <div class="search-container">
@@ -856,65 +795,50 @@
         <button id="search-btn" class="search-btn">Search</button>
     </div>
     
-    <!-- Filter Tags -->
     <div style="text-align: center; margin-bottom: 30px;">
         <span class="trip-tag tag-adventure" onclick="filterByType('adventure')" style="cursor: pointer;">🏃 Adventure</span>
         <span class="trip-tag tag-nature" onclick="filterByType('nature')" style="cursor: pointer;">🌿 Nature</span>
         <span class="trip-tag tag-heritage" onclick="filterByType('heritage')" style="cursor: pointer;">🏛️ Heritage</span>
-        <span class="trip-tag tag-food" onclick="filterByType('food')" style="cursor: pointer;">🍜 Food</span>
     </div>
     
-    <div class="destination-grid" id="destinationGrid">
-        <!-- Destination cards populated by JavaScript -->
-    </div>
+    <div class="destination-grid" id="destinationGrid"></div>
 </section>
 
-<!-- 4. FEATURED DESTINATIONS -->
+<!-- Featured Destinations -->
 <section class="featured-section" id="featured">
     <h2 class="section-title">🌟 Featured Destinations</h2>
     <div class="featured-grid">
         <div class="featured-card">
             <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600');">
-                <div class="featured-overlay">
-                    <h3 class="featured-title">Nandi Hills</h3>
-                </div>
+                <div class="featured-overlay"><h3 class="featured-title">Nandi Hills</h3></div>
             </div>
             <div class="featured-body">
-                <p class="featured-description">Escape to the misty peaks of Nandi Hills, a perfect weekend getaway from Bangalore. Watch breathtaking sunrises and explore ancient temples.</p>
-                <div class="featured-price">Starting from ₹2,500</div>
-                <a href="#planTrip" class="explore-btn">Explore Now</a>
+                <p class="featured-description">Watch breathtaking sunrises and explore ancient temples.</p>
+                <div class="featured-price">From ₹2,500</div>
             </div>
         </div>
-        
         <div class="featured-card">
             <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=600');">
-                <div class="featured-overlay">
-                    <h3 class="featured-title">Coorg</h3>
-                </div>
+                <div class="featured-overlay"><h3 class="featured-title">Coorg</h3></div>
             </div>
             <div class="featured-body">
-                <p class="featured-description">Known as the Scotland of India, Coorg offers lush coffee plantations, stunning waterfalls, and serene landscapes perfect for nature lovers.</p>
-                <div class="featured-price">Starting from ₹2,800</div>
-                <a href="#planTrip" class="explore-btn">Explore Now</a>
+                <p class="featured-description">Lush coffee plantations and stunning waterfalls.</p>
+                <div class="featured-price">From ₹2,800</div>
             </div>
         </div>
-        
         <div class="featured-card">
             <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600');">
-                <div class="featured-overlay">
-                    <h3 class="featured-title">Lonavala</h3>
-                </div>
+                <div class="featured-overlay"><h3 class="featured-title">Lonavala</h3></div>
             </div>
             <div class="featured-body">
-                <p class="featured-description">A favorite hill station for Mumbai and Pune students! Enjoy scenic caves, lush valleys, and delicious chikki at this popular getaway.</p>
-                <div class="featured-price">Starting from ₹1,800</div>
-                <a href="#planTrip" class="explore-btn">Explore Now</a>
+                <p class="featured-description">Favorite hill station for students!</p>
+                <div class="featured-price">From ₹1,800</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 5. INTERACTIVE MAP -->
+<!-- Map Section -->
 <section class="map-section" id="mapSection">
     <h2 class="section-title">🗺️ Explore on Map</h2>
     <div class="map-container">
@@ -922,7 +846,7 @@
     </div>
 </section>
 
-<!-- 6. INPUT SECTION -->
+<!-- Trip Generator -->
 <section class="input-section" id="planTrip">
     <div class="input-card">
         <h3 style="text-align: center; margin-bottom: 30px; font-weight: 700;">🎯 Plan Your Trip</h3>
@@ -935,11 +859,9 @@
                 <label class="form-label">📅 Number of Days</label>
                 <input type="number" class="form-control" id="days" placeholder="How many days?" min="1" max="7" value="2" required>
             </div>
-            <div class="mb-3" style="position: relative;">
+            <div class="mb-3">
                 <label class="form-label">📍 Starting City</label>
-                <input type="text" class="form-control" id="cityInput" placeholder="Type your city..." autocomplete="off" required>
-                <div id="cityAutocomplete" class="autocomplete-items"></div>
-                <select class="form-control" id="city" style="display: none;">
+                <select class="form-control" id="city" required>
                     <option value="">Select your city</option>
                     <option value="Bangalore">Bangalore</option>
                     <option value="Mumbai">Mumbai</option>
@@ -949,551 +871,347 @@
                     <option value="Pune">Pune</option>
                     <option value="Kolkata">Kolkata</option>
                     <option value="Jaipur">Jaipur</option>
-                    <option value="Ahmedabad">Ahmedabad</option>
-                    <option value="Coimbatore">Coimbatore</option>
                 </select>
             </div>
-            <button type="submit" class="generate-btn" id="generateBtn">
-                Generate Trip
-            </button>
+            <button type="submit" class="generate-btn" id="generateBtn">Generate Trip</button>
         </form>
     </div>
 </section>
 
-<!-- 7. OUTPUT SECTION -->
+<!-- Output Section -->
 <section class="output-section" id="outputSection">
-    <div class="trip-card" id="tripCard">
-        <!-- Content populated by JavaScript -->
-    </div>
+    <div class="trip-card" id="tripCard"></div>
 </section>
 
-<!-- 8. HIDDEN GEMS SECTION -->
+<!-- Hidden Gems -->
 <section class="extra-section" id="hiddenGems">
     <h2 class="section-title">💎 Hidden Gems</h2>
-    <p style="text-align: center; color: #757575; max-width: 700px; margin: 0 auto 40px;">Discover offbeat destinations that most tourists miss. These hidden treasures offer unique experiences at budget-friendly prices!</p>
+    <p style="text-align: center; color: #757575; max-width: 700px; margin: 0 auto 40px;">Discover offbeat destinations that most tourists miss!</p>
     
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">🏕️ Kudremukh, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Lush green meadows and misty hills - perfect for weekend escape. Trek through pristine forests and spot exotic wildlife.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-nature">Nature</span>
-                        <span class="trip-tag tag-adventure">Adventure</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">☕ Chikkamagaluru, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Coffee plantations and scenic mountain trails. Experience the joy of staying in a coffee estate and tasting fresh brew.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-nature">Nature</span>
-                        <span class="trip-tag tag-food">Food</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">🏞️ Sakleshpur, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Offbeat hill station with amazing treks and caves. A paradise for adventure enthusiasts and nature lovers alike.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-adventure">Adventure</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">🌿 Hampi, Karnataka</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Ancient ruins and boulder-strewn landscapes. Explore UNESCO World Heritage sites and watch stunning sunsets.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-heritage">Heritage</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">🦋 Wayanad, Kerala</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">Misty mountains and wildlife sanctuaries. Perfect for wildlife spotting and exploring ancient caves.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-nature">Nature</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gem-card">
-                    <div class="gem-name">🏖️ Pondicherry, Tamil Nadu</div>
-                    <p class="text-muted mb-0" style="margin-top: 10px;">French colonial charm meets Indian beaches. Enjoy peaceful ashrams, colorful streets, and delicious cuisine.</p>
-                    <div class="trip-type-tags" style="margin-top: 12px;">
-                        <span class="trip-tag tag-heritage">Heritage</span>
-                        <span class="trip-tag tag-food">Food</span>
-                    </div>
-                </div>
-            </div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏕️ Kudremukh, Karnataka</div><p class="text-muted mb-0 mt-2">Lush green meadows and misty hills</p></div></div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">☕ Chikkamagaluru, Karnataka</div><p class="text-muted mb-0 mt-2">Coffee plantations and mountain trails</p></div></div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏞️ Sakleshpur, Karnataka</div><p class="text-muted mb-0 mt-2">Offbeat hill station with treks</p></div></div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🌿 Hampi, Karnataka</div><p class="text-muted mb-0 mt-2">Ancient ruins and unique landscapes</p></div></div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🦋 Wayanad, Kerala</div><p class="text-muted mb-0 mt-2">Misty mountains and wildlife</p></div></div>
+            <div class="col-md-4"><div class="gem-card"><div class="gem-name">🏖️ Pondicherry</div><p class="text-muted mb-0 mt-2">French charm and peaceful beaches</p></div></div>
         </div>
         
         <button class="bored-btn" onclick="imBored()">🎲 I'm Bored! Suggest a Trip</button>
     </div>
 </section>
 
-<!-- 9. FOOTER -->
+<!-- Footer -->
 <footer class="site-footer">
     <div class="container">
         <div class="row">
             <div class="col-md-5">
                 <h5 class="footer-title">✈️ Travellar</h5>
-                <p class="about-text">Your smart travel companion for budget-friendly adventures. We help students discover amazing destinations, plan perfect itineraries, and create unforgettable memories without breaking the bank. Start your journey with Travellar today!</p>
+                <p class="about-text">Your smart travel companion for budget-friendly adventures. We help students discover amazing destinations!</p>
             </div>
             <div class="col-md-3">
                 <h5 class="footer-title">Quick Links</h5>
                 <a href="#howItWorks" class="footer-link">How It Works</a>
                 <a href="#destinations" class="footer-link">Destinations</a>
                 <a href="#hiddenGems" class="footer-link">Hidden Gems</a>
-                <a href="#planTrip" class="footer-link">Start Planning</a>
             </div>
             <div class="col-md-4">
-                <h5 class="footer-title">Contact & Connect</h5>
-                <p class="about-text" style="margin-bottom: 10px;">📧 hello@travellar.in</p>
-                <p class="about-text">📱 Follow us on social media</p>
-                <p style="color: #BDBDBD; margin-top: 20px;">Made with ❤️ by <span class="developer-credit">Divya</span></p>
+                <h5 class="footer-title">Contact</h5>
+                <p class="about-text">📧 hello@travellar.in</p>
+                <p class="about-text mt-3">Made with ❤️ by <span class="developer-credit">Divya</span></p>
             </div>
         </div>
         <hr style="border-color: #424242; margin: 40px 0 20px;">
-        <p style="text-align: center; color: #757575; margin: 0;">© 2024 Travellar. All rights reserved. | Made for students, by students ❤️</p>
+        <p style="text-align: center; color: #757575; margin: 0;">© 2024 Travellar. All rights reserved.</p>
     </div>
 </footer>
 
-<!-- Load OpenStreetMap -->
+<!-- Leaflet Map CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 {% endblock %}
 
 {% block extra_js %}
+<!-- Leaflet Map JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-    // ==========================================
-    // SEARCH FUNCTIONALITY
-    // ==========================================
-    const searchInput = document.getElementById("search-place");
-    const searchBtn = document.getElementById("search-btn");
+console.log("Travellar JavaScript loading...");
 
-    searchBtn.addEventListener("click", () => {
+// ==========================================
+// DESTINATION DATA
+// ==========================================
+const destinations = [
+    { name: 'Nandi Hills', city: 'Bangalore', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,500', types: ['nature', 'adventure'] },
+    { name: 'Coorg', city: 'Bangalore', image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400', cost: '₹2,800', types: ['nature'] },
+    { name: 'Lonavala', city: 'Mumbai', image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400', cost: '₹1,800', types: ['nature', 'adventure'] },
+    { name: 'Mahabaleshwar', city: 'Mumbai', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', cost: '₹2,800', types: ['nature'] },
+    { name: 'Pondicherry', city: 'Chennai', image: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400', cost: '₹2,500', types: ['heritage', 'food'] },
+    { name: 'Ooty', city: 'Chennai', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400', cost: '₹2,800', types: ['nature'] }
+];
+
+// ==========================================
+// HOTELS DATA
+// ==========================================
+const hotels = {
+    "Nandi Hills": ["Hill View Resort - ₹1,500", "Nandi Residency - ₹1,200"],
+    "Coorg": ["Coorg Resort - ₹2,000", "Misty Valley - ₹1,800"],
+    "Lonavala": ["Lake View Inn - ₹1,200", "Hilltop Resort - ₹1,500"],
+    "Mahabaleshwar": ["Misty Mountain - ₹2,200", "Lake View Hotel - ₹1,800"],
+    "Pondicherry": ["Beach Resort - ₹1,800", "Le Pondy - ₹2,500"],
+    "Ooty": ["Lake Palace - ₹2,000", "Fern Hill - ₹1,600"]
+};
+
+// ==========================================
+// RENDER DESTINATIONS
+// ==========================================
+function renderDestinations() {
+    const grid = document.getElementById('destinationGrid');
+    if (!grid) { console.error("destinationGrid not found!"); return; }
+    
+    console.log("Rendering destinations...");
+    grid.innerHTML = destinations.map((dest, idx) => `
+        <div class="destination-card" data-name="${dest.name.toLowerCase()}" data-types="${dest.types.join(',')}">
+            <img src="${dest.image}" alt="${dest.name}">
+            <div class="destination-card-body">
+                <div class="place-name">📍 ${dest.name}</div>
+                <div class="destination-meta">From ${dest.city} • ${dest.cost}</div>
+                <div class="trip-type-tags">
+                    ${dest.types.map(t => `<span class="trip-tag tag-${t}">${t.charAt(0).toUpperCase() + t.slice(1)}</span>`).join('')}
+                </div>
+                <button class="show-hotels-btn" onclick="toggleHotels('${dest.name}')">🏨 Show Hotels</button>
+                <div class="hotel-list" id="hotels-${dest.name.replace(/\s+/g, '-')}">
+                    ${(hotels[dest.name] || ['No hotels']).map(h => `
+                        <div class="hotel-item">
+                            <div>
+                                <div class="hotel-name">${h.split('-')[0]}</div>
+                                <div class="hotel-price">${h.split('-')[1]}</div>
+                            </div>
+                            <button class="book-btn" onclick="bookHotel('${dest.name}', '${h.split('-')[0]}')">Book Now</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `).join('');
+    console.log("Destinations rendered successfully!");
+}
+
+// ==========================================
+// SEARCH FUNCTIONALITY
+// ==========================================
+function initSearch() {
+    const searchInput = document.getElementById('search-place');
+    const searchBtn = document.getElementById('search-btn');
+    
+    if (!searchInput || !searchBtn) { console.error("Search elements not found!"); return; }
+    
+    console.log("Initializing search...");
+    
+    searchBtn.addEventListener('click', () => {
         const query = searchInput.value.toLowerCase();
-        const cards = document.querySelectorAll(".destination-card");
-        cards.forEach(card => {
-            const place = card.querySelector(".place-name").innerText.toLowerCase();
-            card.style.display = place.includes(query) ? "block" : "none";
-        });
-    });
-
-    // ==========================================
-    // HOTEL RECOMMENDATIONS
-    // ==========================================
-    const hotels = {
-        "Nandi Hills": ["Hill View Resort - ₹1,500/night", "Nandi Residency - ₹1,200/night", "Mountain Stay - ₹1,800/night"],
-        "Coorg": ["Coorg Resort - ₹2,000/night", "Misty Valley - ₹1,800/night", "Coffee Grove - ₹1,600/night"],
-        "Lonavala": ["Lake View Inn - ₹1,200/night", "Hilltop Resort - ₹1,500/night", "Valley View - ₹1,400/night"],
-        "Mahabaleshwar": ["Misty Mountain - ₹2,200/night", "Lake View Hotel - ₹1,800/night", "Silver Oak - ₹2,000/night"],
-        "Pondicherry": ["Beach Resort - ₹1,800/night", "Le Pondy - ₹2,500/night", "Sea Pearl - ₹1,600/night"],
-        "Ooty": ["Lake Palace - ₹2,000/night", "Fern Hill - ₹1,600/night", "Devon House - ₹1,800/night"],
-        "Matheran": ["The Verdict - ₹1,200/night", "Byke Heritage - ₹1,000/night", "Sky Deck - ₹1,400/night"],
-        "Rishikesh": ["Ganga Kinare - ₹1,800/night", "Neeranchal - ₹1,500/night", "Riverside Stay - ₹1,200/night"]
-    };
-
-    function toggleHotels(place) {
-        const hotelList = document.getElementById('hotels-' + place.replace(/\s+/g, '-'));
-        if (hotelList) {
-            hotelList.classList.toggle('show');
-        }
-    }
-
-    // ==========================================
-    // FILTER BY TYPE
-    // ==========================================
-    function filterByType(type) {
+        console.log("Searching for:", query);
         const cards = document.querySelectorAll('.destination-card');
         cards.forEach(card => {
-            const tags = card.querySelectorAll('.trip-tag');
-            let hasType = false;
-            tags.forEach(tag => {
-                if (tag.innerText.toLowerCase().includes(type)) {
-                    hasType = true;
-                }
-            });
-            card.style.display = hasType ? 'block' : 'none';
+            const name = card.dataset.name;
+            card.style.display = name.includes(query) ? 'block' : 'none';
         });
+    });
+    
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            searchBtn.click();
+        }
+    });
+}
+
+// ==========================================
+// TOGGLE HOTELS
+// ==========================================
+function toggleHotels(place) {
+    console.log("Toggling hotels for:", place);
+    const hotelList = document.getElementById('hotels-' + place.replace(/\s+/g, '-'));
+    if (hotelList) {
+        hotelList.classList.toggle('show');
     }
+}
 
-    // ==========================================
-    // AUTOCOMPLETE FOR CITY
-    // ==========================================
-    const cities = ["Bangalore", "Mumbai", "Delhi", "Chennai", "Hyderabad", "Pune", "Kolkata", "Jaipur", "Ahmedabad", "Coimbatore"];
-    const cityInput = document.getElementById('cityInput');
-    const cityAutocomplete = document.getElementById('cityAutocomplete');
-    const citySelect = document.getElementById('city');
+// ==========================================
+// BOOK HOTEL
+// ==========================================
+function bookHotel(place, hotel) {
+    console.log("Booking:", hotel, "at", place);
+    alert(`🎉 Booking Request!\n\nHotel: ${hotel}\nPlace: ${place}\n\nThis would redirect to booking page in production!`);
+}
 
-    cityInput.addEventListener('input', function() {
-        const val = this.value;
-        cityAutocomplete.innerHTML = '';
-        if (!val) {
-            cityAutocomplete.style.display = 'none';
+// ==========================================
+// FILTER BY TYPE
+// ==========================================
+function filterByType(type) {
+    console.log("Filtering by type:", type);
+    const cards = document.querySelectorAll('.destination-card');
+    cards.forEach(card => {
+        const types = card.dataset.types.split(',');
+        card.style.display = types.includes(type) ? 'block' : 'none';
+    });
+}
+
+// ==========================================
+// MAP INITIALIZATION
+// ==========================================
+let map;
+function initMap() {
+    const mapDiv = document.getElementById('map');
+    if (!mapDiv) { console.error("Map element not found!"); return; }
+    
+    console.log("Initializing map...");
+    map = L.map('map').setView([20.0, 78.0], 5);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    const locations = [
+        { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
+        { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
+        { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
+        { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
+        { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
+        { name: 'Ooty', lat: 11.4102, lng: 76.6950 }
+    ];
+    
+    locations.forEach(loc => {
+        L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(`<b>${loc.name}</b><br>Click to explore`);
+    });
+    console.log("Map initialized!");
+}
+
+// ==========================================
+// TRIP GENERATION
+// ==========================================
+const tripDatabase = {
+    'Bangalore': [
+        { name: 'Nandi Hills', cost: 2500, itinerary: ['Day 1: Travel to Nandi Hills', 'Day 2: Sunrise, return'] },
+        { name: 'Coorg', cost: 2800, itinerary: ['Day 1: Visit Abbey Falls', 'Day 2: Coffee tour, return'] },
+        { name: 'Mysore', cost: 2000, itinerary: ['Day 1: Mysore Palace', 'Day 2: Zoo, return'] }
+    ],
+    'Mumbai': [
+        { name: 'Lonavala', cost: 1800, itinerary: ['Day 1: Bhaja Caves', 'Day 2: Tiger Point, return'] },
+        { name: 'Mahabaleshwar', cost: 2800, itinerary: ['Day 1: Pratapgad Fort', 'Day 2: Wilson Point, return'] }
+    ],
+    'Delhi': [
+        { name: 'Agra', cost: 2500, itinerary: ['Day 1: Taj Mahal', 'Day 2: Agra Fort, return'] },
+        { name: 'Rishikesh', cost: 2200, itinerary: ['Day 1: Lakshman Jhula', 'Day 2: Yoga, return'] }
+    ],
+    'Chennai': [
+        { name: 'Pondicherry', cost: 2500, itinerary: ['Day 1: Aurobindo Ashram', 'Day 2: Beach, return'] },
+        { name: 'Ooty', cost: 2800, itinerary: ['Day 1: Botanical Gardens', 'Day 2: Doddabetta, return'] }
+    ],
+    'Hyderabad': [
+        { name: 'Warangal', cost: 2000, itinerary: ['Day 1: Fort visit', 'Day 2: Temples, return'] }
+    ],
+    'Pune': [
+        { name: 'Mahabaleshwar', cost: 2800, itinerary: ['Day 1: Pratapgad', 'Day 2: Sunrise, return'] },
+        { name: 'Lonavala', cost: 1800, itinerary: ['Day 1: Caves', 'Day 2: Valley view, return'] }
+    ],
+    'Kolkata': [
+        { name: 'Digha', cost: 1800, itinerary: ['Day 1: Beach', 'Day 2: Marine Park, return'] }
+    ],
+    'Jaipur': [
+        { name: 'Udaipur', cost: 2800, itinerary: ['Day 1: City Palace', 'Day 2: Lake, return'] }
+    ]
+};
+
+function scrollToInput() {
+    document.getElementById('planTrip').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Trip form handler
+document.getElementById('tripForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log("Form submitted!");
+    
+    const btn = document.getElementById('generateBtn');
+    btn.innerHTML = '<span class="loading-spinner"></span>Generating...';
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        const budget = parseInt(document.getElementById('budget').value);
+        const city = document.getElementById('city').value;
+        
+        if (!city) {
+            alert('Please select your city!');
+            btn.innerHTML = 'Generate Trip';
+            btn.disabled = false;
             return;
         }
         
-        cities.forEach(city => {
-            if (city.toLowerCase().includes(val.toLowerCase())) {
-                const div = document.createElement('div');
-                div.innerText = city;
-                div.addEventListener('click', function() {
-                    cityInput.value = city;
-                    citySelect.value = city;
-                    cityAutocomplete.style.display = 'none';
-                });
-                cityAutocomplete.appendChild(div);
-            }
-        });
+        let trips = tripDatabase[city] || [];
+        trips = trips.filter(t => t.cost <= budget);
+        if (trips.length === 0) trips = tripDatabase[city] || [];
         
-        cityAutocomplete.style.display = cityAutocomplete.children.length ? 'block' : 'none';
-    });
-
-    document.addEventListener('click', function(e) {
-        if (e.target !== cityInput) {
-            cityAutocomplete.style.display = 'none';
-        }
-    });
-
-    // ==========================================
-    // DESTINATION DATA
-    // ==========================================
-    const destinations = [
-        { 
-            name: 'Nandi Hills', 
-            city: 'Bangalore', 
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,500',
-            types: ['nature', 'adventure']
-        },
-        { 
-            name: 'Coorg', 
-            city: 'Bangalore', 
-            image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d9?w=400',
-            cost: '₹2,800',
-            types: ['nature']
-        },
-        { 
-            name: 'Lonavala', 
-            city: 'Mumbai', 
-            image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400',
-            cost: '₹1,800',
-            types: ['nature', 'adventure']
-        },
-        { 
-            name: 'Mahabaleshwar', 
-            city: 'Mumbai', 
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,800',
-            types: ['nature']
-        },
-        { 
-            name: 'Pondicherry', 
-            city: 'Chennai', 
-            image: 'https://images.unsplash.com/photo-1583419316224-1b58b2d6d5e4?w=400',
-            cost: '₹2,500',
-            types: ['heritage', 'food']
-        },
-        { 
-            name: 'Ooty', 
-            city: 'Chennai', 
-            image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-            cost: '₹2,800',
-            types: ['nature']
-        },
-        { 
-            name: 'Matheran', 
-            city: 'Pune', 
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹1,600',
-            types: ['adventure', 'nature']
-        },
-        { 
-            name: 'Rishikesh', 
-            city: 'Delhi', 
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-            cost: '₹2,200',
-            types: ['adventure', 'heritage']
-        }
-    ];
-
-    function renderDestinations() {
-        const grid = document.getElementById('destinationGrid');
-        grid.innerHTML = destinations.map(dest => `
-            <div class="destination-card">
-                <img src="${dest.image}" alt="${dest.name}">
-                <div class="destination-card-body">
-                    <div class="place-name">📍 ${dest.name}</div>
-                    <div class="destination-meta">From ${dest.city} • ${dest.cost}</div>
-                    
-                    <div class="trip-type-tags">
-                        ${dest.types.map(type => `<span class="trip-tag tag-${type}">${type.charAt(0).toUpperCase() + type.slice(1)}</span>`).join('')}
-                    </div>
-                    
-                    <button class="show-hotels-btn" onclick="toggleHotels('${dest.name}')">
-                        🏨 Show Hotels
-                    </button>
-                    
-                    <div class="hotel-list" id="hotels-${dest.name.replace(/\s+/g, '-')}">
-                        ${(hotels[dest.name] || []).map((hotel, idx) => `
-                            <div class="hotel-item">
-                                <div>
-                                    <div class="hotel-name">${hotel.split('-')[0]}</div>
-                                    <div class="hotel-price">${hotel.split('-')[1]}</div>
-                                </div>
-                                <button class="book-btn" onclick="window.location.href='booking.html?hotel=${encodeURIComponent(hotel.split('-')[0])}&place=${encodeURIComponent(dest.name)}'">
-                                    Book Now
-                                </button>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // ==========================================
-    // MAP INITIALIZATION
-    // ==========================================
-    let map;
-    function initMap() {
-        map = L.map('map').setView([20.0, 78.0], 5);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        
-        const mapLocations = [
-            { name: 'Nandi Hills', lat: 13.3916, lng: 77.8144 },
-            { name: 'Coorg', lat: 12.3376, lng: 75.8069 },
-            { name: 'Lonavala', lat: 18.7549, lng: 73.4104 },
-            { name: 'Mahabaleshwar', lat: 17.9303, lng: 73.6351 },
-            { name: 'Pondicherry', lat: 11.9396, lng: 79.7869 },
-            { name: 'Ooty', lat: 11.4102, lng: 76.6950 },
-            { name: 'Matheran', lat: 18.9897, lng: 73.2655 },
-            { name: 'Rishikesh', lat: 30.0869, lng: 78.2676 }
-        ];
-        
-        mapLocations.forEach(loc => {
-            L.marker([loc.lat, loc.lng])
-                .addTo(map)
-                .bindPopup(`<b>${loc.name}</b><br>Click to explore`);
-        });
-    }
-
-    // ==========================================
-    // TRIP GENERATION
-    // ==========================================
-    const tripDatabase = {
-        'Bangalore': [
-            { name: 'Nandi Hills', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
-            { name: 'Coorg', cost: 2800, days: 2, itinerary: ['Day 1: Travel to Coorg, visit Abbey Falls', 'Day 2: Morning coffee plantation tour, return'] },
-            { name: 'Mysore', cost: 2000, days: 2, itinerary: ['Day 1: Visit Mysore Palace, Chamundi Hill', 'Day 2: Morning zoo visit, return'] },
-            { name: 'Ooty', cost: 3000, days: 2, itinerary: ['Day 1: Travel to Ooty, botanical gardens', 'Day 2: Sunrise at Doddabetta, lake visit'] },
-            { name: 'Wayanad', cost: 2900, days: 2, itinerary: ['Day 1: Travel to Wayanad, Edakkal Caves', 'Day 2: Sunrise at Chembra Peak, return'] }
-        ],
-        'Mumbai': [
-            { name: 'Lonavala', cost: 1800, days: 2, itinerary: ['Day 1: Visit Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
-            { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Visit Pratapgad Fort, Venna Lake', 'Day 2: Sunrise at Wilson Point, market visit'] },
-            { name: 'Goa', cost: 3000, days: 2, itinerary: ['Day 1: Beach visit, Fort Aguada', 'Day 2: Baga Beach morning, return'] },
-            { name: 'Alibaug', cost: 2200, days: 2, itinerary: ['Day 1: Beach visit, Kolaba Fort', 'Day 2: Morning beach walk, return'] },
-            { name: 'Panchgani', cost: 2500, days: 2, itinerary: ['Day 1: Visit Table Land, Parsi Point', 'Day 2: Sydney Point, return'] }
-        ],
-        'Delhi': [
-            { name: 'Agra', cost: 2500, days: 2, itinerary: ['Day 1: Taj Mahal visit, Agra Fort', 'Day 2: Itimad-ud-Daulah, return'] },
-            { name: 'Jaipur', cost: 2800, days: 2, itinerary: ['Day 1: Hawa Mahal, City Palace', 'Day 2: Amber Fort, Nahargarh Fort'] },
-            { name: 'Rishikesh', cost: 2200, days: 2, itinerary: ['Day 1: Lakshman Jhula, Ram Jhula', 'Day 2: Morning yoga, Ganga Aarti'] },
-            { name: 'Mathura', cost: 1500, days: 2, itinerary: ['Day 1: Krishna Janmabhoomi, Holi Gate', 'Day 2: Vrindavan temples, return'] },
-            { name: 'Neemrana', cost: 2000, days: 2, itinerary: ['Day 1: Neemrana Fort Palace', 'Day 2: Zip line adventure, return'] }
-        ],
-        'Chennai': [
-            { name: 'Pondicherry', cost: 2500, days: 2, itinerary: ['Day 1: Aurobindo Ashram, Beach Road', 'Day 2: Paradise Beach, return'] },
-            { name: 'Ooty', cost: 2800, days: 2, itinerary: ['Day 1: Botanical Gardens, Ooty Lake', 'Day 2: Doddabetta sunrise, return'] },
-            { name: 'Kodaikanal', cost: 2600, days: 2, itinerary: ['Day 1: Kodai Lake, Coaker\'s Walk', 'Day 2: Bryant Park, return'] },
-            { name: 'Yercaud', cost: 1800, days: 2, itinerary: ['Day 1: Killiyur Falls, Shevaroy Hills', 'Day 2: Sunrise point, return'] },
-            { name: 'Mahabalipuram', cost: 1500, days: 2, itinerary: ['Day 1: Shore Temple, Arjuna\'s Penance', 'Day 2: Beach visit, return'] }
-        ],
-        'Hyderabad': [
-            { name: 'Warangal', cost: 2000, days: 2, itinerary: ['Day 1: Warangal Fort, Khamma', 'Day 2: Thousand Pillar Temple, return'] },
-            { name: 'Nagarjuna Sagar', cost: 2200, days: 2, itinerary: ['Day 1: Dam visit, Ethipothala Falls', 'Day 2: Nagarjuna Konda, return'] },
-            { name: 'Ananthagiri', cost: 1500, days: 2, itinerary: ['Day 1: Hills trek, waterfalls', 'Day 2: Morning walk, return'] },
-            { name: 'Vijayawada', cost: 1800, days: 2, itinerary: ['Day 1: Undavalli Caves, Prakasam Barrage', 'Day 2: Kanaka Durga Temple, return'] },
-            { name: 'Srisailam', cost: 2000, days: 2, itinerary: ['Day 1: Mallikarjuna Temple, UNESCO site', 'Day 2: Pochera Falls, return'] }
-        ],
-        'Pune': [
-            { name: 'Mahabaleshwar', cost: 2800, days: 2, itinerary: ['Day 1: Pratapgad Fort, Venna Lake', 'Day 2: Wilson Point sunrise, market'] },
-            { name: 'Lonavala', cost: 1800, days: 2, itinerary: ['Day 1: Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
-            { name: 'Matheran', cost: 1600, days: 2, itinerary: ['Day 1: Toy train, Charlotte Lake', 'Day 2: Sunrise at Panorama Point, return'] },
-            { name: 'Panchgani', cost: 2200, days: 2, itinerary: ['Day 1: Table Land, Parsi Point', 'Day 2: Sydney Point, return'] },
-            { name: 'Tamhini Ghat', cost: 1500, days: 2, itinerary: ['Day 1: Waterfall visits, nature walk', 'Day 2: Mountain view, return'] }
-        ],
-        'Kolkata': [
-            { name: 'Digha', cost: 1800, days: 2, itinerary: ['Day 1: Beach visit, sunrise', 'Day 2: Marine Park, return'] },
-            { name: 'Shantiniketan', cost: 1500, days: 2, itinerary: ['Day 1: Visva-Bharati University, Rabindranath Tagore\'s Ashram', 'Day 2: Kopai River, return'] },
-            { name: 'Bishnupur', cost: 1800, days: 2, itinerary: ['Day 1: Terracotta temples, Rasmancha', 'Day 2: Baluchar Mosque, return'] },
-            { name: 'Sundarbans', cost: 2800, days: 2, itinerary: ['Day 1: Boat safari, mangrove forest', 'Day 2: Tiger sighting, return'] },
-            { name: 'Darjeeling', cost: 3000, days: 2, itinerary: ['Day 1: Toy train, Tiger Hill', 'Day 2: Tea gardens, return'] }
-        ],
-        'Jaipur': [
-            { name: 'Udaipur', cost: 2800, days: 2, itinerary: ['Day 1: City Palace, Lake Pichola', 'Day 2: Sunrise at Fateh Sagar, return'] },
-            { name: 'Ajmer', cost: 1800, days: 2, itinerary: ['Day 1: Ajmer Sharif Dargah, Ana Sagar Lake', 'Day 2: Taragarh Fort, return'] },
-            { name: 'Pushkar', cost: 1500, days: 2, itinerary: ['Day 1: Brahma Temple, Pushkar Lake', 'Day 2: Sunrise at Savitri Temple, return'] },
-            { name: 'Ranthambore', cost: 3000, days: 2, itinerary: ['Day 1: Safari, Ranthambore Fort', 'Day 2: Morning safari, return'] },
-            { name: 'Neemrana', cost: 1800, days: 2, itinerary: ['Day 1: Neemrana Fort Palace', 'Day 2: Zip line, return'] }
-        ],
-        'Ahmedabad': [
-            { name: 'Udaipur', cost: 2800, days: 2, itinerary: ['Day 1: City Palace, Lake Pichola', 'Day 2: Fateh Sagar sunrise, return'] },
-            { name: 'Mount Abu', cost: 2200, days: 2, itinerary: ['Day 1: Nakki Lake, Dilwara Temples', 'Day 2: Sunset point, return'] },
-            { name: 'Patan', cost: 1500, days: 2, itinerary: ['Day 1: Rani ki Vav, Modhera Sun Temple', 'Day 2: Return'] },
-            { name: 'Vadodara', cost: 1800, days: 2, itinerary: ['Day 1: Laxmi Vilas Palace, Sayaji Baug', 'Day 2: Champaner, return'] },
-            { name: 'Dwarka', cost: 2000, days: 2, itinerary: ['Day 1: Dwarkadhish Temple, beach', 'Day 2: Gomti Ghat, return'] }
-        ],
-        'Coimbatore': [
-            { name: 'Ooty', cost: 2500, days: 2, itinerary: ['Day 1: Botanical Gardens, Ooty Lake', 'Day 2: Doddabetta sunrise, return'] },
-            { name: 'Kodaikanal', cost: 2400, days: 2, itinerary: ['Day 1: Kodai Lake, Coaker\'s Walk', 'Day 2: Bryant Park, return'] },
-            { name: 'Coonoor', cost: 1800, days: 2, itinerary: ['Day 1: Sim\'s Park, Dolphin\'s Nose', 'Day 2: Lamb\'s Rock, return'] },
-            { name: 'Munnar', cost: 2800, days: 2, itinerary: ['Day 1: Tea gardens, Mattupetty Dam', 'Day 2: Sunrise at Echo Point, return'] },
-            { name: 'Valparai', cost: 2000, days: 2, itinerary: ['Day 1: Anamalai Wildlife, waterfalls', 'Day 2: Tea estate visit, return'] }
-        ]
-    };
-
-    const randomTrips = [
-        { name: 'Nandi Hills', city: 'Bangalore', cost: 2500, days: 2, itinerary: ['Day 1: Travel to Nandi Hills, explore sunset point', 'Day 2: Sunrise at 5 AM, visit Tipu Drop, return'] },
-        { name: 'Lonavala', city: 'Mumbai', cost: 1800, days: 2, itinerary: ['Day 1: Visit Bhaja Caves, Karla Caves', 'Day 2: Tiger Point sunrise, return'] },
-        { name: 'Pondicherry', city: 'Chennai', cost: 2500, days: 2, itinerary: ['Day 1: Aurobindo Ashram, Beach Road', 'Day 2: Paradise Beach, return'] },
-        { name: 'Matheran', city: 'Pune', cost: 1600, days: 2, itinerary: ['Day 1: Toy train, Charlotte Lake', 'Day 2: Sunrise at Panorama Point, return'] },
-        { name: 'Coorg', city: 'Bangalore', cost: 2800, days: 2, itinerary: ['Day 1: Travel to Coorg, visit Abbey Falls', 'Day 2: Morning coffee plantation tour, return'] },
-        { name: 'Rishikesh', city: 'Delhi', cost: 2200, days: 2, itinerary: ['Day 1: Lakshman Jhula, Ram Jhula', 'Day 2: Morning yoga, Ganga Aarti'] },
-        { name: 'Mahabaleshwar', city: 'Pune', cost: 2800, days: 2, itinerary: ['Day 1: Pratapgad Fort, Venna Lake', 'Day 2: Wilson Point sunrise, market'] },
-        { name: 'Wayanad', city: 'Bangalore', cost: 2900, days: 2, itinerary: ['Day 1: Travel to Wayanad, Edakkal Caves', 'Day 2: Sunrise at Chembra Peak, return'] }
-    ];
-
-    function scrollToInput() {
-        document.getElementById('planTrip').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    document.getElementById('tripForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const btn = document.getElementById('generateBtn');
-        btn.innerHTML = '<span class="loading-spinner"></span>Generating...';
-        btn.disabled = true;
-        
-        setTimeout(() => {
-            const budget = parseInt(document.getElementById('budget').value);
-            const days = parseInt(document.getElementById('days').value);
-            const city = document.getElementById('city').value;
-            
-            if (!city) {
-                alert('Please select your city!');
-                btn.innerHTML = 'Generate Trip';
-                btn.disabled = false;
-                return;
-            }
-            
-            let availableTrips = tripDatabase[city].filter(trip => trip.cost <= budget);
-            
-            if (availableTrips.length === 0) {
-                availableTrips = tripDatabase[city].filter(trip => trip.days === days);
-            }
-            
-            if (availableTrips.length === 0) {
-                availableTrips = tripDatabase[city];
-            }
-            
-            const trip = availableTrips[Math.floor(Math.random() * availableTrips.length)];
-            
-            const travelCost = Math.round(trip.cost * 0.4);
-            const foodCost = Math.round(trip.cost * 0.35);
-            const stayCost = Math.round(trip.cost * 0.25);
-            
-            const tripCard = document.getElementById('tripCard');
-            tripCard.innerHTML = `
-                <div class="place-name">📍 ${trip.name}</div>
-                <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
-                
-                <div class="cost-breakdown">
-                    <div class="cost-item">
-                        <span>🚆 Travel</span>
-                        <span>₹${travelCost}</span>
-                    </div>
-                    <div class="cost-item">
-                        <span>🍜 Food</span>
-                        <span>₹${foodCost}</span>
-                    </div>
-                    <div class="cost-item">
-                        <span>🏨 Stay</span>
-                        <span>₹${stayCost}</span>
-                    </div>
-                    <div class="cost-item">
-                        <span>Total</span>
-                        <span>₹${trip.cost}</span>
-                    </div>
-                </div>
-                
-                <div style="font-weight: 600; color: #212121; margin-bottom: 15px;">📅 Your Itinerary:</div>
-                ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
-            `;
-            
-            document.getElementById('outputSection').classList.add('show');
-            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
-            
-            btn.innerHTML = 'Generate Trip';
-            btn.disabled = false;
-        }, 1000);
-    });
-
-    function imBored() {
-        const trip = randomTrips[Math.floor(Math.random() * randomTrips.length)];
+        const trip = trips[Math.floor(Math.random() * trips.length)];
         
         const travelCost = Math.round(trip.cost * 0.4);
         const foodCost = Math.round(trip.cost * 0.35);
         const stayCost = Math.round(trip.cost * 0.25);
         
-        const tripCard = document.getElementById('tripCard');
-        tripCard.innerHTML = `
+        document.getElementById('tripCard').innerHTML = `
             <div class="place-name">📍 ${trip.name}</div>
-            <div class="trip-cost">💰 Total Cost: ₹${trip.cost}</div>
-            
+            <div class="trip-cost">💰 Total: ₹${trip.cost}</div>
             <div class="cost-breakdown">
-                <div class="cost-item">
-                    <span>🚆 Travel</span>
-                    <span>₹${travelCost}</span>
-                </div>
-                <div class="cost-item">
-                    <span>🍜 Food</span>
-                    <span>₹${foodCost}</span>
-                </div>
-                <div class="cost-item">
-                    <span>🏨 Stay</span>
-                    <span>₹${stayCost}</span>
-                </div>
-                <div class="cost-item">
-                    <span>Total</span>
-                    <span>₹${trip.cost}</span>
-                </div>
+                <div class="cost-item"><span>🚆 Travel</span><span>₹${travelCost}</span></div>
+                <div class="cost-item"><span>🍜 Food</span><span>₹${foodCost}</span></div>
+                <div class="cost-item"><span>🏨 Stay</span><span>₹${stayCost}</span></div>
+                <div class="cost-item"><span>Total</span><span>₹${trip.cost}</span></div>
             </div>
-            
-            <div style="font-weight: 600; color: #212121; margin-bottom: 15px;">📅 Your Itinerary:</div>
-            ${trip.itinerary.map(item => `<div class="itinerary-item">${item}</div>`).join('')}
+            <div style="font-weight: 600; margin-bottom: 15px;">📅 Your Itinerary:</div>
+            ${trip.itinerary.map(i => `<div class="itinerary-item">${i}</div>`).join('')}
         `;
         
         document.getElementById('outputSection').classList.add('show');
         document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
-    }
+        
+        btn.innerHTML = 'Generate Trip';
+        btn.disabled = false;
+    }, 1000);
+});
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        renderDestinations();
-        initMap();
-    });
+// I'm bored function
+function imBored() {
+    const allTrips = Object.values(tripDatabase).flat();
+    const trip = allTrips[Math.floor(Math.random() * allTrips.length)];
+    
+    const travelCost = Math.round(trip.cost * 0.4);
+    const foodCost = Math.round(trip.cost * 0.35);
+    const stayCost = Math.round(trip.cost * 0.25);
+    
+    document.getElementById('tripCard').innerHTML = `
+        <div class="place-name">📍 ${trip.name}</div>
+        <div class="trip-cost">💰 Total: ₹${trip.cost}</div>
+        <div class="cost-breakdown">
+            <div class="cost-item"><span>🚆 Travel</span><span>₹${travelCost}</span></div>
+            <div class="cost-item"><span>🍜 Food</span><span>₹${foodCost}</span></div>
+            <div class="cost-item"><span>🏨 Stay</span><span>₹${stayCost}</span></div>
+            <div class="cost-item"><span>Total</span><span>₹${trip.cost}</span></div>
+        </div>
+        <div style="font-weight: 600; margin-bottom: 15px;">📅 Your Itinerary:</div>
+        ${trip.itinerary.map(i => `<div class="itinerary-item">${i}</div>`).join('')}
+    `;
+    
+    document.getElementById('outputSection').classList.add('show');
+    document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ==========================================
+// INITIALIZE EVERYTHING
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Page loaded, initializing...");
+    renderDestinations();
+    initSearch();
+    initMap();
+    console.log("All initialization complete!");
+});
 </script>
 {% endblock %}
